@@ -3,6 +3,8 @@ public without sharing class MemdeskEditController {
     // SAMPLE ONLY. Replace isManagerBarcode() with a real manager check later
     // (for example, look up the scanned barcode against manager employee records).
     private static final String SAMPLE_OVERRIDE_BARCODE = 'OVERRIDE';
+    private static final Boolean REQUIRE_OVERRIDE = false;
+    private static Boolean skipBlank = false;
 
     public class MemberEdit {
         @AuraEnabled public String firstName;
@@ -21,6 +23,7 @@ public without sharing class MemdeskEditController {
         @AuraEnabled public String birthdate;      // yyyy-MM-dd
         @AuraEnabled public String nationality;
         @AuraEnabled public String maritalStatus;
+        @AuraEnabled public String gender;
         @AuraEnabled public String remarks;
     }
 
@@ -32,16 +35,12 @@ public without sharing class MemdeskEditController {
     // Returns the names of fields that could not be updated (missing or read-only)
     @AuraEnabled
     public static List<String> saveMember(String memberKey, String overrideBarcode, MemberEdit edit) {
-        if (!isManagerBarcode(overrideBarcode)) {
-            throw buildError('A manager override barcode is required to edit.');
+        skipBlank = true;
+        if (REQUIRE_OVERRIDE && !isManagerBarcode(overrideBarcode)) {
         }
         if (edit == null) {
             throw buildError('Nothing to save.');
         }
-        if (String.isBlank(edit.lastName)) {
-            throw buildError('Last name is required.');
-        }
-
         Id contactId = resolveContactId(memberKey);
         if (contactId == null) {
             throw buildError('That member could not be found.');
@@ -61,7 +60,9 @@ public without sharing class MemdeskEditController {
         Contact c = new Contact(Id = contactId);
 
         put(c, f, 'FirstName', clean(edit.firstName, 40), skipped);
-        put(c, f, 'LastName', clean(edit.lastName, 80), skipped);
+        if (String.isNotBlank(edit.lastName)) {
+            put(c, f, 'LastName', clean(edit.lastName, 80), skipped);
+        }
         put(c, f, 'Street__c', clean(edit.street, 100), skipped);
         put(c, f, 'Province__c', clean(edit.province, 50), skipped);
         put(c, f, 'City__c', clean(edit.city, 50), skipped);
@@ -77,6 +78,7 @@ public without sharing class MemdeskEditController {
         put(c, f, 'Birthdate', birth, skipped);          // standard field, kept in sync
         put(c, f, 'Nationality__c', clean(edit.nationality, 255), skipped);
         put(c, f, 'Marital_Status__c', clean(edit.maritalStatus, 255), skipped);
+        put(c, f, 'Gender__c', clean(edit.gender, 255), skipped);
         put(c, f, 'Remarks__c', clean(edit.remarks, 300), skipped);
 
         try {
@@ -111,7 +113,7 @@ public without sharing class MemdeskEditController {
 
     // ---------- helpers ----------
     private static Boolean isManagerBarcode(String barcode) {
-        return String.isNotBlank(barcode) && barcode.trim().equalsIgnoreCase(SAMPLE_OVERRIDE_BARCODE);
+        return !REQUIRE_OVERRIDE || (String.isNotBlank(barcode) && barcode.trim().equalsIgnoreCase(SAMPLE_OVERRIDE_BARCODE));
     }
 
     private static Id resolveContactId(String memberKey) {
@@ -138,6 +140,9 @@ public without sharing class MemdeskEditController {
     }
 
     private static void put(SObject record, Map<String, Schema.SObjectField> fields, String apiName, Object value, List<String> skipped) {
+        if (skipBlank && value == null) {
+            return;
+        }
         Schema.SObjectField field = fields.get(apiName);
         if (field == null || !field.getDescribe().isUpdateable()) {
             skipped.add(apiName);

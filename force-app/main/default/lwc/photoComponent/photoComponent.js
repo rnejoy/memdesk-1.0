@@ -292,7 +292,7 @@ export default class PhotoComponent extends LightningElement {
         if (error && error.message === 'unsupported') {
             return 'The camera is not available in this browser.';
         }
-        return 'The camera could not be started.';
+        return `The camera could not be started.${name ? ` (${name})` : ''}`;
     }
 
     // First click captures. After capturing, the same button becomes "Retake".

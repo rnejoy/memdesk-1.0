@@ -1336,5 +1336,5 @@ select.input {
 }
 
 .override-card {
-    cursor: pointer; /* Indicates design modal is clickable */
+    cursor: pointer;
 }

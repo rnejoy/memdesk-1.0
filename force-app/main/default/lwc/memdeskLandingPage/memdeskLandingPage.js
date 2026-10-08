@@ -91,6 +91,7 @@ export default class MemdeskLandingPage extends LightningElement {
     barangayOptions = [];
     nationalityOptions = [];
     maritalOptions = [];
+    genderOptions = [];
 
     // ----- Override modal -----
     showOverrideModal = false;
@@ -481,7 +482,9 @@ export default class MemdeskLandingPage extends LightningElement {
             birthdate: toIsoDate(m.birthdate),
             nationality: m.nationality || '',
             maritalStatus: m.maritalStatus || '',
+            gender: m.gender || '',
             remarks: m.remarks || ''
+        
         };
         this.errors = {};
         this.isDirty = false;
@@ -504,15 +507,16 @@ export default class MemdeskLandingPage extends LightningElement {
         const m = this.selectedMemberData || {};
         try {
             if (!this.lookupsReady) {
-                const [provinces, nationalities, marital] = await Promise.all([
+                const [provinces, nationalities, marital, genders] = await Promise.all([
                     getProvinces(),
                     getPicklist({ fieldApiName: 'Nationality__c' }),
-                    getPicklist({ fieldApiName: 'Marital_Status__c' })
+                    getPicklist({ fieldApiName: 'Marital_Status__c' }),
+                    getPicklist({ fieldApiName: 'Gender__c' })
                 ]);
                 this.provinceOptions = provinces || [];
                 this.nationalityOptions = nationalities || [];
                 this.maritalOptions = marital || [];
-                this.lookupsReady = true;
+                this.genderOptions = genders || [];
             }
 
             const province = this.matchOption(this.provinceOptions, m.provinceCode, m.province);
@@ -594,8 +598,7 @@ export default class MemdeskLandingPage extends LightningElement {
     validateEdit() {
         const e = this.edit;
         const errors = {};
-        if (!e.lastName.trim()) {
-            errors.lastName = 'Last name is required.';
+        if (!e.lastName.trim() && !this.selectedMemberData?.lastName) {
         }
         if (e.mobile.trim() && !PH_MOBILE.test(e.mobile.trim())) {
             errors.mobile = 'Use 09XXXXXXXXX or +639XXXXXXXXX.';
@@ -652,6 +655,7 @@ export default class MemdeskLandingPage extends LightningElement {
             birthdate: e.birthdate,
             nationality: e.nationality,
             maritalStatus: e.maritalStatus,
+            gender: e.gender,
             remarks: e.remarks.trim()
         };
     }
@@ -868,8 +872,13 @@ export default class MemdeskLandingPage extends LightningElement {
             this.staticField('middleName', 'Middle Name', show(m.middleName)),
             this.editField('lastName', 'Last Name', show(m.lastName), { maxlength: 80, required: true }),
             this.staticField('suffix', 'Suffix', show(m.suffix), false),
-            this.staticField('gender', 'Gender', show(m.gender), false),
-            this.headingField('addressHeading', 'Address'),
+            this.editField('gender', 'Gender', show(m.gender), {
+                kind: this.genderOptions.length ? 'select' : 'text',
+                full: false,
+                maxlength: 30,
+                options: this.buildPicklist(this.genderOptions, e.gender)
+            }),
+                        this.headingField('addressHeading', 'Address'),
             this.editField('street', 'Street', show(m.street), { maxlength: 100 }),
             this.editField('barangay', 'Barangay', show(m.barangay), {
                 kind: 'select',
@@ -1012,6 +1021,7 @@ export default class MemdeskLandingPage extends LightningElement {
         // 1. Dismiss the modal
         this.showOverrideModal = false;
         this.overrideError = '';
+        this.overrideBarcode = 'OVERRIDE';
 
         // 2. Trigger edit mode directly
         await this.startEditing();

@@ -9,7 +9,7 @@ public without sharing class MemdeskLookupController {
         }
     }
 
-    private static final Set<String> PICKLIST_FIELDS = new Set<String>{ 'Nationality__c', 'Marital_Status__c' };
+    private static final Set<String> PICKLIST_FIELDS = new Set<String>{ 'Nationality__c', 'Marital_Status__c', 'Gender__c' };
 
     @AuraEnabled(cacheable=true)
     public static List<Option> getProvinces() {
