@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>How_often_do_you_visit__c</fullName>
+    <inlineHelpText>7.  How often do you visit?*</inlineHelpText>
+    <label>How often do you visit?</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Once a week</fullName>
+                <default>false</default>
+                <label>Once a week</label>
+            </value>
+            <value>
+                <fullName>Twice a week</fullName>
+                <default>false</default>
+                <label>Twice a week</label>
+            </value>
+            <value>
+                <fullName>Once a month</fullName>
+                <default>false</default>
+                <label>Once a month</label>
+            </value>
+            <value>
+                <fullName>Twice a Month</fullName>
+                <default>false</default>
+                <label>Twice a Month</label>
+            </value>
+            <value>
+                <fullName>Once per Quarter</fullName>
+                <default>false</default>
+                <label>Once per Quarter</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

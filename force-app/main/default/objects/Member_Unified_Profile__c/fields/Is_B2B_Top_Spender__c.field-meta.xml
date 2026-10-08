@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Is_B2B_Top_Spender__c</fullName>
+    <defaultValue>false</defaultValue>
+    <label>Is B2B Top Spender</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

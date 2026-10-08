@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Role_in_the_household__c</fullName>
+    <inlineHelpText>3.  Which of the  following  best describes you in terms of  your role in the household?</inlineHelpText>
+    <label>Role in the household</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>I am the primary decision maker and buyer of groceries in my household.</fullName>
+                <default>false</default>
+                <label>I am the primary decision maker and buyer of groceries in my household.</label>
+            </value>
+            <value>
+                <fullName>I am the primary decision maker of what to buy, but somebody else goes to the groceries to buy for me.</fullName>
+                <default>false</default>
+                <label>I am the primary decision maker of what to buy, but somebody else goes to the groceries to buy for me.</label>
+            </value>
+            <value>
+                <fullName>I only pick up groceries</fullName>
+                <default>false</default>
+                <label>I only pick up groceries</label>
+            </value>
+            <value>
+                <fullName>I rarely buy groceries</fullName>
+                <default>false</default>
+                <label>I rarely buy groceries</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

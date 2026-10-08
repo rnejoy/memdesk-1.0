@@ -1,0 +1,109 @@
+<template>
+    <div class="photo-section">
+
+        <div class="photo-frame">
+            <img src={displayUrl} alt="Member photo" class="photo-img" onerror={handleImageError} />
+            <template lwc:if={isSaving}>
+                <div class="photo-overlay" role="status">
+                    <span class="spinner"></span>
+                    <span>Saving...</span>
+                </div>
+            </template>
+        </div>
+
+        <div class="photo-actions">
+            <button type="button" class="photo-btn" title="Take a picture" aria-label="Take a picture" onclick={openCameraModal}>
+                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z" />
+                    <circle cx="12" cy="13" r="3" />
+                </svg>
+            </button>
+
+            <!-- The file input sits on top of the button, so a click opens the picker natively -->
+            <div class="photo-btn" title="Upload a photo">
+                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="17 8 12 3 7 8" />
+                    <line x1="12" x2="12" y1="3" y2="15" />
+                </svg>
+                <input
+                    class="file-input"
+                    type="file"
+                    accept="image/*"
+                    aria-label="Upload a photo"
+                    disabled={isSaving}
+                    onchange={handleFileSelected} />
+            </div>
+
+            <button type="button" class="photo-btn" title="Email member" aria-label="Email member" onclick={handleSendMessage}>
+                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <rect width="20" height="16" x="2" y="4" rx="2" />
+                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                </svg>
+            </button>
+        </div>
+
+    </div>
+
+    <template lwc:if={statusMessage}>
+        <p class={statusClass} role="status">{statusMessage}</p>
+    </template>
+
+    <!-- TAKE A PICTURE MODAL -->
+    <template lwc:if={isModalOpen}>
+        <div class="modal-backdrop" onclick={handleBackdropClick} onkeydown={handleModalKeydown}>
+            <div class="modal-card" role="dialog" aria-modal="true" aria-label="Take a picture" tabindex="-1">
+
+                <button type="button" class="modal-close" aria-label="Close" onclick={closeCameraModal}>x</button>
+
+                <div class="modal-head">
+                    <span class="modal-icon">
+                        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                            <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z" />
+                            <circle cx="12" cy="13" r="3" />
+                        </svg>
+                    </span>
+                    <h2 class="modal-title">Take a Picture</h2>
+                </div>
+
+                <span class="select-label">Select Camera:</span>
+                <select class="camera-select" aria-label="Select camera" onchange={handleCameraChange}>
+                    <template for:each={cameraOptions} for:item="opt">
+                        <option key={opt.value} value={opt.value} selected={opt.selected}>{opt.label}</option>
+                    </template>
+                </select>
+
+                <div class="panels">
+                    <div class="panel-col">
+                        <span class="chip">Camera</span>
+                        <div class="panel">
+                            <video class={videoClass} autoplay playsinline></video>
+                            <template lwc:if={cameraMessage}>
+                                <p class="panel-text">{cameraMessage}</p>
+                            </template>
+                        </div>
+                        <button type="button" class="btn-light" onclick={handleCapture} disabled={captureDisabled}>{captureLabel}</button>
+                    </div>
+
+                    <div class="panel-col">
+                        <span class="chip">Photo View</span>
+                        <div class="panel">
+                            <template lwc:if={capturedUrl}>
+                                <img class="panel-img" src={capturedUrl} alt="Captured photo" />
+                            </template>
+                            <template lwc:else>
+                                <p class="panel-text">Please capture a photo to view</p>
+                            </template>
+                        </div>
+                        <button type="button" class="btn-light" onclick={handleUploadCaptured} disabled={uploadDisabled}>{uploadLabel}</button>
+                    </div>
+                </div>
+
+                <template lwc:if={modalError}>
+                    <p class="modal-error" role="alert">{modalError}</p>
+                </template>
+
+            </div>
+        </div>
+    </template>
+</template>

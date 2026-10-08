@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>How_would_you_rate_service_received__c</fullName>
+    <label>How would you rate service received?</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Very satisfied</fullName>
+                <default>false</default>
+                <label>Very satisfied</label>
+            </value>
+            <value>
+                <fullName>Satisfied</fullName>
+                <default>false</default>
+                <label>Satisfied</label>
+            </value>
+            <value>
+                <fullName>Neutral</fullName>
+                <default>false</default>
+                <label>Neutral</label>
+            </value>
+            <value>
+                <fullName>Not satisfied</fullName>
+                <default>false</default>
+                <label>Not satisfied</label>
+            </value>
+            <value>
+                <fullName>Very dissatisfied</fullName>
+                <default>false</default>
+                <label>Very dissatisfied</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

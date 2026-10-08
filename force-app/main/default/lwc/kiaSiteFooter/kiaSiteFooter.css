@@ -1,0 +1,99 @@
+:host {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+
+    --emerald:      #0A2F1E;
+    --emerald-mid:  #133C26;
+    --emerald-deep: #051710;
+    --gold:         #D4AF5A;
+    --gold-bright:  #F2D88A;
+    --red:          #C81E2C;
+    --white:        #FFFFFF;
+    --muted:        rgba(242,216,138,.45);
+}
+
+.ftr {
+    width: 100%;
+    background: linear-gradient(180deg, var(--emerald-deep) 0%, var(--emerald-mid) 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Gold foil top accent line */
+.ftr::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--gold) 15%, var(--gold-bright) 50%, var(--gold) 85%, transparent);
+    box-shadow: 0 0 12px rgba(242,216,138,.35);
+    z-index: 1;
+}
+
+/* Matching foil sheen texture */
+.ftr::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+        100deg,
+        rgba(255,255,255,.025) 0px,
+        rgba(255,255,255,.025) 1px,
+        transparent 1px,
+        transparent 58px
+    );
+    pointer-events: none;
+    z-index: 0;
+}
+
+.ftr-inner {
+    position: relative; z-index: 2;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.ftr-tag {
+    color: var(--gold-bright);
+    font-size: 9.5px;
+    letter-spacing: .28em;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-family: 'Inter', 'Salesforce Sans', system-ui, sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Red dot before the tag — the offer colour, kept as the one accent spark */
+.ftr-tag::before {
+    content: '';
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--red);
+    box-shadow: 0 0 5px rgba(200,30,44,.6);
+    flex-shrink: 0;
+}
+
+.ftr-copy {
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: .06em;
+    font-family: 'Inter', 'Salesforce Sans', system-ui, sans-serif;
+    font-weight: 500;
+}
+
+@media (max-width: 600px) {
+    .ftr-inner {
+        flex-direction: column;
+        gap: 4px;
+        padding: 14px 20px;
+        text-align: center;
+    }
+    .ftr-tag::before { display: none; }
+}

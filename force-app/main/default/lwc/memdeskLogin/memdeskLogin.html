@@ -1,0 +1,107 @@
+<template>
+    <template lwc:if={isLoggedIn}>
+        <c-memdesk-landing-page
+            store-name={loggedInStore}
+            user-name={loggedInUser}
+            onlogout={handleLogout}>
+        </c-memdesk-landing-page>
+    </template>
+    <template lwc:else>
+        <div class="slds-grid slds-wrap login-container">
+
+            <!-- LEFT PANEL -->
+            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 left-panel">
+
+                <!-- Brand -->
+                <header class="brand">
+                    <img src={memdeskLoginLogo} alt="Membership Desk logo" class="brand-logo" />
+                    <span class="brand-name">Membership Desk <span class="brand-version">v.1.0</span></span>
+                </header>
+
+                <!-- Form -->
+                <div class="form-wrapper">
+                    <div class="login-form">
+                        <h1 class="login-heading">Sign In</h1>
+                        <p class="login-subtitle">Good to see you again.</p>
+
+                        <div class="field">
+                            <label for="email" class="field-label">Email</label>
+                            <input
+                                id="email"
+                                type="email"
+                                class={emailClass}
+                                placeholder="you@landers.ph"
+                                autocomplete="username"
+                                oninput={handleEmailChange} />
+                        </div>
+
+                        <div class="field">
+                            <div class="field-row">
+                                <label for="password" class="field-label">Password</label>
+                                <button type="button" class="forgot-password" onclick={openForgotModal}>
+                                    Forgot password?
+                                </button>
+                            </div>
+                            <input
+                                id="password"
+                                type="password"
+                                class={passwordClass}
+                                autocomplete="current-password"
+                                oninput={handlePasswordChange} />
+                        </div>
+
+                        <div class="message-slot" aria-live="polite">
+                            <template lwc:if={errorMessage}>
+                                <div class="login-error">{errorMessage}</div>
+                            </template>
+                            <template lwc:if={successMessage}>
+                                <div class="login-success">{successMessage}</div>
+                            </template>
+                        </div>
+
+                        <button
+                            type="button"
+                            class="login-button"
+                            onclick={handleSubmit}
+                            disabled={isLoading}>
+                            {submitLabel}
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <footer class="login-footer">
+                    <span>Landers Membership Desk © 2026</span>
+                    <span class="footer-dot" aria-hidden="true">·</span>
+                    <span>About</span>
+                    <span class="footer-dot" aria-hidden="true">·</span>
+                    <span>Credits</span>
+                </footer>
+
+            </div>
+
+            <!-- RIGHT PANEL -->
+            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 right-panel">
+                <div class="hero-card">
+                    <span class="hero-pill">{currentDateTime}</span>
+                    <img src={memdeskLoginCenterImage} alt="" class="center-image" />
+                </div>
+            </div>
+
+        </div>
+
+        <!-- FORGOT PASSWORD -->
+        <template lwc:if={showForgotModal}>
+            <div class="modal-backdrop" onclick={handleBackdropClick} onkeydown={handleModalKeydown}>
+                <div class="modal-card" role="dialog" aria-modal="true" aria-label="Forgot password">
+                    <button type="button" class="modal-close" onclick={closeForgotModal} aria-label="Close">x</button>
+                    <p class="modal-text">
+                        To reset password, kindly contact<br />
+                        Salesforce Admin via<br />
+                        <span class="modal-email">itsupport@landers.ph</span>
+                    </p>
+                </div>
+            </div>
+        </template>
+    </template>
+</template>

@@ -1,0 +1,29 @@
+.THIS .slds-form-element {
+	height: 80px !important;
+}
+
+.THIS .slds-select {
+	height: 44px !important;
+	font-size: 20px !important;
+	border-radius: 3px !important;
+	padding-left: 10px;
+}
+
+.THIS .slds-input {
+	height: 42px !important;
+	font-size: 20px !important;
+	border-radius: 3px !important;
+}
+
+.THIS .displayInfo {
+	font-size: 19px !important;
+}
+
+.THIS .slds-button {
+	height: 50px !important;
+	color: white !important;
+}
+
+.THIS .sorry {
+	font-size: 20px;
+}

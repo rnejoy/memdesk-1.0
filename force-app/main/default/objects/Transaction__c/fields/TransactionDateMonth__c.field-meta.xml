@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>TransactionDateMonth__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(MONTH(DATEVALUE( Transaction_Date__c)) = 1, &quot;01 January&quot;, 
+IF(MONTH(DATEVALUE( Transaction_Date__c)) = 2, &quot;02 February&quot;, 
+IF(MONTH(DATEVALUE( Transaction_Date__c)) = 3, &quot;03 March&quot;,
+IF(MONTH(DATEVALUE( Transaction_Date__c)) = 4, &quot;04 April&quot;,
+IF(MONTH(DATEVALUE( Transaction_Date__c)) = 5, &quot;05 May&quot;,
+IF(MONTH(DATEVALUE( Transaction_Date__c)) = 6, &quot;06 June&quot;,
+IF(MONTH(DATEVALUE( Transaction_Date__c)) = 7, &quot;07 July&quot;,
+IF(MONTH(DATEVALUE( Transaction_Date__c)) = 8, &quot;08 August&quot;,
+IF(MONTH(DATEVALUE( Transaction_Date__c)) = 9, &quot;09 September&quot;,
+IF(MONTH(DATEVALUE( Transaction_Date__c)) = 10, &quot;10 October&quot;,
+IF(MONTH(DATEVALUE( Transaction_Date__c)) = 11, &quot;11 November&quot;,
+IF(MONTH(DATEVALUE( Transaction_Date__c)) = 12, &quot;12 December&quot;, null
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>TransactionDateMonth</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

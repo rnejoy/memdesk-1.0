@@ -1,0 +1,424 @@
+<template>
+    <div class="page">
+
+        <!-- HEADER -->
+        <header class="topbar">
+            <div class="brand">
+                <img src={memdeskLoginLogo} alt="Membership Desk logo" class="brand-logo" />
+                <span class="brand-name">Membership Desk v.1.0</span>
+            </div>
+
+            <div class="store-text">Store: <strong>{storeName}</strong></div>
+
+            <div class="user-menu" onkeydown={handleMenuKeydown}>
+                <button
+                    type="button"
+                    class="user-button"
+                    onclick={toggleUserMenu}
+                    aria-haspopup="menu"
+                    aria-expanded={menuExpanded}>
+                    <span class="avatar">{userInitials}</span>
+                    <span class={userChevronClass}></span>
+                    <span class="user-name">{userName}</span>
+                </button>
+
+                <template lwc:if={showUserMenu}>
+                    <div class="menu-backdrop" onclick={closeUserMenu}></div>
+                    <div class="menu-panel" role="menu">
+                        <button type="button" class="menu-item" role="menuitem" data-action="account" onclick={handleMenuAction}>Account Information</button>
+                        <button type="button" class="menu-item" role="menuitem" data-action="settings" onclick={handleMenuAction}>Settings</button>
+                        <button type="button" class="menu-item menu-item-danger" role="menuitem" data-action="logout" onclick={handleMenuAction}>Logout</button>
+                    </div>
+                </template>
+            </div>
+        </header>
+
+        <!-- SEARCH MODE -->
+        <template lwc:if={isSearchMode}>
+            <main class="content">
+
+                <!-- SCAN CARD -->
+                <section class="scan-wrap">
+                    <button type="button" class={scanCardClass} onclick={startScan}>
+                        <span class="scan-tile">
+                            <svg class="gun-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+                                <path d="M8 20a8 8 0 0 1 8-8h22a6 6 0 0 1 6 6v10H8z" fill="#8bbd4e" />
+                                <path d="M44 14l9-3a2 2 0 0 1 2.6 1.9V31l-11.6.2z" fill="#4a7a22" />
+                                <rect x="14" y="19" width="22" height="4" rx="2" fill="#e4f2cf" />
+                                <path d="M10 30h16v20a6 6 0 0 1-6 6h-4a6 6 0 0 1-6-6z" fill="#5f8f2d" />
+                            </svg>
+                            <span class="scan-line"></span>
+                        </span>
+                        <span class="scan-title">{scanTitle}</span>
+                        <span class="scan-hint">{scanHint}</span>
+                    </button>
+
+                    <template lwc:if={isScanning}>
+                        <input
+                            class="scan-input"
+                            type="text"
+                            aria-label="Barcode input"
+                            autocomplete="off"
+                            onkeydown={handleScanKeydown}
+                            onblur={handleScanBlur} />
+                    </template>
+                </section>
+
+                <!-- SEARCH CARD -->
+                <section class="search-card">
+                    <div class="search-head">
+                        <h2 class="section-title">Search by Name</h2>
+                        <div class="toggle-group" role="group" aria-label="Search type">
+                            <button type="button" class={leadToggleClass} data-type="Lead" aria-pressed={leadPressed} onclick={handleTypeChange}>Lead</button>
+                            <button type="button" class={memberToggleClass} data-type="Member" aria-pressed={memberPressed} onclick={handleTypeChange}>Member</button>
+                        </div>
+                    </div>
+
+                    <div class="search-panel">
+                        <div class="search-row">
+                            <input
+                                type="text"
+                                class="search-input"
+                                placeholder="Enter full name"
+                                aria-label="Search by name"
+                                autocomplete="off"
+                                value={searchInputValue}
+                                readonly={searchInputReadOnly}
+                                oninput={handleSearchInput}
+                                onkeydown={handleSearchKeydown} />
+                            <button type="button" class="search-button" onclick={handleSearch}>Search</button>
+                            <button type="button" class="expand-button" onclick={toggleNameFields} aria-label="Search by first, middle and last name" aria-expanded={nameFieldsExpanded}>
+                                <span class={chevronClass}></span>
+                            </button>
+                        </div>
+
+                        <template lwc:if={showNameFields}>
+                            <div class="name-fields">
+                                <div class="name-row">
+                                    <input class="name-input" type="text" aria-label="First name" autocomplete="off" value={firstName} oninput={handleFirstChange} onkeydown={handleSearchKeydown} />
+                                    <span class="name-chip">First Name</span>
+                                </div>
+                                <div class="name-row">
+                                    <input class="name-input" type="text" aria-label="Middle name" autocomplete="off" value={middleName} oninput={handleMiddleChange} onkeydown={handleSearchKeydown} />
+                                    <span class="name-chip">Middle Name</span>
+                                </div>
+                                <div class="name-row">
+                                    <input class={lastNameClass} type="text" aria-label="Last name" aria-required="true" autocomplete="off" placeholder={lastNamePlaceholder} value={lastName} oninput={handleLastChange} onkeydown={handleSearchKeydown} />
+                                    <span class="name-chip">Last Name <span class="req">*</span></span>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+
+                    <template lwc:if={searchError}>
+                        <p class="search-error" role="alert">{searchError}</p>
+                    </template>
+
+                    <div class="results-card">
+                        <div class="results-title">{resultsLabel}</div>
+
+                        <template lwc:if={hasResults}>
+                            <ul class="results-list">
+                                <template for:each={pagedResults} for:item="row">
+                                    <li key={row.id}>
+                                        <button type="button" class={row.rowClass} data-id={row.id} onclick={handleSelectResult}>
+                                            <span class="result-name">{row.fullName}</span>
+                                            <span class="result-id">{row.displayId}</span>
+                                        </button>
+                                    </li>
+                                </template>
+                            </ul>
+
+                            <div class="pagination">
+                                <button type="button" class="page-btn" onclick={handlePrevPage} disabled={prevDisabled} aria-label="Previous page">
+                                    <svg viewBox="0 0 24 24" class="page-arrow"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" /></svg>
+                                </button>
+                                <span class="page-number">{pageNumber} / {totalPages}</span>
+                                <button type="button" class="page-btn" onclick={handleNextPage} disabled={nextDisabled} aria-label="Next page">
+                                    <svg viewBox="0 0 24 24" class="page-arrow"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" /></svg>
+                                </button>
+                            </div>
+                        </template>
+                        <template lwc:elseif={noMatches}>
+                            <p class="empty-text">{noMatchesMessage}</p>
+                        </template>
+                        <template lwc:else>
+                            <p class="empty-text">Search by name to see results here.</p>
+                        </template>
+                    </div>
+                </section>
+
+            </main>
+        </template>
+
+        <!-- DETAIL MODE -->
+        <template lwc:else>
+            <main class="detail-container">
+
+                <div class="top-nav">
+                    <button type="button" class="back-btn" onclick={handleBackToSearch}>
+                        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                            <path d="m12 19-7-7 7-7" />
+                            <path d="M19 12H5" />
+                        </svg>
+                        Back
+                    </button>
+                </div>
+
+                <template lwc:if={isLoadingDetails}>
+                    <div class="state-card">
+                        <span class="spinner"></span>
+                        <span>Loading profile...</span>
+                    </div>
+                </template>
+                <template lwc:elseif={hasDetails}>
+
+                    <div class="detail-grid">
+
+                        <!-- PROFILE CARD -->
+                        <aside class="profile-card">
+                            <c-photo-component
+                                record-key={detailKey}
+                                record-type={detailRecordType}
+                                initial-photo-url={detailPhotoUrl}>
+                            </c-photo-component>
+
+                            <div class="id-badge">
+                                <span class="badge-label">{idLabel}</span>
+                                <div class="badge-row">
+                                    <span class={idTextClass}>{idText}</span>
+                                    <template lwc:if={showCopyId}>
+                                        <button type="button" class="icon-btn" onclick={handleCopyId} aria-label="Copy membership ID">
+                                            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                                <rect width="11" height="11" x="8" y="8" rx="2" ry="2" />
+                                                <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+                                            </svg>
+                                        </button>
+                                    </template>
+                                </div>
+                            </div>
+
+                            <h3 class="pref-title">How should we reach you?</h3>
+                            <ul class="check-grid">
+                                <template for:each={reachItems} for:item="item">
+                                    <li key={item.label}>
+                                        <button type="button" class="check-item" role="checkbox" aria-checked={item.ariaChecked} data-group={item.group} data-label={item.label} disabled={prefsLocked} onclick={handlePrefToggle}>
+                                            <span class={item.boxClass}>
+                                                <svg class="check-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><polyline points="20 6 9 17 4 12" /></svg>
+                                            </span>
+                                            <span>{item.label}</span>
+                                        </button>
+                                    </li>
+                                </template>
+                            </ul>
+
+                            <h3 class="pref-title">How did you hear about us?</h3>
+                            <ul class="check-grid">
+                                <template for:each={sourceItems} for:item="item">
+                                    <li key={item.label}>
+                                        <button type="button" class="check-item" role="checkbox" aria-checked={item.ariaChecked} data-group={item.group} data-label={item.label} disabled={prefsLocked} onclick={handlePrefToggle}>
+                                            <span class={item.boxClass}>
+                                                <svg class="check-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><polyline points="20 6 9 17 4 12" /></svg>
+                                            </span>
+                                            <span>{item.label}</span>
+                                        </button>
+                                    </li>
+                                </template>
+                            </ul>
+
+                            <h3 class="pref-title">Voucher Validation</h3>
+                            <div class="voucher-row">
+                                <input class="voucher-input" type="text" aria-label="Voucher code" autocomplete="off" value={voucherCode} oninput={handleVoucherInput} onkeydown={handleVoucherKeydown} />
+                                <button type="button" class="voucher-btn" onclick={handleVoucherSubmit}>Submit</button>
+                            </div>
+                            <template lwc:if={voucherError}>
+                                <p class="voucher-error" role="alert">{voucherError}</p>
+                            </template>
+                        </aside>
+
+                        <!-- THREE INFO CARDS -->
+                        <template for:each={cards} for:item="card">
+                            <section key={card.key} class="info-card">
+                                <div class="field-grid">
+                                    <template for:each={card.fields} for:item="f">
+                                        <div key={f.key} class={f.wrapClass}>
+
+                                            <template lwc:if={f.isHeading}>
+                                                <span class="group-title">{f.label}</span>
+                                            </template>
+
+                                            <template lwc:elseif={f.isVat}>
+                                                <span class={f.boxClass}>
+                                                    <svg class="check-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><polyline points="20 6 9 17 4 12" /></svg>
+                                                </span>
+                                                <span>Is VAT exempt?</span>
+                                                <span class="sr-only">{f.display}</span>
+                                            </template>
+
+                                            <template lwc:else>
+                                                <span class="f-label">{f.label}<template lwc:if={f.required}><span class="req" aria-hidden="true"> *</span></template></span>
+
+                                                <template lwc:if={f.showInput}>
+                                                <div class="input-wrapper">
+                                                    <template lwc:if={f.isSelect}>
+                                                        <select class={f.inputClass} data-field={f.key} aria-label={f.label} disabled={f.disabled} onchange={handleEditSelect}>
+                                                            <template for:each={f.options} for:item="opt">
+                                                                <option key={opt.value} value={opt.value} selected={opt.selected}>{opt.label}</option>
+                                                            </template>
+                                                        </select>
+                                                    </template>
+                                                    <template lwc:elseif={f.isTextarea}>
+                                                        <textarea class={f.inputClass} data-field={f.key} aria-label={f.label} maxlength={f.maxlength} value={f.value} oninput={handleEditInput}></textarea>
+                                                    </template>
+                                                    <template lwc:else>
+                                                        <input class={f.inputClass} type={f.inputType} data-field={f.key} aria-label={f.label} maxlength={f.maxlength} value={f.value} autocomplete="off" oninput={handleEditInput} />
+                                                    </template>
+                                                </div>
+                                                <template lwc:if={f.error}>
+                                                    <span class="f-error" role="alert">{f.error}</span>
+                                                </template>
+                                            </template>
+
+                                                <template lwc:else>
+                                                    <div class={f.valueClass}>
+                                                        <template lwc:if={f.isPill}>
+                                                            <span class={f.pillClass}>{f.display}</span>
+                                                        </template>
+                                                        <template lwc:else>
+                                                            <span class="value-text">{f.display}</span>
+                                                        </template>
+                                                        <template lwc:if={f.hasAction}>
+                                                            <a class="value-action" href={f.actionHref} aria-label={f.actionLabel}>
+                                                                <template lwc:if={f.isSms}>
+                                                                    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>
+                                                                </template>
+                                                                <template lwc:else>
+                                                                    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect width="20" height="16" x="2" y="4" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" /></svg>
+                                                                </template>
+                                                            </a>
+                                                        </template>
+                                                    </div>
+                                                </template>
+                                            </template>
+
+                                        </div>
+                                    </template>
+                                </div>
+                            </section>
+                        </template>
+
+                    </div>
+
+                    <!-- ACTIONS -->
+                    <div class="detail-actions">
+                        <div class="action-group">
+                            <button type="button" class="btn" onclick={handleRefresh} disabled={refreshDisabled}>
+                                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                    <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />
+                                    <path d="M21 3v5h-5" />
+                                    <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
+                                    <path d="M8 16H3v5" />
+                                </svg>
+                                Refresh
+                            </button>
+
+                            <!-- One button: Edit becomes Save -->
+                            <button type="button" class={editButtonClass} onclick={handleEditSave} disabled={isSaving}>
+                                <template lwc:if={isEditing}>
+                                    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+                                        <polyline points="17 21 17 13 7 13 7 21" />
+                                        <polyline points="7 3 7 8 15 8" />
+                                    </svg>
+                                </template>
+                                <template lwc:else>
+                                    <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                        <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
+                                        <path d="m15 5 4 4" />
+                                    </svg>
+                                </template>
+                                {editButtonLabel}
+                            </button>
+                        </div>
+                        <div class="action-group">
+                            <button type="button" class="btn btn-lime" data-name="Print card" onclick={handlePlaceholderAction}>
+                                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                    <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+                                    <path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6" />
+                                    <rect x="6" y="14" width="12" height="8" rx="1" />
+                                </svg>
+                                Print Card
+                            </button>
+                            <button type="button" class="btn" data-name="Record payment" onclick={handlePlaceholderAction}>
+                                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+                                    <polyline points="17 21 17 13 7 13 7 21" />
+                                    <polyline points="7 3 7 8 15 8" />
+                                </svg>
+                                Record Payment
+                            </button>
+                        </div>
+                    </div>
+
+                </template>
+                <template lwc:else>
+                    <div class="state-card state-error" role="alert">{detailError}</div>
+                </template>
+
+            </main>
+        </template>
+
+        <!-- FOOTER -->
+        <footer class="login-footer">
+            <span>Landers Membership Desk @2026</span>
+            <span class="footer-bar" aria-hidden="true">|</span>
+            <span>About</span>
+            <span class="footer-bar" aria-hidden="true">|</span>
+            <span>Credits</span>
+        </footer>
+
+        <!-- TEMPORARY MESSAGE -->
+        <template lwc:if={notice}>
+            <div class="notice" role="status">{notice}</div>
+        </template>
+
+        <!-- MANAGER OVERRIDE MODAL -->
+        <template lwc:if={showOverrideModal}>
+            <div class="modal-backdrop" onclick={handleOverrideBackdrop} onkeydown={handleOverrideEsc}>
+                <!-- Added onclick handler to the tile so clicking anywhere on the design dismisses it -->
+                <div class="override-card" role="dialog" aria-modal="true" aria-label="Manager override" onclick={handleOverrideClick}>
+
+                    <div class="override-tile">
+                        <span class={overrideIconClass}>
+                            <svg class="override-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+                                <path d="M8 20a8 8 0 0 1 8-8h22a6 6 0 0 1 6 6v10H8z" fill="#8bbd4e" />
+                                <path d="M44 14l9-3a2 2 0 0 1 2.6 1.9V31l-11.6.2z" fill="#4a7a22" />
+                                <rect x="14" y="19" width="22" height="4" rx="2" fill="#e4f2cf" />
+                                <path d="M10 30h16v20a6 6 0 0 1-6 6h-4a6 6 0 0 1-6-6z" fill="#5f8f2d" />
+                            </svg>
+                        </span>
+                    </div>
+
+                    <p class="override-text">Kindly scan <span class="override-word">Override</span> Barcode<br />To Allow Edit</p>
+
+                    <template lwc:if={overrideError}>
+                        <p class="override-error" role="alert">{overrideError}</p>
+                    </template>
+
+                    <button type="button" class="btn-light" onclick={closeOverrideModal}>Cancel</button>
+
+                    <!-- Hidden scanner input -->
+                    <input
+                        class="override-input"
+                        type="text"
+                        aria-label="Override barcode"
+                        autocomplete="off"
+                        onkeydown={handleOverrideScan}
+                        onfocus={handleOverrideFocus}
+                        onblur={handleOverrideBlur} />
+                </div>
+            </div>
+        </template>
+
+    </div>
+</template>

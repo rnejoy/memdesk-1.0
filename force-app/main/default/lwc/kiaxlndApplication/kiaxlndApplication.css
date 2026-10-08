@@ -1,0 +1,1001 @@
+:host {
+    /* ── Landers 10 × Kia Tokens ──────────────────────────────────────────
+       Pulled directly from the campaign key art:
+       Emerald: the deep glossy field colour behind everything
+       Gold:    the foil ring around "P400K OFF" and the "10" anniversary mark
+       Red:     the offer-price tag colour ("P200K OFF" / "P400K OFF")
+       Ivory:   the bottom card panel in the key art (light, warm, clean)
+    ───────────────────────────────────────────────────────────────────── */
+    --emerald:       #0A2F1E;
+    --emerald-dark:  #051710;
+    --emerald-mid:   #133C26;
+    --emerald-rim:   #1F5C38;
+    --emerald-glow:  rgba(31,92,56,.35);
+
+    --gold:          #D4AF5A;
+    --gold-bright:   #F2D88A;
+    --gold-dim:      #8C6F2E;
+    --gold-line:     rgba(212,175,90,.38);
+
+    --red:           #C81E2C;
+    --red-dark:      #931623;
+    --red-glow:      rgba(200,30,44,.20);
+    --red-pale:      #fdeeee;
+
+    --charcoal:      #15201B;
+    --charcoal-mid:  #1E2C24;
+
+    --ice:           #FAF7EF;
+    --ice-mid:       #F1ECDD;
+    --ice-dark:      #E2DBC2;
+
+    --white:         #FFFFFF;
+    --ink:           #16241B;
+    --muted:         #66705F;
+    --line:          #E5DFC8;
+
+    display: block;
+    width: 100%;
+    height: auto !important;
+    font-family: 'Inter', 'Salesforce Sans', system-ui, -apple-system, sans-serif;
+    color: var(--ink);
+    background: transparent;
+}
+
+/* ══ LAYOUT ══
+   Avoid 100vh entirely — it resolves against the physical viewport pixel
+   dimensions and ignores the Experience Builder preview zoom level, which
+   causes a large empty gap below the content at 50% / 75% zoom.
+   Instead we let the two panels size to their own content (height: auto)
+   while keeping them side-by-side via the grid. align-items: stretch
+   ensures both columns always match the height of the taller one. */
+.shell {
+    display: flex;
+    flex-direction: column;
+}
+
+.page {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 42% 58%;
+    grid-template-rows: min-content;
+    align-items: stretch;
+}
+
+/* ══════════════════════════════════════════
+   LEFT PANEL
+   Direct echo of the key art: deep emerald field,
+   gold foil ring badge, anniversary "10" mark, red price tags
+══════════════════════════════════════════ */
+.left-panel {
+    position: relative;
+    overflow: hidden;
+    min-height: 520px;
+    background:
+        radial-gradient(120% 90% at 22% 0%, var(--emerald-rim) 0%, var(--emerald) 42%, var(--emerald-dark) 100%);
+}
+
+/* Vertical foil sheen sweeping the field — the glossy light streaks in the poster */
+.left-panel::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+        100deg,
+        rgba(255,255,255,.05) 0px,
+        rgba(255,255,255,.05) 1px,
+        transparent 1px,
+        transparent 60px
+    );
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Faint gold hairline diamond, bottom-right — ambient texture only */
+.left-panel::after {
+    content: '';
+    position: absolute;
+    bottom: -90px; right: -90px;
+    width: 220px; height: 220px;
+    border: 1.5px solid rgba(212,175,90,.16);
+    transform: rotate(45deg);
+    z-index: 0;
+}
+
+/* Car image — large ghost, tinted to sit inside the green field */
+.bg-img {
+    position: absolute;
+    bottom: -6%; right: -10%;
+    width: 130%; height: 72%;
+    object-fit: cover;
+    object-position: center center;
+    opacity: .14;
+    mix-blend-mode: luminosity;
+    filter: grayscale(1) brightness(1.6) contrast(1.05);
+    pointer-events: none;
+}
+
+/* Full-panel dim gradient for legibility */
+.overlay {
+    position: absolute; inset: 0;
+    background:
+        linear-gradient(165deg, rgba(5,23,16,.80) 0%, rgba(5,23,16,.58) 45%, rgba(5,23,16,.93) 100%);
+    z-index: 1;
+}
+
+/* Gold foil band along the bottom edge */
+.overlay-side {
+    position: absolute;
+    left: -60px; right: -60px;
+    bottom: 0; height: 4px;
+    background: linear-gradient(90deg, transparent, var(--gold) 12%, var(--gold-bright) 50%, var(--gold) 88%, transparent);
+    opacity: .9;
+    z-index: 2;
+    box-shadow: 0 0 18px 1px rgba(212,175,90,.35);
+}
+.overlay-side::before {
+    content: '';
+    position: absolute; left: 0; right: 0; bottom: 9px; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(212,175,90,.2) 50%, transparent);
+}
+.overlay-side::after { content: none; }
+
+.left-content {
+    position: relative; z-index: 4;
+    min-height: 100%;
+    padding: 40px 36px 36px;
+    display: flex; flex-direction: column;
+    justify-content: space-between;
+}
+
+/* ── top block ── */
+.top-block { flex-shrink: 0; }
+
+/* Gold-rimmed eyebrow badge, echoing "MEMBER'S EXCLUSIVE OFFER" framed mark */
+.chip {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 5px 14px;
+    border: 1px solid var(--gold-line);
+    background: rgba(212,175,90,.08);
+    color: var(--gold-bright);
+    font-size: 7.5px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .42em;
+    margin-bottom: 16px;
+    clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+    position: relative;
+}
+.chip-dot {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--red);
+    animation: blink 2s ease-in-out infinite;
+}
+@keyframes blink {
+    0%,100% { opacity:1; transform:scale(1); }
+    50%      { opacity:.3; transform:scale(.5); }
+}
+.chip-txt { letter-spacing: .38em; }
+
+/* Anniversary mark — icon image + "Landers / Anniversary" text label beside it */
+.anniv-mark {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+.anniv-icon-img {
+    height: 44px;
+    width: auto;
+    display: block;
+    flex-shrink: 0;
+}
+.anniv-text { display: flex; flex-direction: column; gap: 1px; }
+.anniv-word {
+    color: rgba(255,255,255,.85);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    line-height: 1.2;
+}
+.anniv-sub {
+    color: var(--gold-bright);
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: .28em;
+    text-transform: uppercase;
+    line-height: 1.2;
+}
+
+.hero-title {
+    color: #fff;
+    font-family: 'BebasKai', 'Inter', system-ui, sans-serif;
+    font-weight: 900;
+    font-size: clamp(34px, 4vw, 52px);
+    line-height: .96;
+    letter-spacing: .01em;
+    text-transform: uppercase;
+    margin: 0;
+}
+/* The × rendered in gold foil */
+.gold {
+    color: var(--gold-bright);
+    display: inline-block;
+    font-size: .75em;
+    opacity: .9;
+    margin: 0 4px;
+    text-shadow: 0 0 14px rgba(242,216,138,.45);
+}
+
+.divider-bar {
+    width: 32px; height: 3px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-bright));
+    margin: 18px 0 14px;
+}
+
+.hero-sub {
+    color: rgba(255,255,255,.55);
+    font-size: 12.5px; line-height: 1.8;
+    width: 100%;
+    margin: 0 0 22px;
+    font-weight: 400;
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+/* ── Headline offer badge — the signature element, a direct lift of the
+   gold-ringed "P400K OFF" frame from the key art ── */
+.offer-frame {
+    position: relative;
+    border: 1.5px solid var(--gold);
+    box-shadow: inset 0 0 0 1px rgba(242,216,138,.25), 0 0 22px rgba(212,175,90,.18);
+    padding: 14px 18px;
+    margin-bottom: 22px;
+    background: rgba(212,175,90,.05);
+}
+.offer-frame-eyebrow {
+    color: rgba(255,255,255,.6);
+    font-size: 8.5px;
+    font-weight: 700;
+    letter-spacing: .26em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+}
+.offer-amount-img {
+    display: block;
+    height: 78px; /* original CSS text peaked at 46px font-size, but cap-height
+                     (the actual visible glyph height) was only ~32-35px of
+                     that — sized notably larger here so the image reads at
+                     least as prominent as the text did, not just matches it */
+    width: auto;
+    max-width: 100%;
+    margin: 4px 0;
+}
+.offer-frame-sub {
+    color: #fff;
+    font-weight: 800;
+    font-size: 15px;
+    letter-spacing: -.01em;
+    text-transform: uppercase;
+    margin-top: 2px;
+}
+.offer-frame-points {
+    display: inline-block;
+    margin-top: 10px;
+    background: var(--red);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+}
+
+/* Stats — gold numerals echoing the campaign's "10" mark */
+.stats-row {
+    display: flex; gap: 10px;
+    margin-bottom: 0;
+}
+.stat-item {
+    flex: 1;
+    background: rgba(255,255,255,.05);
+    border: 1px solid var(--gold-line);
+    padding: 13px 8px;
+    text-align: center;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+}
+.stat-num {
+    font-size: 24px; font-weight: 900;
+    color: var(--gold-bright);
+    line-height: 1; letter-spacing: -.03em;
+    font-family: 'Inter', system-ui, sans-serif;
+    text-shadow: 0 0 16px rgba(242,216,138,.3);
+}
+.stat-lbl {
+    color: rgba(255,255,255,.45);
+    font-size: 8px; text-transform: uppercase;
+    letter-spacing: .2em; margin-top: 4px; font-weight: 600;
+}
+
+/* ── Promo card ── */
+.promo-card {
+    background: rgba(255,255,255,.045);
+    border: 1px solid rgba(255,255,255,.10);
+    border-left: 3px solid var(--gold);
+    padding: 15px 18px;
+    margin-top: 18px;
+}
+.promo-header {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 11px;
+}
+.promo-icon {
+    width: 18px; height: 18px;
+    background: var(--red);
+    display: grid; place-items: center;
+    color: #fff; font-size: 8px; flex-shrink: 0;
+    clip-path: polygon(4px 0%, 100% 0%, calc(100% - 4px) 100%, 0% 100%);
+}
+.promo-title {
+    color: var(--gold-bright); font-weight: 700; font-size: 8px;
+    text-transform: uppercase; letter-spacing: .38em;
+}
+.promo-list { list-style: none; padding: 0; margin: 0; }
+.promo-item {
+    display: flex; gap: 10px; align-items: flex-start;
+    color: rgba(255,255,255,.55);
+    font-size: 12px; line-height: 1.6;
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(255,255,255,.07);
+}
+.promo-item:last-child { border-bottom: none; }
+.bullet { color: var(--gold-bright); font-size: 9px; flex-shrink: 0; margin-top: 3px; }
+.promo-item strong { color: rgba(255,255,255,.92); font-weight: 600; }
+.promo-tnc { margin: 8px 0 0; font-size: 11px; color: rgba(255,255,255,.4); font-style: italic; }
+
+/* ══════════════════════════════════════════
+   RIGHT PANEL — Warm ivory with gold + red accents
+══════════════════════════════════════════ */
+.right-panel {
+    background: var(--ice);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.right-panel::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+        linear-gradient(var(--ice-mid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--ice-mid) 1px, transparent 1px);
+    background-size: 32px 32px;
+    opacity: .45;
+    pointer-events: none;
+}
+
+.right-panel::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--emerald) 0%, var(--gold) 35%, var(--red) 70%, var(--red) 100%);
+    z-index: 2;
+}
+
+.right-inner {
+    position: relative; z-index: 1;
+    width: 100%;
+    padding: 44px 48px;
+    max-width: 600px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+/* Grid texture and top accent line now on right-inner */
+.right-inner::before {
+    display: none;
+}
+
+.right-inner::after {
+    display: none;
+}
+
+.card {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 0;
+    padding: 0;
+    box-shadow: 0 8px 40px -8px rgba(10,47,30,.18), 0 2px 8px rgba(0,0,0,.04);
+    overflow: hidden;
+}
+
+.card-header-bar {
+    background: linear-gradient(135deg, var(--emerald) 0%, var(--emerald-dark) 100%);
+    padding: 16px 28px;
+    display: flex; align-items: center; justify-content: space-between;
+    position: relative;
+}
+.card-header-bar::after {
+    content: '';
+    position: absolute; left: 0; right: 0; bottom: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold-bright) 50%, transparent);
+    opacity: .8;
+}
+.card-header-label {
+    color: var(--gold-bright);
+    font-size: 9px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .38em;
+}
+.card-header-title {
+    color: #fff;
+    font-size: 18px; font-weight: 800;
+    letter-spacing: -.02em; text-transform: uppercase;
+}
+
+.card-body { padding: 14px 28px 26px; }
+.card-center { text-align: center; }
+
+.eyebrow { display: none; }
+.card-title {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 22px; font-weight: 800;
+    color: var(--ink); margin: 0; line-height: 1.15;
+    letter-spacing: -.02em; text-transform: uppercase;
+}
+.card-sub { color: var(--muted); font-size: 13px; margin: 4px 0 0; }
+
+.step-progress {
+    display: flex; align-items: center;
+    margin: 0;
+    background: var(--ice);
+    border-bottom: 1px solid var(--line);
+    padding: 14px 28px;
+}
+.step-node { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+.step-connector { flex: 1; height: 1px; background: var(--line); margin: 0 6px; }
+.step-circle {
+    width: 26px; height: 26px;
+    border: 1.5px solid var(--line);
+    background: var(--white);
+    display: grid; place-items: center;
+    font-size: 11px; font-weight: 700;
+    color: var(--muted); flex-shrink: 0;
+    clip-path: polygon(5px 0%, 100% 0%, calc(100% - 5px) 100%, 0% 100%);
+}
+.step-circle.active {
+    background: var(--red); border-color: var(--red); color: #fff;
+}
+.step-circle.done {
+    background: var(--emerald); border-color: var(--emerald);
+    color: var(--gold-bright); font-size: 12px;
+}
+.step-name { font-size: 11.5px; color: var(--muted); font-weight: 500; }
+.step-name.active { color: var(--red); font-weight: 700; }
+
+.form-section {
+    font-size: 9px; font-weight: 800;
+    text-transform: uppercase; letter-spacing: .32em;
+    color: var(--emerald);
+    display: flex; align-items: center; gap: 10px;
+    margin: 18px 0 10px;
+}
+.card-body > .form-section:first-child { margin-top: 0; }
+.form-section::before {
+    content: '';
+    width: 3px; height: 14px;
+    background: var(--gold);
+    flex-shrink: 0;
+}
+.form-section::after {
+    content: ''; flex: 1; height: 1px;
+    background: var(--line);
+}
+
+.membership-field {
+    background: var(--emerald);
+    border: none;
+    padding: 12px 16px;
+    margin-bottom: 4px;
+    position: relative;
+}
+.membership-field::before {
+    content: '';
+    position: absolute; top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: linear-gradient(to bottom, var(--gold-bright), var(--gold-dim));
+}
+.membership-field lightning-input {
+    --slds-c-input-color-border: transparent;
+    --slds-c-input-color-border-focus: transparent;
+    --lwc-shadowColorFocus: transparent;
+    --slds-c-input-shadow: none;
+    --lwc-colorTextLabel: rgba(255,255,255,.45);
+    --slds-c-input-text-color: #fff;
+}
+
+.membership-input-row {
+    display: flex; align-items: flex-start; gap: 8px;
+}
+.membership-input { flex: 1; min-width: 0; }
+
+.verify-btn {
+    flex-shrink: 0;
+    background: transparent;
+    border: 1.5px solid var(--gold);
+    color: #fff;
+    font-family: inherit;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: .04em;
+    height: 36px;
+    padding: 0 16px;
+    cursor: pointer;
+    transition: background .15s, border-color .15s;
+}
+.verify-btn:hover:not(:disabled),
+.verify-btn:focus-visible:not(:disabled) {
+    background: rgba(212,175,90,.15);
+    border-color: var(--gold-bright);
+}
+.verify-btn:disabled {
+    opacity: .45;
+    cursor: not-allowed;
+}
+
+.member-status {
+    font-size: 11.5px; font-weight: 600;
+    margin: 8px 0 0;
+    display: flex; align-items: center; gap: 6px;
+}
+.member-status.checking { color: var(--ice-dark); }
+.member-status.valid    { color: #4fae6f; }
+.member-status.invalid  { color: var(--red); }
+
+.for-others-label {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 12.5px; color: var(--muted);
+    cursor: pointer; margin-bottom: 4px;
+    padding: 10px 14px;
+    background: var(--ice);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--ice-dark);
+    transition: border-color .15s;
+}
+.for-others-label:hover { border-left-color: var(--gold); }
+.for-others-checkbox { width: 14px; height: 14px; accent-color: var(--red); flex-shrink: 0; }
+.for-others-text { line-height: 1.4; }
+
+.relationship-field {
+    margin-bottom: 4px;
+    animation: slide-down .2s ease;
+}
+@keyframes slide-down {
+    from { opacity:0; transform:translateY(-6px); }
+    to   { opacity:1; transform:translateY(0); }
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    row-gap: 6px; column-gap: 12px;
+}
+.grid .full { grid-column: 1 / -1; }
+
+.grid lightning-input,
+.grid lightning-combobox,
+.relationship-field lightning-combobox {
+    --slds-c-input-radius-border: 0px;
+    --slds-c-input-color-border: var(--line);
+    --slds-c-input-color-border-focus: var(--emerald);
+    --lwc-colorTextLabel: var(--muted);
+    --lwc-fontSize2: 11px;
+    --lwc-fontSizeSmall: 11px;
+    margin-bottom: 2px;
+}
+
+.name-field-locked { opacity: .55; }
+
+.car-cards {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+    margin-bottom: 4px;
+}
+.car-card {
+    border: 1.5px solid var(--line);
+    background: var(--white);
+    padding: 16px;
+    cursor: pointer;
+    transition: border-color .15s, transform .15s, box-shadow .15s;
+    position: relative; overflow: hidden;
+    clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+}
+.car-card::after {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 3px; background: linear-gradient(90deg, var(--gold), var(--red));
+    opacity: 0; transition: opacity .15s;
+}
+.car-card:hover {
+    border-color: var(--gold);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(212,175,90,.18);
+}
+.car-card:hover::after { opacity: 1; }
+.car-card-selected {
+    border-color: var(--red);
+    background: var(--red-pale);
+    box-shadow: 0 4px 20px rgba(200,30,44,.16);
+}
+.car-card-selected::after { opacity: 1; }
+
+.car-card-name {
+    font-size: 13.5px; font-weight: 800; color: var(--ink);
+    letter-spacing: -.01em; margin-bottom: 4px;
+    text-transform: uppercase;
+}
+.car-card-badge {
+    display: inline-block; font-size: 8.5px; font-weight: 700;
+    color: var(--gold-bright); background: var(--emerald);
+    padding: 2px 8px; margin-bottom: 10px;
+    text-transform: uppercase; letter-spacing: .1em;
+}
+.car-card-price-wrapper {
+    display: flex; flex-direction: column; gap: 1px;
+}
+.car-card-discount-price {
+    font-size: 20px; font-weight: 900;
+    color: var(--red); letter-spacing: -.03em;
+    line-height: 1;
+}
+.car-card-original-price {
+    font-size: 11px; color: var(--muted);
+    text-decoration: line-through;
+}
+.car-card-specs-link {
+    margin-top: 10px;
+    font-size: 10.5px; font-weight: 700;
+    color: var(--emerald); letter-spacing: .02em;
+    /* a real, visibly-a-button <button>, decoupled from the card's own
+       onclick so tapping it never also selects the card */
+    display: inline-block; width: auto; text-align: center;
+    background: var(--white); border: 1.5px solid var(--emerald);
+    padding: 7px 12px; margin-top: 4px;
+    font-family: inherit; cursor: pointer;
+    text-transform: uppercase;
+    clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+    transition: background .15s, color .15s;
+}
+.car-card-specs-link:hover,
+.car-card-specs-link:focus-visible {
+    background: var(--emerald); color: #fff;
+}
+
+.actions {
+    margin-top: 22px;
+    display: flex; align-items: center;
+    justify-content: space-between; gap: 12px;
+    flex-wrap: wrap;
+    padding: 16px 28px;
+    background: var(--ice);
+    border-top: 1px solid var(--line);
+}
+
+/* Review step: Back sizes to its own text on the left; Submit is pushed
+   flush to the right edge via margin-left: auto (same pattern as
+   .next-btn-right elsewhere) rather than stretched to share the row
+   equally — that stretching was a wrap-prevention workaround needed back
+   when the label was the longer "Submit Registration"; now that it's just
+   "Submit" it isn't needed, and was what made the button look oversized
+   and oddly centered instead of compact. */
+.cta-btn-custom {
+    margin-left: auto;
+    --slds-c-button-brand-color-background: var(--red);
+    --slds-c-button-brand-color-background-hover: var(--red-dark);
+    --slds-c-button-brand-color-border: var(--red);
+    --slds-c-button-brand-color-border-hover: var(--red-dark);
+    --slds-c-button-radius-border: 0px;
+    --slds-c-button-sizing-height: 48px;
+}
+/* lightning-button doesn't expose color hooks for its disabled state, so
+   it falls back to a flat grey/black look regardless of the brand colors
+   set above. Dimming the whole element with opacity works no matter what
+   SLDS does internally, and returns to full color the instant it's enabled. */
+.actions-review lightning-button[disabled] {
+    opacity: .45;
+}
+.actions-next {
+    justify-content: flex-end;
+    display: flex;
+}
+
+.cta-btn {
+    width: 100%; display: block;
+    --slds-c-button-brand-color-background: var(--red);
+    --slds-c-button-brand-color-background-hover: var(--red-dark);
+    --slds-c-button-brand-color-background-active: var(--red-dark);
+    --slds-c-button-brand-color-border: var(--red);
+    --slds-c-button-brand-color-border-hover: var(--red-dark);
+    --slds-c-button-brand-color-border-active: var(--red-dark);
+    --slds-c-button-text-color: #fff;
+    --slds-c-button-radius-border: 0px;
+    --slds-c-button-sizing-height: 48px;
+    --lwc-fontSize4: 13px;
+}
+.cta-btn .slds-button { width: 100% !important; }
+
+.back-btn {
+    --slds-c-button-neutral-color-background: var(--white);
+    --slds-c-button-neutral-color-border: var(--line);
+    --slds-c-button-neutral-color-border-hover: var(--emerald);
+    --slds-c-button-neutral-text-color: var(--emerald);
+    --slds-c-button-radius-border: 0px;
+    --slds-c-button-sizing-height: 48px;
+}
+
+.next-btn-right {
+    margin-left: auto;
+    --slds-c-button-brand-color-background: var(--red);
+    --slds-c-button-brand-color-background-hover: var(--red-dark);
+    --slds-c-button-brand-color-border: var(--red);
+    --slds-c-button-radius-border: 0px;
+    --slds-c-button-sizing-height: 48px;
+}
+
+.error-msg {
+    font-size: 12px; font-weight: 600;
+    color: var(--red-dark); background: var(--red-pale);
+    border-left: 3px solid var(--red);
+    padding: 8px 12px; margin: 8px 0 0;
+    border-radius: 0;
+    width: 100%;
+}
+.grid .phone-error { grid-column: 2; margin-top: 2px; }
+
+.review {
+    margin: 0;
+    border: 1px solid var(--line);
+    border-top: 3px solid var(--emerald);
+    background: var(--white);
+}
+.review-section-header {
+    background: var(--emerald);
+    padding: 6px 16px;
+    display: flex; align-items: center; gap: 8px;
+}
+.review-section-title {
+    font-size: 8.5px; font-weight: 800;
+    text-transform: uppercase; letter-spacing: .32em;
+    color: var(--gold-bright);
+}
+.review-row {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    padding: 10px 16px; border-bottom: 1px solid var(--line); gap: 16px;
+}
+.review-row:last-child { border-bottom: none; }
+.review-lbl {
+    font-size: 10px; font-weight: 700; color: var(--muted);
+    text-transform: uppercase; letter-spacing: .1em; flex-shrink: 0;
+}
+.review-val {
+    font-size: 13px; color: var(--ink); font-weight: 600; text-align: right;
+}
+
+/* ── Data privacy consent ── */
+.consent-row {
+    display: flex; align-items: center; gap: 8px;
+    margin: 16px 0 4px; padding: 0 4px;
+}
+.consent-checkbox {
+    flex-shrink: 0;
+    width: 18px; height: 18px;
+    margin: 0;
+    accent-color: var(--emerald);
+    cursor: pointer;
+}
+.consent-text {
+    font-size: 12px; line-height: 1.5; color: var(--muted);
+    margin: 0;
+}
+.consent-link {
+    background: none; border: none; padding: 0; margin: 0;
+    font: inherit; font-weight: 700; color: var(--emerald);
+    text-decoration: underline; cursor: pointer;
+}
+.consent-link:hover { color: var(--emerald-mid); }
+
+.consent-modal-body { padding: 18px 20px 22px; }
+.consent-modal-text {
+    font-size: 12.5px; line-height: 1.65; color: var(--ink);
+    margin: 0 0 14px;
+}
+
+.success-card { overflow: hidden; }
+.check-ring {
+    width: 64px; height: 64px;
+    background: linear-gradient(135deg, var(--gold-bright), var(--gold));
+    display: grid; place-items: center;
+    margin: 0 auto 20px;
+    --lwc-colorTextIconDefault: var(--emerald-dark);
+    clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
+    box-shadow: 0 6px 20px rgba(212,175,90,.35);
+}
+.done-sub {
+    max-width: 360px; margin: 0 auto 24px;
+    color: var(--muted); font-size: 13.5px; line-height: 1.75;
+}
+.next-steps {
+    display: flex; align-items: center;
+    justify-content: center; margin-bottom: 28px; gap: 0;
+}
+.next-step-item {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    flex: 1;
+}
+.next-step-icon { font-size: 20px; }
+.next-step-lbl {
+    font-size: 9px; font-weight: 700; color: var(--muted);
+    text-transform: uppercase; letter-spacing: .14em; text-align: center; max-width: 80px;
+}
+.next-step-connector {
+    width: 28px; height: 2px;
+    background: linear-gradient(90deg, var(--gold), var(--red)); opacity: .6; flex-shrink: 0;
+    margin-bottom: 18px;
+}
+
+.recaptcha-wrapper {
+    display: flex; justify-content: center;
+    margin: 16px 0 4px;
+}
+.recaptcha-frame {
+    width: 304px; height: 78px; border: 0;
+    max-width: 100%; /* still fits comfortably down to ~320px viewports */
+}
+
+.recaptcha-notice {
+    font-size: 11px; line-height: 1.5; color: var(--muted);
+    text-align: center; padding: 0; max-width: 100%;
+}
+.recaptcha-notice a {
+    color: inherit; text-decoration: underline;
+}
+
+.step-progress .step-circle.active-step-1 { background: var(--red); border-color: var(--red); color: #fff; }
+.step-progress .step-name.active-name-1   { color: var(--red); font-weight: 700; }
+.step-progress .step-circle.active-step-2 { background: var(--red); border-color: var(--red); color: #fff; }
+.step-progress .step-name.active-name-2   { color: var(--red); font-weight: 700; }
+
+/* ── Specs / Photo Modal ── */
+.specs-modal-backdrop {
+    position: fixed; inset: 0;
+    background: rgba(10, 18, 13, .62);
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px; z-index: 1000;
+    animation: fade-in .15s ease;
+}
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+
+.specs-modal {
+    background: var(--white);
+    width: 100%; max-width: 380px;
+    max-height: 88vh; overflow-y: auto;
+    border: 1px solid var(--line);
+    position: relative;
+    animation: slide-down .2s ease;
+}
+
+.specs-modal-close {
+    position: absolute; top: 10px; right: 10px;
+    width: 28px; height: 28px;
+    border: none; background: rgba(10,18,13,.55);
+    color: var(--white); font-size: 13px;
+    cursor: pointer; display: grid; place-items: center;
+    z-index: 1;
+}
+.specs-modal-close:hover { background: var(--red); }
+
+.specs-modal-image {
+    width: 100%; height: 180px;
+    object-fit: cover; display: block;
+    background: var(--ice);
+}
+
+.specs-modal-body { padding: 18px 20px 22px; }
+
+.specs-modal-title {
+    font-size: 15.5px; font-weight: 800; color: var(--ink);
+    text-transform: uppercase; letter-spacing: -.01em;
+    line-height: 1.3;
+    margin-bottom: 6px;
+}
+
+.specs-modal-price-row {
+    display: flex; align-items: baseline; gap: 8px;
+    margin-bottom: 16px;
+}
+.specs-modal-price {
+    font-size: 19px; font-weight: 900;
+    color: var(--red); letter-spacing: -.03em;
+}
+.specs-modal-original-price {
+    font-size: 12px; color: var(--muted);
+    text-decoration: line-through;
+}
+
+.specs-modal-section-label {
+    font-size: 9px; font-weight: 800;
+    text-transform: uppercase; letter-spacing: .28em;
+    color: var(--emerald);
+    margin-bottom: 8px;
+}
+
+.specs-modal-summary {
+    font-size: 12.5px; line-height: 1.6; color: var(--ink);
+    margin: 0 0 6px;
+}
+.specs-modal-colors {
+    font-size: 11.5px; color: var(--muted); font-weight: 600;
+    margin: 0 0 16px;
+}
+
+.specs-modal-list {
+    list-style: none; margin: 0 0 18px; padding: 0;
+}
+.specs-modal-list li {
+    font-size: 12.5px; color: var(--ink);
+    padding: 6px 0 6px 16px;
+    border-bottom: 1px solid var(--line);
+    position: relative;
+}
+.specs-modal-list li:last-child { border-bottom: none; }
+.specs-modal-list li::before {
+    content: '';
+    position: absolute; left: 0; top: 13px;
+    width: 6px; height: 6px;
+    background: var(--gold);
+}
+
+.specs-modal-link {
+    display: block; width: 100%; text-align: center;
+    background: var(--emerald); color: var(--gold-bright);
+    font-size: 11.5px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .06em;
+    text-decoration: none;
+    border: none; font-family: inherit; cursor: pointer;
+    padding: 12px 14px;
+    transition: background .15s;
+}
+.specs-modal-link:hover { background: var(--emerald-dark); }
+
+@media (max-width: 480px) {
+    .specs-modal { max-width: 100%; }
+    .specs-modal-image { height: 150px; }
+}
+
+@media (max-width: 820px) {
+    .page { grid-template-columns: 1fr; }
+    .left-panel { min-height: 280px; }
+    .offer-frame { padding: 12px 16px; }
+    .right-inner { padding: 28px 20px; }
+    .grid { grid-template-columns: 1fr; }
+    .grid .full { grid-column: 1; }
+    .grid .phone-error { grid-column: 1; }
+    .car-cards { grid-template-columns: 1fr; }
+    .card-title { font-size: 20px; }
+    .actions { padding: 14px 20px; }
+}
+
+@media (max-width: 480px) {
+    .anniv-icon-img { height: 44px; }
+    .offer-amount-img { height: 58px; }
+}
+
+/* Phone-first pass — this form is primarily filled out on a phone, so these
+   aren't edge-case tweaks, they're the main experience. */
+@media (max-width: 480px) {
+    .left-panel { min-height: 200px; }
+    .right-inner { padding: 20px 14px; }
+    .step-progress { padding: 12px 16px; }
+    .actions { padding: 14px 16px; }
+
+    .specs-modal-close { width: 38px; height: 38px; font-size: 16px; }
+}

@@ -1,0 +1,24 @@
+<aura:component>
+	<aura:attribute name="contact" type="Contact" />
+	<aura:attribute name="pictureURL" type="String" />
+
+	<lightning:card title="{!v.contact.Name}" class="slds-card_boundary">
+		<aura:set attribute="actions">
+			<lightning:button name="details" label="Details" onclick="{!c.goToRecord}" />
+		</aura:set>
+		<div style="display: flex; justify-content: start; margin-left: 20px;">
+			<div><img src="{!v.pictureURL + v.contact.Picture_URL__c}" width="80" height="60" style="border: 1px solid #C2C2C2;"/></div>
+			<div>
+				<p class="slds-p-horizontal_small">
+					Membership ID: {!v.contact.Membership_ID__c}
+				</p>
+				<p class="slds-p-horizontal_small">
+					Membership Start Date: {!v.contact.Membership_Start_Date__c}
+				</p>
+				<p class="slds-p-horizontal_small">
+					Membership Expiry Date: {!v.contact.Membership_Expiry_Date__c}
+				</p>
+			</div>
+		</div>
+	</lightning:card>
+</aura:component>

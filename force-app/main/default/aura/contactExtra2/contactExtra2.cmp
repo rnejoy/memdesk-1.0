@@ -1,0 +1,41 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId"
+    controller="contactExtra2" access="global" >
+	<!-- Handle component initialization in a client-side controller -->
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+	<!-- Dynamically load the list of contacts -->
+	<aura:attribute type="Contact" name="contactObj"
+		default="{'AccountId':'',
+				'Customer_Sub_Type__c':''}"/>
+	<aura:attribute name="contacts" 	 type="Contact[]"/>
+	<aura:attribute name="relconLabel" 	 type="String" default="Extensions"/>
+	<aura:attribute name="totalContacts" type="Integer"/>
+	<aura:attribute name="pictureURL"	 type="String"/>
+
+	<!-- Page header with a counter that displays total number of contacts -->
+	<div class="slds-page-header slds-page-header_object-home">
+		<lightning:layout>
+			<lightning:layoutItem>
+				<h1 class="slds-page-header__title slds-p-right_x-small">{!v.relconLabel}</h1>
+			</lightning:layoutItem>
+		</lightning:layout>
+		<lightning:layout>
+			<lightning:layoutItem>
+				<p class="slds-text-body_small">- {!v.totalContacts} -</p>
+			</lightning:layoutItem>
+		</lightning:layout>
+
+	</div>
+
+	<!-- either display primary or iteration of extensions in card display format -->
+	<div style="margin-top: 10px;">
+		<lightning:layout multipleRows="true">
+			<aura:iteration var="contact" items="{!v.contacts}">
+				<lightning:layoutItem class="slds-p-right_x-small" size="4">
+					<c:extension contact="{!contact}" pictureURL="{!v.pictureURL}"/>
+				</lightning:layoutItem>
+			</aura:iteration>
+		</lightning:layout>
+	</div>
+	<br/>
+</aura:component>

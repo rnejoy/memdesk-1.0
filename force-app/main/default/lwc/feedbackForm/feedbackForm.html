@@ -1,0 +1,311 @@
+<template>
+    <div class="page">
+
+        <div class="survey-header">
+            <h1>Landers Superstore Exit Survey</h1>
+            <p class="survey-subtext">
+                Kindly let us know your feedback about your recent visit.
+                Your responses will help us improve your shopping experience.
+            </p>
+        </div>
+
+        <lightning-card>
+            <div class="container">
+
+                <!-- LANDING -->
+                <template if:true={isLanding}>
+                    <div class="landing">
+                        <template if:false={isVerified}>
+                            <lightning-combobox
+                                data-id="storeSelect"
+                                label="Select Your Store"
+                                placeholder="Choose a store..."
+                                value={selectedStore}
+                                options={storeOptions}
+                                onchange={handleStoreChange}>
+                            </lightning-combobox>
+                        </template>
+
+                        <template if:true={isVerified}>
+                            <div class="slds-text-align_center slds-m-bottom_large">
+                                <span class="slds-badge slds-theme_success" style="font-size: 14px; padding: 6px 16px;">
+                                    Active Terminal Profile: <strong> {selectedStoreName} Store</strong>
+                                </span>
+                            </div>
+                            <h2 class="landing-title">Scan Membership Card to Begin</h2>
+                            <lightning-input
+                                data-id="membershipInput"
+                                label="Scan Membership ID"
+                                value={membershipId}
+                                inputmode="none"
+                                onchange={handleInputChange}
+                                onkeyup={handleMembershipKey}>
+                            </lightning-input>
+                        </template>
+                    </div>
+                </template>
+
+                <!-- QUESTIONS (schema-driven) -->
+                <template if:true={isQuestions}>
+
+                    <h3 class="greeting">Hello, {displayName}</h3>
+                    <p class="progress-label">{progressLabel} - {currentSectionTitle}</p>
+
+                    <h2 class="question">{currentQuestion.text}</h2>
+
+                    <!-- Single select (incl. dynamically-piped options) -->
+                    <template if:true={isTypeSingleSelect}>
+                        <div class="option-list">
+                            <template for:each={currentOptions} for:item="opt">
+                                <button
+                                    key={opt.value}
+                                    class="option-btn"
+                                    data-value={opt.value}
+                                    aria-pressed={opt.selected}
+                                    onclick={handleSingleSelect}>
+                                    {opt.label}
+                                </button>
+                            </template>
+                        </div>
+                    </template>
+
+                    <!-- Multi select -->
+                    <template if:true={isTypeMultiSelect}>
+                        <div class="option-list">
+                            <template for:each={currentOptions} for:item="opt">
+                                <button
+                                    key={opt.value}
+                                    class="option-btn"
+                                    data-value={opt.value}
+                                    aria-pressed={opt.selected}
+                                    onclick={handleMultiSelect}>
+                                    {opt.label}
+                                </button>
+                            </template>
+                        </div>
+                        <template if:true={currentQuestion.maxItems}>
+                            <p class="hint-text">Choose up to {currentQuestion.maxItems}.</p>
+                        </template>
+                    </template>
+
+                    <!-- "Other, please specify" free text - shared by single & multi select -->
+                    <template if:true={showOtherTextInput}>
+                        <lightning-input
+                            label="Please specify"
+                            value={currentOtherText}
+                            onchange={handleOtherTextChange}
+                            class="slds-m-top_small">
+                        </lightning-input>
+                    </template>
+
+                    <!-- Inline optional note attached to the current question (e.g. Q12_PRIORITY "Tell us more") -->
+                    <template if:true={currentOptionalComment}>
+                        <lightning-textarea
+                            label={currentOptionalComment.label}
+                            variant="label-hidden"
+                            value={currentOptionalCommentValue}
+                            onchange={handleOptionalCommentChange}
+                            class="slds-m-top_small">
+                        </lightning-textarea>
+                    </template>
+
+                    <!-- Yes / No -->
+                    <template if:true={isTypeYesNo}>
+                        <div class="option-list">
+                            <button class="option-btn" data-value="Yes" aria-pressed={isYesSelected} onclick={handleYesNo}>Yes</button>
+                            <button class="option-btn" data-value="No" aria-pressed={isNoSelected} onclick={handleYesNo}>No</button>
+                        </div>
+                    </template>
+
+                    <!-- Open text -->
+                    <template if:true={isTypeOpenText}>
+                        <lightning-textarea
+                            label="Your answer"
+                            variant="label-hidden"
+                            onkeydown={handleKeyDown}
+                            onchange={handleOpenTextChange}>
+                        </lightning-textarea>
+                    </template>
+
+                    <!-- Open text - multiple items (e.g. missing item names) -->
+                    <template if:true={isTypeOpenTextMulti}>
+                        <template for:each={currentQuestionMaxItemsArray} for:item="idx">
+                            <lightning-input
+                                key={idx}
+                                data-index={idx}
+                                label="Item"
+                                onchange={handleOpenTextMultiItemChange}>
+                            </lightning-input>
+                        </template>
+                    </template>
+
+                    <!-- Star matrix (satisfaction ratings) -->
+                    <template if:true={isTypeStarMatrix}>
+                        <template for:each={currentStarRows} for:item="row">
+                            <div key={row.key} class="rating-row">
+                                <div class="rating-label">{row.label}</div>
+                                <div class="stars">
+                                    <template for:each={row.stars} for:item="star">
+                                        <span
+                                            key={star.index}
+                                            class={star.className}
+                                            data-row-key={row.key}
+                                            data-index={star.index}
+                                            onclick={handleStarClick}>
+                                            ★
+                                        </span>
+                                    </template>
+                                </div>
+                            </div>
+                        </template>
+                    </template>
+
+                    <!-- Satisfaction follow-up: one short text box per low-rated attribute (max 2) -->
+                    <template if:true={isTypeSatisfactionFollowup}>
+                        <template for:each={currentSatisfactionFollowUps} for:item="f">
+                            <div key={f.key} class="rating-row">
+                                <div class="rating-label">{f.prompt}</div>
+                                <lightning-textarea
+                                    variant="label-hidden"
+                                    data-key={f.key}
+                                    value={f.value}
+                                    onchange={handleSatisfactionFollowUpChange}>
+                                </lightning-textarea>
+                            </div>
+                        </template>
+                    </template>
+
+                    <!-- NPS scale -->
+                    <template if:true={isTypeNPS}>
+                        <div class="stars">
+                            <template for:each={currentNpsStars} for:item="star">
+                                <span
+                                    key={star.index}
+                                    class={star.className}
+                                    data-index={star.index}
+                                    onclick={handleNpsClick}>
+                                    ★
+                                </span>
+                            </template>
+                        </div>
+                    </template>
+
+                    <!-- Consent checkbox (service recovery) -->
+                    <template if:true={isTypeCheckbox}>
+                        <lightning-input
+                            type="checkbox"
+                            label="Yes, please have someone call me"
+                            checked={currentCheckboxChecked}
+                            onchange={handleCheckboxToggle}>
+                        </lightning-input>
+                    </template>
+
+                    <!-- Consent + privacy notice, shown only on the final question -->
+                    <template if:true={isLastQuestion}>
+                        <div class="consent-row slds-m-top_large">
+                            <lightning-input
+                                type="checkbox"
+                                data-id="consentCheckbox"
+                                checked={consentGiven}
+                                onchange={handleConsentChange}>
+                            </lightning-input>
+                            <span class="consent-text">
+                                I agree to the
+                                <button class="privacy-link" onclick={openPrivacyModal}>Data Privacy Notice</button>
+                                and consent to the collection and processing of my personal information.
+                            </span>
+                        </div>
+                    </template>
+
+                </template>
+
+                <!-- THANK YOU -->
+                <template if:true={isThankYou}>
+                    <div class="thankyou">
+                        <div class="thankyou-box">
+                            <div class="check-icon">✔</div>
+                            <h2>Thank You!</h2>
+                            <p>Your feedback has been successfully submitted.</p>
+                            <p class="subtext">We appreciate you helping us improve your Landers experience.</p>
+                            <lightning-button
+                                label="Submit Another Response"
+                                variant="brand"
+                                onclick={handleReset}
+                                class="reset-btn">
+                            </lightning-button>
+                        </div>
+                    </div>
+                </template>
+
+                <template if:true={errorMessage}>
+                    <div class="error-box">{errorMessage}</div>
+                </template>
+
+                <template if:true={isQuestions}>
+                    <div class="nav">
+                        <lightning-button label="Back" onclick={prevStep} disabled={isFirstQuestion}></lightning-button>
+                        <lightning-button
+                            variant="brand"
+                            label={nextLabel}
+                            onclick={nextStep}
+                            disabled={isNextDisabled}
+                            class="next-btn">
+                        </lightning-button>
+                    </div>
+                </template>
+
+            </div>
+        </lightning-card>
+
+        <!-- Privacy modal: unchanged from your existing markup -->
+        <template if:true={showModal}>
+            <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_medium">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closePrivacyModal}>
+                            <span class="close-icon">&times;</span>
+                            <span class="slds-assistive-text">Close</span>
+                        </button>
+                        <h2 class="slds-text-heading_medium slds-hyphenate">Data Privacy Notice</h2>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium">
+                        <p>By submitting this form, you acknowledge that you have read and understood this Data Privacy Notice and <strong>consent</strong> to the collection, use, and processing of your feedback by <strong>Southeastasia Retail Inc.</strong> ("the Company"), in accordance with the Data Privacy Act of 2012 (Republic Act No. 10173) and its Implementing Rules and Regulations.</p>
+                        <br></br>
+                        <h3>Purpose of Collection</h3>
+                        <p>Your Membership ID and survey responses are collected and used for feedback analysis and to enhance your overall experience with Landers, including through our internal customer systems.</p>
+
+                        <br></br>
+
+                        <h3>Data Collected</h3>
+                        <p>This includes your Membership ID, the store/branch visited, and your survey responses.</p>
+
+                        <br></br>
+
+                        <h3>Use and Disclosure</h3>
+                        <p>Your information will be used solely for the purposes stated above and will not be shared, sold, or disclosed to any external or third party, except as required by law or to comply with a valid order from competent authorities.</p>
+
+                        <br></br>
+
+                        <h3>Data Storage and Security</h3>
+                        <p>Your data is stored securely and retained only for as long as necessary to fulfill the purposes stated above, or as required by applicable law.</p>
+
+                        <br></br>
+
+                        <h3>Your Rights</h3>
+                        <p>Under the Data Privacy Act, you have the right to be informed, to access, to object, to correct, to data portability, to file a complaint, and to be indemnified for damages, as provided under RA 10173. You may exercise these rights by contacting our Data Protection Officer at <strong>[DPO email/contact number]</strong>.</p>
+
+                        <br></br>
+
+                        <h3>Consent</h3>
+                        <p>By clicking "Submit," you confirm that you are voluntarily providing your feedback and consent to it being processed for feedback analysis and to enhance your experience with Landers, as described above.</p>
+                    </div>
+                    <footer class="slds-modal__footer">
+                        <button class="slds-button slds-button_brand" onclick={closePrivacyModal}>Close</button>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+
+    </div>
+</template>

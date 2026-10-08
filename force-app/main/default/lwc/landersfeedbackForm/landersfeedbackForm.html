@@ -1,0 +1,62 @@
+<template>
+    <div class="page">
+        <section class="card">
+            <header class="head">
+                <span class="badge">Landers Superstore feedback</span>
+                <h2 class="title">How was your Landers visit?</h2>
+                <p class="lede">You shopped with us 3 times this month. Your reaction decides what we improve first.</p>
+            </header>
+
+            <template lwc:if={submitted}>
+                <div class="body thanks" role="status">
+                    <div class="thanks-icon" aria-hidden="true">&#10003;</div>
+                    <h3 class="thanks-title">Feedback sent</h3>
+                    <p class="thanks-text">You picked <strong>{selectedReactionLabel}</strong> and mentioned {topicCount} {topicWord}. This is sample data, so nothing was saved.</p>
+                    <button type="button" class="send" onclick={handleReset}>Send another</button>
+                </div>
+            </template>
+
+            <template lwc:else>
+                <div class="body">
+                    <h3 class="label">Your overall reaction</h3>
+                    <div class="reactions" role="radiogroup" aria-label="Your overall reaction">
+                        <template for:each={reactionItems} for:item="r">
+                            <button key={r.value} type="button" role="radio" class={r.cls}
+                                aria-checked={r.checked} data-value={r.value} onclick={handleReaction}>
+                                <span class={r.faceCls} aria-hidden="true">{r.emoji}</span>
+                                <span class="rlabel">{r.label}</span>
+                            </button>
+                        </template>
+                    </div>
+
+                    <h3 class="label">What did you use? <span class="opt">Optional</span></h3>
+                    <div class="chips">
+                        <template for:each={topicItems} for:item="t">
+                            <button key={t.name} type="button" class={t.cls} aria-pressed={t.pressed}
+                                data-name={t.name} onclick={handleTopic}>
+                                <span class="plus" aria-hidden="true">{t.mark}</span>{t.name}
+                            </button>
+                        </template>
+                    </div>
+
+                    <h3 class="label">What should we fix or keep? <span class="opt">Optional</span></h3>
+                    <textarea class="area" rows="4" placeholder="The bulk aisle signs are easy to read..."
+                        onchange={handleComment}>{comment}</textarea>
+
+                    <h3 class="label">Photo <span class="opt">Optional. PNG, JPG or WebP up to 5 MB</span></h3>
+                    <input type="file" class="file-input" accept="image/png,image/jpeg,image/webp" onchange={handleFile} />
+                    <button type="button" class="attach" onclick={handleAttach}>
+                        <lightning-icon icon-name="utility:image" size="x-small" alternative-text="Image"></lightning-icon>
+                        <span class="attach-text">{attachLabel}</span>
+                    </button>
+                    <p lwc:if={fileError} class="error" role="alert">{fileError}</p>
+
+                    <div class="actions">
+                        <button type="button" class="send" onclick={handleSend}>Send feedback</button>
+                        <span class="note">Demo: nothing is sent.</span>
+                    </div>
+                </div>
+            </template>
+        </section>
+    </div>
+</template>

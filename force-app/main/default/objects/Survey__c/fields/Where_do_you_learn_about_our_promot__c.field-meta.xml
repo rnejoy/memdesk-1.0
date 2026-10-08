@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Where_do_you_learn_about_our_promot__c</fullName>
+    <inlineHelpText>16.  Where do you learn about our promotions?</inlineHelpText>
+    <label>Learn about our promotion</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Facebook</fullName>
+                <default>false</default>
+                <label>Facebook</label>
+            </value>
+            <value>
+                <fullName>Instagram</fullName>
+                <default>false</default>
+                <label>Instagram</label>
+            </value>
+            <value>
+                <fullName>SMS</fullName>
+                <default>false</default>
+                <label>SMS</label>
+            </value>
+            <value>
+                <fullName>Email</fullName>
+                <default>false</default>
+                <label>Email</label>
+            </value>
+            <value>
+                <fullName>In Store Materials</fullName>
+                <default>false</default>
+                <label>In Store Materials</label>
+            </value>
+            <value>
+                <fullName>Website</fullName>
+                <default>false</default>
+                <label>Website</label>
+            </value>
+            <value>
+                <fullName>Family and Friends</fullName>
+                <default>false</default>
+                <label>Family and Friends</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

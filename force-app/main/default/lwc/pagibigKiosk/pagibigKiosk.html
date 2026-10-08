@@ -1,0 +1,215 @@
+<template>
+    <div class={kioskClass}>
+
+        <!-- Header (suppressed when embedded in a modal) -->
+        <template if:false={embedded}>
+        <header class="k-header">
+            <div class="k-brand">
+                <c-landers-mark class="k-logo"></c-landers-mark>
+                <span class="k-brand__name">LANDERS</span>
+            </div>
+        </header>
+        </template>
+
+        <main class="k-body">
+
+            <!-- Progress -->
+            <ol class="k-steps" aria-label="Progress">
+                <li class={step1Class}><span>1</span>Scan</li>
+                <li class={step2Class}><span>2</span>Details</li>
+                <li class={step3Class}><span>3</span>Pass</li>
+            </ol>
+
+            <!-- ============ STEP 1 — SCAN ============ -->
+            <template if:true={isScanStep}>
+                <section class="k-panel" onclick={focusScanner}>
+                    <p class="k-eyebrow">Step 1 of 3</p>
+                    <h1 class="k-title">
+                        Tap your card,<br />
+                        <span class="k-title--green">start your visit.</span>
+                    </h1>
+                    <p class="k-lede">
+                        Hold your Pag-IBIG card up to the scanner. We'll read your
+                        Pag-IBIG number straight off the barcode, no typing needed.
+                    </p>
+
+                    <div class={scanFrameClass}>
+                        <span class="corner tl"></span><span class="corner tr"></span>
+                        <span class="corner bl"></span><span class="corner br"></span>
+                        <template if:false={isBlocked}>
+                            <div class="scanline"></div>
+                        </template>
+                        <template if:true={isBlocked}>
+                            <p class="scan-hint scan-hint--blocked">{blockedMessage}</p>
+                        </template>
+                        <template if:false={isBlocked}>
+                            <template if:false={scanError}>
+                                <p class="scan-hint">{scanHint}</p>
+                            </template>
+                            <template if:true={scanError}>
+                                <p class="scan-hint scan-hint--error">{scanError}</p>
+                            </template>
+                        </template>
+                    </div>
+
+                    <!-- Hardware scanners behave as keyboards: they type the
+                         barcode then send Enter. This input stays focused to
+                         catch that. It is also the manual-entry fallback. -->
+                    <template if:true={isBlocked}>
+                        <div class="form__actions">
+                            <button class="btn btn--green btn--lg" onclick={clearBlocked}>
+                                Scan next member
+                            </button>
+                        </div>
+                    </template>
+
+                    <div class="manual" if:false={isBlocked}>
+                        <label class="manual__label" for="scan">Pag-IBIG ID number</label>
+                        <input
+                            id="scan"
+                            class="manual__input"
+                            type="text"
+                            inputmode={scanInputMode}
+                            autocomplete="off"
+                            placeholder={scanPlaceholder}
+                            value={scanBuffer}
+                            onkeydown={handleScanKey}
+                            oninput={handleScanInput}
+                            onblur={refocusSoon} />
+                        <button class="btn btn--green" onclick={commitScan} disabled={scanBusy}>Continue</button>
+                        <template if:false={manualEntry}>
+                            <button class="btn btn--ghost" onclick={enableManual}>Type it instead</button>
+                        </template>
+                    </div>
+                </section>
+            </template>
+
+            <!-- ============ STEP 2 — DETAILS ============ -->
+            <template if:true={isDetailsStep}>
+                <section class="k-panel">
+                    <p class="k-eyebrow">Step 2 of 3</p>
+                    <h1 class="k-title k-title--green">Your details</h1>
+                    <p class="k-lede">Fill in the rest of the details.</p>
+
+                    <div class="form">
+                        <div class="f-grid">
+                            <div class="f f--wide">
+                                <label for="pid">Pag-IBIG ID no.</label>
+                                <input id="pid" class="locked" type="text" value={displayId} readonly />
+                            </div>
+
+                            <div class="f">
+                                <label for="fn">First name <i>*</i></label>
+                                <input id="fn" type="text" data-field="firstName" maxlength="40"
+                                       class={firstNameClass} value={form.firstName}
+                                       oninput={handleField} onblur={handleBlur} autocomplete="off" />
+                                <template if:true={firstNameError}>
+                                    <p class="fe">{firstNameError}</p>
+                                </template>
+                            </div>
+                            <div class="f">
+                                <label for="mn">Middle name</label>
+                                <input id="mn" type="text" data-field="middleName" maxlength="40"
+                                       value={form.middleName} oninput={handleField} autocomplete="off" />
+                            </div>
+                            <div class="f">
+                                <label for="ln">Last name <i>*</i></label>
+                                <input id="ln" type="text" data-field="lastName" maxlength="80"
+                                       class={lastNameClass} value={form.lastName}
+                                       oninput={handleField} onblur={handleBlur} autocomplete="off" />
+                                <template if:true={lastNameError}>
+                                    <p class="fe">{lastNameError}</p>
+                                </template>
+                            </div>
+
+                            <div class="f">
+                                <label for="mob">Mobile phone <i>*</i></label>
+                                <input id="mob" type="tel" inputmode="numeric" data-field="mobile"
+                                       maxlength="11" class={mobileClass} value={form.mobile}
+                                       placeholder="09XXXXXXXXX"
+                                       oninput={handleField} onblur={handleBlur} autocomplete="off" />
+                                <template if:true={mobileError}>
+                                    <p class="fe">{mobileError}</p>
+                                </template>
+                            </div>
+                            <div class="f">
+                                <label for="bd">Birthdate <i>*</i></label>
+                                <input id="bd" type="date" data-field="birthdate"
+                                       class={birthdateClass} value={form.birthdate}
+                                       max={today} onchange={handleField} onblur={handleBlur} />
+                                <template if:true={birthdateError}>
+                                    <p class="fe">{birthdateError}</p>
+                                </template>
+                            </div>
+                        </div>
+
+                        <label class="consent">
+                            <input type="checkbox" data-field="consent"
+                                   checked={form.consent} onchange={handleField} />
+                            <span>I confirm these details are correct and understand this pass is
+                                  valid for one visit only, on the date shown.</span>
+                        </label>
+
+                        <template if:true={errorMessage}>
+                            <p class="alert" role="alert">{errorMessage}</p>
+                        </template>
+
+                        <div class="form__actions">
+                            <button class="btn btn--ghost" onclick={restart} disabled={busy}>Start over</button>
+                            <button class="btn btn--green btn--lg" onclick={submitForm} disabled={submitDisabled}>
+                                <template if:true={busy}>Issuing…</template>
+                                <template if:false={busy}>Submit</template>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+            </template>
+
+            <!-- ============ STEP 3 — PASS ============ -->
+            <template if:true={isPassStep}>
+                <section class="k-panel">
+                    <p class="k-eyebrow no-print">Step 3 of 3</p>
+                    <h1 class="k-title no-print">
+                        You're all set!<br />
+                        <span class="k-title--green">Start shopping.</span>
+                    </h1>
+                    <p class="k-lede no-print">
+                        Your one-day pass has been issued. Show this at the entrance.
+                    </p>
+
+                    <div class="pass" data-print-root>
+                        <div class="pass__tag">One day pass</div>
+                        <div class="pass__code">
+                            <svg data-barcode class="pass__barcode"></svg>
+                            <img data-barcode-img class="pass__barcode-img" alt="" />
+                            <p class="pass__mid">{displayMembershipId}</p>
+                            <p class="pass__mname">{membershipName}</p>
+                        </div>
+                        <div class="pass__meta">
+                            <div>
+                                <span>Pag-IBIG ID no.</span>
+                                <strong>{pass.pagIbigId}</strong>
+                            </div>
+                            <div class="ta-r">
+                                <span>Valid on</span>
+                                <strong>{pass.validOn}</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form__actions no-print">
+                        <button class="btn btn--dark btn--lg" onclick={printPass}>Print day pass</button>
+                        <button class="btn btn--green btn--lg" onclick={restart}>Register another member</button>
+                    </div>
+
+                    <template if:true={showCountdown}>
+                        <p class="countdown no-print">
+                            Returning to the start in {secondsLeft}s
+                        </p>
+                    </template>
+                </section>
+            </template>
+
+        </main>
+    </div>
+</template>

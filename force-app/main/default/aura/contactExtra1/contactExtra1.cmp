@@ -1,0 +1,77 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId"
+	access="global" controller="contactExtra1">
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+	<!-- component property -->
+	<aura:attribute type="String" name="hbcolor" default="green"/>
+	<aura:attribute type="String" name="StoreCanvaLabel" default=""/>
+	<aura:attribute type="String" name="StoreCanvaName"  default=""/>
+	<aura:attribute type="Contact" name="contactObj"
+		default="{'Id':'',
+				'FirstName':'',
+				'Birthdate__c':'',
+				'Membership_Expiry_Date__c':''}"/>
+	<aura:attribute type="Lead" name="leadObj"
+		default="{'Id':'',
+				'LeadSource':'',
+				'Canvasser_Name__c':'',
+				'Store_Signup__c':'',
+				'Store_Pickup__c':''}"/>
+
+	<lightning:layout>
+		<lightning:layoutItem size="12">
+			<lightning:card>
+				<div style="padding: 0 15px 10px 15px;">
+					<lightning:layout>
+						<lightning:layoutItem>
+							<lightning:icon iconName="standard:lead" size="small" />
+						</lightning:layoutItem>
+						<lightning:layoutItem class="slds-m-left_small">
+							<div style="font-size: 16px;">
+								<b>Registration Information</b></div>
+						</lightning:layoutItem>
+					</lightning:layout>
+					<lightning:layout>
+						<div style="margin: 10px 0 0 0px;">
+							<table>
+								<tr>
+									<td class="tdlabel">QR Code Scan</td>
+									<td class="tddata">{!v.leadObj.LeadSource}</td>
+								</tr>
+								<tr>
+									<td class="tdlabel">{!v.StoreCanvaLabel} Name</td>
+									<td class="tddata">{!v.StoreCanvaName}</td>
+								</tr>
+								<tr>
+									<td class="tdlabel">Preferred Store (Pickup)</td>
+									<td class="tddata">{!v.leadObj.Store_Pickup__c}</td>
+								</tr>
+							</table>
+						</div>
+					</lightning:layout>
+				</div>
+
+				<div id="specialmsgdiv" style="margin-top: 15px; padding-left: 20px;
+					display: none;">
+					<lightning:layout>
+						<lightning:layoutItem>
+							<lightning:icon iconName="standard:announcement" size="small"/>
+						</lightning:layoutItem>
+						<lightning:layoutItem class="slds-m-left_small">
+							<div style="font-size: 16px;">
+								<b>Special Member Message</b></div>
+						</lightning:layoutItem>
+					</lightning:layout>
+					<div id="hbmessage" style="margin-left: 20px; font-size: 20px; display: none;">
+						*** Happy Birthday to Member! ***
+					</div>
+
+					<div id="tmmessage" style="margin-left: 20px; color: red; font-size: 20px;
+						line-height: 1em; display: none;">
+						*** This Membership expires in 3 months or less! ***
+					</div>
+					<br/>
+				</div>
+			</lightning:card>
+		</lightning:layoutItem>
+	</lightning:layout>
+</aura:component>

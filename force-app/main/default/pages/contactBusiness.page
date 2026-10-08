@@ -1,0 +1,225 @@
+<apex:page lightningStylesheets="true" applyBodyTag="false" standardController="Contact">
+    <apex:slds />
+    <head>
+        <apex:includeScript value="{!URLFOR($Resource.JsBarcode, 'jquery.min.js')}"/>
+        <style>
+            body {
+                height: 100%;
+            }
+            .bPageBlock {
+                border: 0px !important;
+                box-shadow: 0 0 0 0 rgb(0 0 0 / 10%) !important;
+                -webkit-box-shadow: 0 0 0 0 rgb(0 0 0 / 10%) !important;
+                padding: 0px !important;
+                margin: 0px !important;
+            }
+
+            .fwrapper {
+                width: 100%;
+                display: grid;
+                grid-template-columns: 48% 48%;
+                column-gap: 35px;
+            }
+            .fdisplay {
+                padding: 5px 0;
+                border-bottom: 1px solid #E5E5E5;
+                display: flex;
+                justify-content: start;
+            }
+            .flabel {
+                width: 33%;
+            }
+            .foutput {
+                width: 63%;
+            }
+            .finput {
+                width: 63%;
+                display: none;
+            }
+            .foutput2 {
+                width: 63%;
+            }
+            .finput2 {
+                width: 63%;
+                display: none;
+            }
+            .nobborder {
+                border-bottom: 0px !important;
+            }
+        </style>
+
+        <script>
+            var toggle = 0;
+            function bodyonload() {
+                if (document.getElementById('hidcustype').value == 'Business'
+                    && document.getElementById('hidsubtype').value == 'Primary')
+                    document.getElementById('businessdiv').style.display = 'block';
+                else
+                    document.getElementById('premextdiv').style.display = 'block';
+            }
+
+            function editfield() {
+                if (toggle == 0) {
+                    $('.foutput').hide();
+                    $('.finput').show();
+                    $('#savediv').show();
+                    $('#editlink').html('ret');
+                    toggle = 1;
+                }
+                else {
+                    $('.foutput').show();
+                    $('.finput').hide();
+                    $('#savediv').hide();
+                    $('#editlink').html('edit');
+                    toggle = 0;
+                }
+            }
+        </script>
+    </head>
+    <body onload="bodyonload()">
+        <apex:form >
+        <apex:pageBlock >
+            <div id="businessdiv" style="display: none;">
+                <div class="fwrapper">
+                    <div class="fdisplay">
+                        <div class="flabel">
+                            <apex:outputLabel value="Business Name"/>
+                        </div>
+                        <div class="foutput">
+                            <apex:outputField value="{!Contact.Business_Name__c}"/>
+                        </div>
+                        <div class="finput">
+                            <apex:inputField value="{!Contact.Business_Name__c}"/>
+                        </div>
+                        <div>
+                            <a id="editlink" href="#" onclick="editfield()">edit</a>
+                        </div>
+                    </div>
+                    <div class="fdisplay">
+                        <div class="flabel">
+                            <apex:outputLabel value="Business House/Unit"/>
+                        </div>
+                        <div class="foutput">
+                            <apex:outputField value="{!Contact.Business_House_Unit__c}"/>
+                        </div>
+                        <div class="finput">
+                            <apex:inputField value="{!Contact.Business_House_Unit__c}"/>
+                        </div>
+                    </div>
+                    <div class="fdisplay">
+                        <div class="flabel">
+                            <apex:outputLabel value="Business Type"/>
+                        </div>
+                        <div class="foutput">
+                            <apex:outputField value="{!Contact.Business_Type__c}"/>
+                        </div>
+                        <div class="finput">
+                            <apex:inputField value="{!Contact.Business_Type__c}"/>
+                        </div>
+                    </div>
+                    <div class="fdisplay">
+                        <div class="flabel">
+                            <apex:outputLabel value="Business Subd/Bldg Name"/>
+                        </div>
+                        <div class="foutput">
+                            <apex:outputField value="{!Contact.Business_Subd_Bldg_Name__c}"/>
+                        </div>
+                        <div class="finput">
+                            <apex:inputField value="{!Contact.Business_Subd_Bldg_Name__c}"/>
+                        </div>
+                    </div>
+                    <div class="fdisplay">
+                        <div class="flabel">
+                            <apex:outputLabel value="Business Code"/>
+                        </div>
+                        <div class="foutput">
+                            <apex:outputField value="{!Contact.Business_Code__c}"/>
+                        </div>
+                        <div class="finput">
+                            <apex:inputField value="{!Contact.Business_Code__c}"/>
+                        </div>
+                    </div>
+                    <div class="fdisplay">
+                        <div class="flabel">
+                            <apex:outputLabel value="Business Street"/>
+                        </div>
+                        <div class="foutput">
+                            <apex:outputField value="{!Contact.Business_Street__c}"/>
+                        </div>
+                        <div class="finput">
+                            <apex:inputField value="{!Contact.Business_Street__c}"/>
+                        </div>
+                    </div>
+                    <div class="fdisplay">
+                        <div class="flabel">
+                            <apex:outputLabel value="Business Phone"/>
+                        </div>
+                        <div class="foutput">
+                            <apex:outputField value="{!Contact.Business_Phone__c}"/>
+                        </div>
+                        <div class="finput">
+                            <apex:inputField value="{!Contact.Business_Phone__c}"/>
+                        </div>
+                    </div>
+                    <div class="fdisplay">
+                        <div class="flabel">
+                            <apex:outputLabel value="Business Province"/>
+                        </div>
+                        <div class="foutput2">
+                            <apex:outputField value="{!Contact.Business_Province__c}"/>
+                        </div>
+                        <div class="finput2">
+                            <apex:inputField value="{!Contact.Business_Province__c}"/>
+                        </div>
+                    </div>
+                    <div class="fdisplay">
+                        <div class="flabel">
+                            <apex:outputLabel value="Business Email"/>
+                        </div>
+                        <div class="foutput">
+                            <apex:outputField value="{!Contact.Business_Email__c}"/>
+                        </div>
+                        <div class="finput">
+                            <apex:inputField value="{!Contact.Business_Email__c}"/>
+                        </div>
+                    </div>
+                    <div class="fdisplay">
+                        <div class="flabel">
+                            <apex:outputLabel value="Business City"/>
+                        </div>
+                        <div class="foutput2">
+                            <apex:outputField value="{!Contact.Business_City__c}"/>
+                        </div>
+                        <div class="finput2">
+                            <apex:inputField value="{!Contact.Business_City__c}"/>
+                        </div>
+                    </div>
+                    <div class="fdisplay nobborder">
+                        <div class="flabel">
+                        </div>
+                    </div>
+                    <div class="fdisplay">
+                        <div class="flabel">
+                            <apex:outputLabel value="Business Barangay"/>
+                        </div>
+                        <div class="foutput2">
+                            <apex:outputField value="{!Contact.Business_Barangay__c}"/>
+                        </div>
+                        <div class="finput2">
+                            <apex:inputField value="{!Contact.Business_Barangay__c}"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="savediv" style="display: none;">
+                <apex:commandButton action="{!Save}" value="Save"/>
+            </div>
+            <div id="premextdiv" style="display: none;">
+                No business information. This is either a Premium account or an Extension.
+            </div>
+        </apex:pageBlock>
+        </apex:form>
+        <input type="hidden" id="hidcustype" value="{!Contact.Customer_Type__c}"/>
+        <input type="hidden" id="hidsubtype" value="{!Contact.Customer_Sub_Type__c}"/>
+    </body>
+</apex:page>

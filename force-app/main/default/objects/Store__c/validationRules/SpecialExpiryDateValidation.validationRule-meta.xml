@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SpecialExpiryDateValidation</fullName>
+    <active>true</active>
+    <errorConditionFormula>IsPreOpening__c  = True  &amp;&amp;  ISBLANK(SpecialExpiryDate__c)</errorConditionFormula>
+    <errorDisplayField>SpecialExpiryDate__c</errorDisplayField>
+    <errorMessage>Special Expiry Date can&apos;t be blank!</errorMessage>
+</ValidationRule>

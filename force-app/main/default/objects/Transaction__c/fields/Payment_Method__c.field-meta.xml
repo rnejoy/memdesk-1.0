@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Payment_Method__c</fullName>
+    <label>Payment Method</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Debit Card</fullName>
+                <default>false</default>
+                <label>Debit Card</label>
+            </value>
+            <value>
+                <fullName>Credit Card</fullName>
+                <default>false</default>
+                <label>Credit Card</label>
+            </value>
+            <value>
+                <fullName>Cash</fullName>
+                <default>false</default>
+                <label>Cash</label>
+            </value>
+            <value>
+                <fullName>ALLIED CC MSTRCRD</fullName>
+                <default>false</default>
+                <label>ALLIED CC MSTRCRD</label>
+            </value>
+            <value>
+                <fullName>BDO CC MASTERCARD</fullName>
+                <default>false</default>
+                <label>BDO CC MASTERCARD</label>
+            </value>
+            <value>
+                <fullName>BDO CREDIT CARD VISA</fullName>
+                <default>false</default>
+                <label>BDO CREDIT CARD VISA</label>
+            </value>
+            <value>
+                <fullName>BPI CC MASTERCARD</fullName>
+                <default>false</default>
+                <label>BPI CC MASTERCARD</label>
+            </value>
+            <value>
+                <fullName>CHNBNK CC MASTERCARD</fullName>
+                <default>false</default>
+                <label>CHNBNK CC MASTERCARD</label>
+            </value>
+            <value>
+                <fullName>CITIBNK C C MSTRCARD</fullName>
+                <default>false</default>
+                <label>CITIBNK C C MSTRCARD</label>
+            </value>
+            <value>
+                <fullName>CREDIT MEMO (CCM)</fullName>
+                <default>false</default>
+                <label>CREDIT MEMO (CCM)</label>
+            </value>
+            <value>
+                <fullName>EASTWEST CC MSTRCRD</fullName>
+                <default>false</default>
+                <label>EASTWEST CC MSTRCRD</label>
+            </value>
+            <value>
+                <fullName>ECOMM</fullName>
+                <default>false</default>
+                <label>ECOMM</label>
+            </value>
+            <value>
+                <fullName>EFT CC</fullName>
+                <default>false</default>
+                <label>EFT CC</label>
+            </value>
+            <value>
+                <fullName>GCASH</fullName>
+                <default>false</default>
+                <label>GCASH</label>
+            </value>
+            <value>
+                <fullName>GIFT CERTIFICATE</fullName>
+                <default>false</default>
+                <label>GIFT CERTIFICATE</label>
+            </value>
+            <value>
+                <fullName>HSBC CC MSTRCARD</fullName>
+                <default>false</default>
+                <label>HSBC CC MSTRCARD</label>
+            </value>
+            <value>
+                <fullName>HSBC CC VISA</fullName>
+                <default>false</default>
+                <label>HSBC CC VISA</label>
+            </value>
+            <value>
+                <fullName>MISC INCOME</fullName>
+                <default>false</default>
+                <label>MISC INCOME</label>
+            </value>
+            <value>
+                <fullName>PAYMAYA</fullName>
+                <default>false</default>
+                <label>PAYMAYA</label>
+            </value>
+            <value>
+                <fullName>MTRBNK CC MSTRCARD</fullName>
+                <default>false</default>
+                <label>MTRBNK CC MSTRCARD</label>
+            </value>
+            <value>
+                <fullName>RCBC BNKRD CCMSTRCRD</fullName>
+                <default>false</default>
+                <label>RCBC BNKRD CCMSTRCRD</label>
+            </value>
+            <value>
+                <fullName>SEC BNK CC MSTRCARD</fullName>
+                <default>false</default>
+                <label>SEC BNK CC MSTRCARD</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,301 @@
+:host {
+    display: block;
+    --ink: #0e2a1c;
+    --green: #0b7a3b;
+    --green-dark: #085c2c;
+    --lime: #b7e8b0;
+    --mint: #e3f5e5;
+    --line: #cfe6d3;
+    --muted: #4f6b5a;
+    font-family: 'Nunito', 'Segoe UI', Arial, sans-serif;
+    color: var(--ink);
+}
+
+.page {
+    background: #eef8f0;
+    padding: 2rem 1rem;
+}
+
+.card {
+    max-width: 38rem;
+    margin: 0 auto;
+    background: #fff;
+    border: 2px solid var(--ink);
+    border-radius: 1.75rem;
+    box-shadow: 0.6rem 0.6rem 0 var(--ink);
+    overflow: hidden;
+}
+
+.head {
+    background: var(--lime);
+    border-bottom: 2px solid var(--ink);
+    padding: 1.5rem 2rem 1.75rem;
+}
+
+.badge {
+    display: inline-block;
+    background: #fff;
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+    padding: 0.2rem 0.8rem;
+    font-size: 0.75rem;
+    font-weight: 800;
+}
+
+.title {
+    margin: 0.9rem 0 0.5rem;
+    font-size: 2rem;
+    line-height: 1.15;
+    font-weight: 900;
+}
+
+.lede {
+    margin: 0;
+    max-width: 32rem;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.body {
+    padding: 1.5rem 2rem 2rem;
+}
+
+.label {
+    margin: 1.5rem 0 0.75rem;
+    font-size: 1rem;
+    font-weight: 800;
+}
+
+.label:first-child {
+    margin-top: 0;
+}
+
+.opt {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--muted);
+    margin-left: 0.25rem;
+}
+
+/* Reactions */
+.reactions {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0.6rem;
+}
+
+.reaction {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem 0.25rem;
+    background: #fff;
+    border: 2px solid var(--line);
+    border-radius: 1rem;
+    cursor: pointer;
+    font: inherit;
+    color: var(--muted);
+}
+
+.reaction.is-on {
+    border-color: var(--green);
+    background: var(--mint);
+    box-shadow: 0 0 0 3px rgba(11, 122, 59, 0.25);
+    color: var(--ink);
+}
+
+.face {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    font-size: 1.35rem;
+}
+
+.tone1 { background: #f6a6a0; }
+.tone2 { background: #f8be86; }
+.tone3 { background: #f5db5c; }
+.tone4 { background: #a9e3a4; }
+.tone5 { background: #3fb874; }
+
+.rlabel {
+    font-size: 0.75rem;
+    font-weight: 800;
+}
+
+/* Chips */
+.chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+}
+
+.chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.9rem 0.5rem 0.5rem;
+    background: #fff;
+    border: 2px solid var(--line);
+    border-radius: 999px;
+    font: inherit;
+    font-size: 0.88rem;
+    font-weight: 800;
+    color: var(--ink);
+    cursor: pointer;
+}
+
+.chip.is-on {
+    background: var(--mint);
+    border-color: var(--green);
+}
+
+.plus {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.35rem;
+    height: 1.35rem;
+    border-radius: 50%;
+    background: var(--mint);
+    color: var(--green);
+    font-size: 0.9rem;
+    font-weight: 900;
+}
+
+.chip.is-on .plus {
+    background: var(--green);
+    color: #fff;
+}
+
+/* Comment box */
+.area {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 2px solid var(--line);
+    border-radius: 1rem;
+    font: inherit;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--ink);
+    resize: vertical;
+}
+
+.area::placeholder {
+    color: #7b9485;
+}
+
+/* Photo attach */
+.file-input {
+    display: none;
+}
+
+.attach {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.65rem 1rem;
+    background: var(--mint);
+    border: 2px dashed var(--green);
+    border-radius: 0.8rem;
+    font: inherit;
+    font-weight: 800;
+    color: var(--green-dark);
+    cursor: pointer;
+}
+
+.error {
+    margin: 0.6rem 0 0;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #b3261e;
+}
+
+/* Send */
+.actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1.75rem;
+}
+
+.send {
+    padding: 0.8rem 1.6rem;
+    background: var(--green);
+    color: #fff;
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+    box-shadow: 0.2rem 0.2rem 0 var(--ink);
+    font: inherit;
+    font-size: 1rem;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.send:hover {
+    background: var(--green-dark);
+}
+
+.note {
+    font-size: 0.8rem;
+    color: var(--muted);
+}
+
+/* Thank-you state */
+.thanks {
+    text-align: center;
+    padding: 2.5rem 2rem;
+}
+
+.thanks-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    background: var(--green);
+    color: #fff;
+    font-size: 1.75rem;
+    font-weight: 900;
+}
+
+.thanks-title {
+    margin: 1rem 0 0.5rem;
+    font-size: 1.5rem;
+    font-weight: 900;
+}
+
+.thanks-text {
+    margin: 0 auto 1.5rem;
+    max-width: 26rem;
+    line-height: 1.6;
+    color: var(--muted);
+}
+
+button:focus-visible,
+.area:focus-visible {
+    outline: 3px solid var(--green);
+    outline-offset: 2px;
+}
+
+@media (max-width: 34rem) {
+    .head,
+    .body {
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+    }
+
+    .reactions {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .title {
+        font-size: 1.6rem;
+    }
+}

@@ -1,0 +1,268 @@
+<apex:page controller="SMS_SendTestMessage">
+    <head>
+        <apex:slds />
+        <apex:includeScript value="https://code.jquery.com/jquery-2.2.4.js"/>
+        <script>
+            var messageType;
+
+            $(document).ready(function() {
+                preparedisplay();
+            });
+
+            function preparedisplay() {
+                //console.log('we are in preparedisplay');
+                messageType = $('#hidmsgtyp').val();;
+                var messageStr  = "Simple";
+                if (messageType == 'P')
+                    messageStr = 'Personalized';
+                $('#messagetypespan').html(messageStr);
+                if (messageType == 'P') {
+                    $('#personaldiv').show();
+                    $('#custom1').focus();
+                }
+                else {
+                    $('#personaldiv').hide();
+                    $('#mobile1').focus();
+                }
+
+                var result = $('#hidresult').val();
+                //console.log('result: ' + result);
+                $('#returnspan').html(result);
+                if (result != '')
+                    $('#returnspan').fadeIn().delay(15000).fadeOut();
+            }
+
+            function sendSMSJS() {
+                var custom1 = $('#custom1').val();
+                var custom2 = $('#custom2').val();
+                var custom3 = $('#custom3').val();
+                var custom4 = $('#custom4').val();
+                var custom5 = $('#custom5').val();
+
+                var arrMob = [];
+                arrMob[0] = $('#mobile1').val();
+                arrMob[1] = $('#mobile2').val();
+                arrMob[2] = $('#mobile3').val();
+                arrMob[3] = $('#mobile4').val();
+                arrMob[4] = $('#mobile5').val();
+
+                if (messageType == 'P') {
+                    if ((custom1.trim() + custom2.trim() + custom3.trim() + custom4.trim() + custom5.trim()) == '') {
+                        alert("Oops.. Message type is Personalized, you need to provide at least one custom data!");
+                        $('#custom1').focus();
+                        return false;
+                    }
+                }
+
+                var mobileStr = '';
+                for (var i=0; i<5; i++) {
+                    var mobileno = arrMob[i];
+                    if (mobileno.trim() != '' && (mobileno.length < 11 || /^09/.test(mobileno) == false || /^[0-9]{11}/.test(mobileno) == false)) {
+                        alert('Oops.. Mobile number must begin with 09 and must be 11 digits long !');
+                        $('#mobile' + (i + 1)).focus();
+                        return false;
+                    }
+
+                    mobileStr += mobileno;
+                }
+
+                if (mobileStr == '') {
+                    alert("Oops.. you need to provide at least one mobile number!");
+                    $('#mobile1').focus();
+                    return false;
+                }
+
+                if (confirm("Do you really want to send test SMS now?"))
+                    sendSMSSFX(custom1, custom2, custom3, custom4, custom5, arrMob.join(','));
+                else
+                    return false;
+            }
+        </script>
+        <style>
+            /* Custom Classes */
+                .wrapperdiv {
+                    width: 98%;
+                    height: 100%;
+                    margin: 10px auto 0 auto;
+                }
+
+                p {
+                    margin-top: 10px !important;
+                    font-size: 14px;
+                }
+                td {
+                    padding-top: 3px !important;
+                }
+
+                .myInput {
+                    width: 225px;
+                    height: 35px;
+                    padding-left: 7px !important;
+                    border: 1px solid #C2C2C2 !important;
+                    font-size: 16px !important;
+                    outline: none !important;
+                }
+                .wd150 {
+                    width: 150px;
+                }
+
+            /* BUTTONS */
+                .button {
+                    width: 120px;
+                    height: 40px;
+                    vertical-align: middle;
+                    border-radius: 2px;
+                    border: 1px;
+                    font-family: verdana;
+                    font-size: 12px;
+                    font-weight: normal !important;
+                    cursor: pointer;
+                }
+                .bblue {
+                    background: #0078D7;
+                    color: #FFFFFF !important;
+                }
+                .bblue:hover {
+                    border: 2px solid #014F8F;
+                }
+                .bgreen {
+                    background: #2C9F1C;
+                    color: #FFFFFF !important;
+                }
+                .bgreen:hover {
+                    border: 2px solid #193d19;
+                }
+                .bgray {
+                    background: #CBCBCB;
+                    color: #FFFFFF !important;
+                }
+                .bgray:hover {
+                    border: 2px solid #797979;
+                }
+                .borange {
+                    background: #FFA500;
+                    color: #000000 !important;
+                }
+                .borange:hover {
+                    border: 2px solid #BF7900;
+                }
+                .bsuccess {
+                    background: #5CB85C;
+                    color: #FFFFFF !important;
+                }
+                .bsuccess:hover {
+                    border: 2px solid #3A773A;
+                }
+                .bwarning {
+                    background: #F0AD4E;
+                    color: #ffffff !important;
+                }
+                .bwarning:hover {
+                    border: 2px solid #725122;
+                }
+                .bfailure {
+                    background: #B9534F;
+                    color: #FFFFFF !important;
+                }
+                .bfailure:hover {
+                    border: 2px solid #70312F;
+                }
+        </style>
+    </head>
+    <apex:form id="theForm">
+        <apex:pageBlock id="theBlock" title="">
+            <apex:facet name="header">
+                <div style="height: 35px; padding: 5px 5px; font-family: 'Salesforce Sans',Arial,sans-serif; font-size: 14px; color: #000000;">
+                    <div id="headmsg1" style="float: left; font-weight: bold;">Test SMS Template Message</div>
+                </div>
+            </apex:facet>
+
+            <div class="wrapperdiv">
+                <div id="promptdiv">
+                    <div>Message Type : <span id="messagetypespan"></span></div>
+                    <div id="personaldiv" style="margin-top: 30px;">
+                        <p>The message type is Personalized. Please provide the necessary customization:</p>
+                        <div>
+                            <table>
+                                <tr>
+                                    <td>
+                                        Custom 1 <input id="custom1" class="myInput" type="text" value=""/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Custom 2 <input id="custom2" class="myInput" type="text" value=""/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Custom 3 <input id="custom3" class="myInput" type="text" value=""/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Custom 4 <input id="custom4" class="myInput" type="text" value=""/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Custom 5 <input id="custom5" class="myInput" type="text" value=""/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div style="margin-top: 30px;">
+                        <p>Please provide the mobile number/s to send this SMS message to:</p>
+                        <div>
+                            <table>
+                                <tr>
+                                    <td>
+                                        1. <input id="mobile1" class="myInput wd150" type="text" value="" maxlength="11"/>
+                                    </td>
+                                    <td style="width: 20px;"></td>
+                                    <td>
+                                        2. <input id="mobile2" class="myInput wd150" type="text" value="" maxlength="11"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        3. <input id="mobile3" class="myInput wd150" type="text" value="" maxlength="11"/>
+                                    </td>
+                                    <td></td>
+                                    <td>
+                                        4. <input id="mobile4" class="myInput wd150" type="text" value="" maxlength="11"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        5. <input id="mobile5" class="myInput wd150" type="text" value="" maxlength="11"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div style="margin: 20px 0 15px 0;">
+                        <button type="button" class="button bgreen" onclick="sendSMSJS()">Send Test SMS</button>
+                    </div>
+                    <div style="height: 70px;">
+                        <span id="returnspan" style="display: block; color: #000080;"></span>
+                    </div>
+                </div>
+            </div>
+        </apex:pageBlock>
+
+        <!-- Apex Action Functions Here -->
+            <apex:actionFunction name="sendSMSSFX" action="{!sendSMS}" rerender="theForm" oncomplete="preparedisplay()">
+                <apex:param name="a" assignTo="{!custom1}"  value=""/>
+                <apex:param name="b" assignTo="{!custom2}"  value=""/>
+                <apex:param name="c" assignTo="{!custom3}"  value=""/>
+                <apex:param name="d" assignTo="{!custom4}"  value=""/>
+                <apex:param name="e" assignTo="{!custom5}"  value=""/>
+                <apex:param name="f" assignTo="{!moblstr}"  value=""/>
+            </apex:actionFunction>
+        <!--  -->
+        <input type="hidden" id="hidmsgtyp" value="{!messageType}"/>
+        <input type="hidden" id="hidresult" value="{!sendResult}"/>
+    </apex:form>
+</apex:page>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Online</fullName>
+    <columns>NAME</columns>
+    <columns>OBJECT_ID</columns>
+    <columns>Branch__c</columns>
+    <columns>Transaction_Type__c</columns>
+    <columns>Transaction_Date__c</columns>
+    <columns>Source_of_Purchase__c</columns>
+    <columns>Status__c</columns>
+    <columns>Member__c</columns>
+    <columns>Billing_Information__c</columns>
+    <columns>Delivery_Date__c</columns>
+    <columns>Delivery_Fee__c</columns>
+    <columns>Personal_Shopper__c</columns>
+    <columns>Order_Total__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Source_of_Purchase__c</field>
+        <operation>equals</operation>
+        <value>Online</value>
+    </filters>
+    <filters>
+        <field>Order_Total__c</field>
+        <operation>equals</operation>
+        <value>0</value>
+    </filters>
+    <filters>
+        <field>Delivery_Fee__c</field>
+        <operation>equals</operation>
+        <value>0</value>
+    </filters>
+    <label>Online</label>
+</ListView>

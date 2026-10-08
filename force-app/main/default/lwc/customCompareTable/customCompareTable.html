@@ -1,0 +1,18 @@
+<template>
+    <div style="height: 300px;">
+        <lightning-input 
+            type="text" 
+            label="Search Items" 
+            placeholder="Search by item..." 
+            onchange={handleSearchChange}>
+        </lightning-input>
+        
+        <lightning-datatable
+            key-field="id"
+            data={filteredData}
+            show-row-number-column
+            hide-checkbox-column
+            columns={columns}>
+        </lightning-datatable>
+    </div>
+</template>

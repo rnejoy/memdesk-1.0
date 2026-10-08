@@ -1,0 +1,18 @@
+:host {
+    display: inline-block;
+    line-height: 0;
+    /* Parent controls the disc behind the petals. Default is the white
+       roundel used on the header, the gold card and the tile chips.
+       Set --mark-disc: transparent to drop it. */
+    --mark-disc: #ffffff;
+}
+
+.mark {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.mark__disc {
+    fill: var(--mark-disc);
+}

@@ -1,0 +1,9 @@
+.THIS td {
+	padding-left: 25px;
+}
+.THIS td.tddata {
+	font-size: 15px;
+}
+.THIS td.tdlabel {
+	font-size: 12px;
+}

@@ -1,0 +1,426 @@
+<apex:page id="thePage" applyBodyTag="false" applyHtmlTag="true" showHeader="false" docType="html-5.0" controller="Membership_Generator">
+    <head>
+        <apex:slds />
+        <apex:includeScript value="{!URLFOR($Resource.JsBarcode, 'jquery.min.js')}"/>
+
+        <script>
+            //global working variables here
+            var userstore;
+            console.log('we are in Membership Generator VFPage');
+            $(document).ready(function () {
+                userstore = trim("{!StoreCode}");
+                if (userstore != '')
+                    $('#storesignup').attr('disabled', true);
+                var arrCodes = [];
+                var arrNames = [];
+                <apex:repeat value="{!storecodes}" var="elem">
+                    arrCodes.push('{!JSENCODE(elem)}');
+                </apex:repeat>
+                <apex:repeat value="{!storenames}" var="elem">
+                    arrNames.push('{!JSENCODE(elem)}');
+                </apex:repeat>
+                loadSelect2(storesignup, '', 'choose Store...', '', arrNames, arrCodes, 9999, '', '');
+                arrCodes = [];
+                arrNames = [];
+                <apex:repeat value="{!campaignids}" var="elem">
+                    arrCodes.push('{!JSENCODE(elem)}');
+                </apex:repeat>
+                <apex:repeat value="{!campaignnms}" var="elem">
+                    arrNames.push('{!JSENCODE(elem)}');
+                </apex:repeat>
+                if (arrCodes.length > 0)
+                    loadSelect2(campaign, '', 'choose Campaign...', '', arrNames, arrCodes, 9999, '', '');
+                else
+                    loadSelect2(campaign, '', 'No Campaign available', '', arrNames, arrCodes, 9999, '', '');
+
+
+                $('#storesignup').val(userstore);
+                $('#membertype').val('Member');
+                $('#companyname').focus();
+            });
+
+            function loadSelect2(selObj, noinit, promptText, promptValue, arrOptions, arrOValues, filter, defaultIndex, defaultValue) {
+                //utility used to dynamically load options and values to a select element--modified from my original version
+                var selectedIndex = defaultIndex == '' ? 0 : defaultIndex;
+
+                if (noinit != 1) {
+                    //we delete all previous options of select Object
+                    for (var i=selObj.length -1; i>=0; i--)
+                        selObj.options[i] = null;
+                }
+
+                if (filter) {
+                    var optrows = 0;
+                    //if promptText is not blank.. we create the first row as the prompt for the selection
+                    if (promptText != "") {
+                        optrows++;
+                        selObj.options[selObj.length] = new Option(promptText, promptValue);
+                    }
+                    //then we iterate through the input array for Options and Values -- filter will determine what to include
+                    //  filter = 9999 means include all
+                    for (i=0; i<arrOptions.length; i++) {
+                        var dopt = arrOptions[i];
+                        var dval = arrOValues[i];
+                        if (filter == 9999 || dval == filter) {
+                            optrows++;
+                            selObj.options[selObj.length] = new Option(dopt, dval);
+                            if (defaultValue != "") {
+                                if (dopt == defaultValue)
+                                    selectedIndex = optrows - 1;
+                            }
+                        }
+                    }
+
+                    selObj.selectedIndex = selectedIndex;
+                }
+                else {
+                    //if filter is blank.. this is our way of putting a fixed value to the select element (no choice/s)
+                    selObj.options[selObj.length] = new Option(promptText, promptValue);
+                    selObj.selectedIndex = 0;
+                }
+            }
+
+            function trim(stringToTrim) {
+                //return stringToTrim.replace(/^\s+|\s+$/g,"");
+                if (!(stringToTrim == '' || stringToTrim == null))
+                    return stringToTrim.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '')
+                else
+                    return '';
+            }
+
+            function doubleclick(obj) {
+                if ($(obj).attr('rows') == 4) {
+                    $(obj).attr('rows', '50');
+                    $('.buttondiv').hide();
+                }
+                else {
+                    $(obj).attr('rows', '4');
+                    $('.buttondiv').show();
+                }
+            }
+
+            function typeChanged(val) {
+                console.log('val: ' + val);
+                if (val == 'Complimentary')
+                    $('#reqblockdiv').hide();
+                else
+                    $('#reqblockdiv').show();
+            }
+
+            function testnull() {
+                var companyname  = trim($('#companyname').val());
+                var number2gen   = $('#number2gen').val();
+                var tempnostart  = trim($('#tempnostart').val());
+                var tempnoend    = trim($('#tempnoend').val());
+                var membertype   = trim($('#membertype').val());
+                var memstartdate = $('#memstartdate').val();
+                var extendexpiry = $('#extendexpiry').val();
+                var storesupcode = $('#storesignup').val();
+                var storesupname = $('#storesignup option:selected').text();
+                var refNumber    = trim($('#refnumber').val());
+                var campaignid   = $('#campaign').val();
+                var remarks      = $('#remarks').val();
+                //let us validate all paramters entered
+                    //Company Name.. must not be blank
+                        if (companyname == '') {
+                            alert("Oops..Company Name cannot be blank!");
+                            $('#companyname').focus();
+                            return false;
+                        }
+
+                    //Number to generate.. must not be less than 3
+                        if (number2gen < 1) {
+                            alert("Oops..Number of Lead records to generate must not be 0!");
+                            return false
+                        }
+
+                    //Temporary Number Range (Start and End).. must follow the format nnn-nnn-nnn
+                    //  End must be greated than Start
+                    //  Range must match the Number of Members
+                    //  If Member Type is Complimentary (Temporary Number is not required)
+                        if (membertype != 'Complimentary') {
+                            if (/^[0-9]{3}-[0-9]{3}-[0-9]{3}/.test(tempnostart) == false) {
+                                alert("Invalid Temporary Number Start!");
+                                $('#tempnostart').focus();
+                                return false;
+                            }
+                            else {
+                                var tstart = tempnostart.replace(/-/g, "");
+                            }
+                            if (/^[0-9]{3}-[0-9]{3}-[0-9]{3}/.test(tempnoend) == false) {
+                                alert("Invalid Temporary Number End!");
+                                $('#tempnoend').focus();
+                                return false;
+                            }
+                            else {
+                                var tend = tempnoend.replace(/-/g, "");
+                            }
+                            if (tend < tstart) {
+                                alert("Temporary Number End cannot be lesser than Temporary Number Start!");
+                                $('#tempnoend').focus();
+                                return false;
+                            }
+                            var tdiff = tend - tstart + 1;
+                            if (tdiff != number2gen) {
+                                alert('Number of Lead records to generate doesn\'t match the range of Temporary Numbers!\n\r' +
+                                        'Number based on range: ' + tdiff);
+                                $('#number2gen').focus();
+                                return false;
+                            }
+                        }
+
+                    //Membership Type.. must not be blank (NO LONGER NEEDED.. WILL ALWAYS HAVE A VALUE)
+                        // if (membertype == '') {
+                        //  alert('Oops..Member Type cannot be blank!');
+                        //  return false;
+                        // }
+
+                    //Membership Start Date.. must be a valid date and must not be before today
+                        var dt = new Date(memstartdate);
+                        if (Object.prototype.toString.call(dt) != "[object Date]" || isNaN(dt.getTime())) {  // d.valueOf() could also work
+                            alert('Membership Start Date must be a valid date!');
+                            return false;
+                        }
+                        else {
+                            var sd = new Date(dt.getFullYear(), dt.getMonth(), dt.getDate());
+                            dt = new Date();
+                            var td = new Date(dt.getFullYear(), dt.getMonth(), dt.getDate());
+                            if (td > sd) {
+                                alert('Oops..Membership Start Date cannot be before today');
+                                return false;
+                            }
+                        }
+
+                    //Store SignUp Code.. must not be blank and must match the Store Assignment info in the user record (if present)
+                        if (storesupcode == '') {
+                            alert('Oops..Store SignUp cannot be blank!');
+                            return false;
+                        }
+                        // if (userstore != '' && storesupcode != userstore) {
+                        //  alert('Oops..selected Store SignUp is not the same as your Store Assignment!');
+                        //  return false;
+                        // }
+
+                    //Reference Number.. must not be blank
+                        if (refNumber == '') {
+                                alert("Oops..Reference Number must not be blank!");
+                                $('#refnumber').focus();
+                                return false;
+                            }
+
+                //Everything is hanky dory here so let us ask for a confirmation
+                if (confirm("Do you really want to submit this request now?")) {
+                    $('#promptdiv').hide();
+                    $('#generatingdiv').show();
+
+                    generateLeadsSFX(storesupcode, storesupname, companyname, number2gen, tempnostart, membertype, memstartdate, extendexpiry, refNumber, campaignid, remarks);
+                }
+            }
+        </script>
+
+        <style>
+            body {
+                width: 1366px;
+                height: 80%;
+                font-size: 80%;
+            }
+            /* SF Class Overrides */
+                .pbBody {
+                    /* width: 100% !important;
+                    height: 100% !important; */
+                    margin: 0px !important;
+                }
+                .mainTitle {
+                    font-size: 22px !important;
+                }
+                .dataCol {
+                    padding: 7px 10px !important;
+                }
+                .btn .aright {
+                    float: right;
+                }
+                .dataCell {
+                    padding: 2px 0px 2px 7px !important;
+                    color: #555555 !important;
+                }
+                .slds-scope img {
+                    height: 20px !important;
+                }
+            /* Custom Classes */
+                .wrapperdiv {
+                    width: 98%;
+                    height: 100%;
+                    margin: 10px auto 0 auto;
+                    /* padding: 0 10px; */
+                    /* border: 1px solid black; */
+                }
+                    .subh-wrapperdiv {
+                        margin-left: 10px;
+                    }
+                    .subb-wrapperdiv {
+                        margin: 10px 0 0 40px;
+                    }
+                        .subb-wrapperdiv .buttondiv {
+                            margin-top: 10px;
+                            margin-bottom: 30px;
+                        }
+
+                .myInput {
+                    width: 300px;
+                    height: 35px;
+                    padding-left: 7px !important;
+                    border: 1px solid #C2C2C2 !important;
+                    font-size: 16px !important;
+                    outline: none !important;
+                }
+                .w600 {
+                    width: 600px;
+                }
+                .w150 {
+                    width: 150px;
+                }
+                .w250 {
+                    width: 250px;
+                }
+                .ml20 {
+                    margin-left: 20px;
+                }
+                .tar {
+                    text-align: right;
+                }
+                .bbutton {
+                    width: 80px;
+                    height: 40px;
+                    cursor: pointer;
+                }
+                label {
+                    font-weight: bold;
+                    color: #535353;
+                }
+        </style>
+    </head>
+    <body class="slds-scope" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <div style="width: 100%; height: 100%; background-color: #F5F5F5; position: relative;">
+            <apex:form id="theForm">
+                <!-- Prompt for required Lead generation parameters-->
+                <apex:pageBlock id="theBlock" title="Batch Upload Request" rendered="{!showPromptMember}">
+                    <div class="wrapperdiv">
+                        <div id="promptdiv">
+                            <div class="subh-wrapperdiv">
+                                <p style="font-size: 18px;">Please fill out this form and submit: (Confirmation in the Head Office will generate Members)</p>
+                            </div>
+                            <div class="subb-wrapperdiv">
+                                <apex:pageBlockSection id="theSection" columns="1">
+                                    <!-- Company Name -->
+                                    <apex:outputLabel value="Company Name"/>
+                                    <apex:outputPanel styleClass="requiredInput" layout="block">
+                                        <apex:outputPanel styleClass="requiredBlock"/>
+                                        <input id="companyname" class="myInput w600" type="text" value=""/>
+                                    </apex:outputPanel>
+                                    <!-- Number of Members to generate -->
+                                    <apex:outputLabel value="Number of Members"/>
+                                    <apex:outputPanel styleClass="requiredInput" layout="block">
+                                        <apex:outputPanel styleClass="requiredBlock"/>
+                                        <input id="number2gen" class="myInput w150 tar" type="number" value="0"/>
+                                    </apex:outputPanel>
+                                    <!-- Temporary Number Range -->
+                                    <apex:outputLabel value="Temporary Number Range (Start/End)"/>
+                                    <apex:outputPanel styleClass="requiredInput" layout="block">
+                                        <div id="reqblockdiv" style="width: 3px; height: 35px; background-color: #c00; float: left; margin: 0 1px 0 -4px;"></div>
+                                        <div style="float: left">
+                                            <input id="tempnostart" class="myInput w150"       type="text" value="" placeholder="000-nnn-nnn" maxlength="11"/>
+                                            <input id="tempnoend"   class="myInput w150 ml20" type="text" value="" placeholder="000-nnn-nnn" maxlength="11"/>
+                                        </div>
+                                    </apex:outputPanel>
+                                    <!-- Membership Type -->
+                                    <apex:outputLabel value="Membership Type"/>
+                                    <apex:outputPanel styleClass="requiredInput" layout="block">
+                                        <apex:outputPanel styleClass="requiredBlock"/>
+                                        <select id="membertype" class="myInput w150" onchange="typeChanged(this.value)">
+                                            <option value="Affiliate">Affiliates</option>
+                                            <option value="Employee">Employee</option>
+                                            <option value="Complimentary">Complimentary</option>
+                                            <option value="Member">Member</option>
+                                        </select>
+                                    </apex:outputPanel>
+                                    <!-- Membership Start Date -->
+                                    <apex:outputLabel value="Membership Start Date/Additional Days"/>
+                                    <apex:outputPanel styleClass="requiredInput" layout="block">
+                                        <apex:outputPanel styleClass="requiredBlock"/>
+                                        <input id="memstartdate" class="myInput w150" type="date"/>
+                                        <input id="extendexpiry" class="myInput w150 tar ml20" type="number" value="0"/>
+                                    </apex:outputPanel>
+                                    <!-- <apex:outputLabel value="Extended Expiry (in days)"/>
+                                        <apex:outputPanel styleClass="requiredInput" layout="block">
+                                            <input id="extendexpiry" class="myInput w150 tar" type="number" value="0"/>
+                                        </apex:outputPanel> -->
+                                    <!-- Store SignUp -->
+                                    <apex:outputLabel value="Store SignUp"/>
+                                    <apex:outputPanel styleClass="requiredInput" layout="block">
+                                        <apex:outputPanel styleClass="requiredBlock"/>
+                                        <select id="storesignup" class="myInput w150"></select>
+                                    </apex:outputPanel>
+                                    <!-- Reference Number -->
+                                    <apex:outputLabel value="Transaction Number/Campaign"/>
+                                    <apex:outputPanel styleClass="requiredInput" layout="block">
+                                        <apex:outputPanel styleClass="requiredBlock"/>
+                                        <input id="refnumber" class="myInput w150" type="text" value=""/>
+                                        <select id="campaign" class="myInput w50"></select>
+                                    </apex:outputPanel>
+                                    <!-- Remarks -->
+                                    <apex:outputLabel value="Remarks (double click to expand/collapse)"/>
+                                    <apex:outputPanel styleClass="requiredInput" layout="block">
+                                        <textarea id="remarks" cols="160" rows="4" style="resize: none; outline: none !important;" ondblclick="doubleclick(this)"></textarea>
+                                    </apex:outputPanel>
+
+                                    <div class="buttondiv">
+                                        <!-- <apex:commandButton value="Submit" action="{!goNext}" reRender="theForm" styleClass="apexbutton"/> -->
+                                        <button type="button" class="bbutton" onclick="testnull()">Submit</button>
+                                    </div>
+                                </apex:pageBlockSection>
+                            </div>
+                        </div>
+
+                        <div id="generatingdiv" style="display: none;">
+                            <div class="wrapperdiv">
+                                <div class="subh-wrapperdiv">
+                                    <p style="font-size: 18px;">Generating Lead records. Please wait...</p>
+                                </div>
+                                <div class="subb-wrapperdiv">
+                                    <div style='width: 100%; margin-left: 17px;'>
+                                        <img src="{!$Resource.loadergif}" style="width: 150px !important; height: 150px !important;"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </apex:pageBlock>
+
+                <!-- Show Success Screen -->
+                <apex:pageBlock id="theBlock7" title="Batch Upload Lead Generator" rendered="{!showFinalScreen}">
+                    <div class="wrapperdiv">
+                        <div class="subh-wrapperdiv">
+                            <p style="font-size: 18px;">Lead records successfully generated. Please ask Head Office to confirm conversion!</p>
+                        </div>
+                    </div>
+                </apex:pageBlock>
+
+                <!-- Apex Action Functions Here -->
+                <apex:actionFunction name="generateLeadsSFX" action="{!generateLeads}" reRender="theForm">
+                    <apex:param name="a" assignTo="{!StoreCode}"    value=""/>
+                    <apex:param name="b" assignTo="{!StoreName}"    value=""/>
+                    <apex:param name="c" assignTo="{!CompanyName}"  value=""/>
+                    <apex:param name="d" assignTo="{!Number2Gen}"   value=""/>
+                    <apex:param name="e" assignTo="{!TempNumber}"   value=""/>
+                    <apex:param name="f" assignTo="{!MemberType}"   value=""/>
+                    <apex:param name="g" assignTo="{!MemStartDate}" value=""/>
+                    <apex:param name="h" assignTo="{!ExtendExpiry}" value=""/>
+                    <apex:param name="i" assignTo="{!RefNumber}"    value=""/>
+                    <apex:param name="j" assignTo="{!CampaignId}"   value=""/>
+                    <apex:param name="k" assignTo="{!Remarks}"      value=""/>
+                </apex:actionFunction>
+                <!--  -->
+            </apex:form>
+        </div>
+    </body>
+</apex:page>

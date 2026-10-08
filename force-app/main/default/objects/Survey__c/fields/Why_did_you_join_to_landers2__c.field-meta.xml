@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Why_did_you_join_to_landers2__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(INCLUDES(Why_did_you_join_to_landers__c  , &quot;Product Assortment&quot;), &quot;Product Assortment&quot;,
+IF(INCLUDES(Why_did_you_join_to_landers__c  , &quot;Proximity to Residence/Office&quot;), &quot;Proximity to Residence/Office&quot;,
+IF(INCLUDES(Why_did_you_join_to_landers__c  , &quot;Customer Service&quot;), &quot;Customer Service&quot;,
+IF(INCLUDES(Why_did_you_join_to_landers__c  , &quot;Landers Central/Barber Shop/Doppio/Pharmacy&quot;), &quot;Landers Central/Barber Shop/Doppio/Pharmacy&quot;,
+IF(INCLUDES(Why_did_you_join_to_landers__c  , &quot;Discounted Fuel&quot;), &quot;Discounted Fuel&quot;,
+IF(INCLUDES(Why_did_you_join_to_landers__c  , &quot;Membership Price&quot;), &quot;Membership Price&quot;,null
+)
+)
+)
+)
+)
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Why did you join to landers?</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

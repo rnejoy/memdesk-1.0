@@ -1,0 +1,332 @@
+/*
+ * Poppins must be available at the community level. Either enable it in
+ * Experience Builder (Theme > Fonts) or load a @font-face from a static
+ * resource. The stack below falls back gracefully if it isn't loaded.
+ */
+
+:host {
+    /* palette */
+    --green:        #6f9b41;
+    --green-dark:   #4f7a2c;
+    --gold:         #f0c020;
+    --gold-card:    #c79a34;
+    --gold-card-2:  #b0862a;
+    --ink:          #2e2e2e;
+    --ink-soft:     #5c5c5c;
+    --dark-btn:     #3a332b;
+    --pagibig-red:  #e11b22;
+    --pagibig-blue: #003a9b;
+    --white:        #ffffff;
+    --maxw:         1120px;
+
+    display: block;
+    font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+    color: var(--ink);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+.page { background: var(--white); }
+
+.wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 28px; }
+
+.eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+}
+.eyebrow--gold { color: var(--gold); }
+
+/* ---------- Logo sizing per placement ---------- */
+.logo-header { width: 38px; height: 38px; }
+.logo-card   { width: 34px; height: 34px; }
+
+/* ---------- Header ---------- */
+.site-header { background: var(--green); position: sticky; top: 0; z-index: 40; }
+.header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 68px;
+}
+.brand { display: flex; align-items: center; gap: 12px; }
+.brand__name {
+    color: var(--white);
+    font-weight: 700;
+    font-size: 22px;
+    letter-spacing: 0.30em;
+}
+.nav { display: flex; gap: 34px; }
+.nav a {
+    color: var(--white) !important;
+    text-decoration: none !important;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+}
+.nav a:hover { opacity: 0.82; }
+
+/* ---------- Buttons ---------- */
+/*
+ * The LWR site theme styles bare anchors and wins on specificity, which
+ * strips the background/padding and repaints these as plain blue links.
+ * Scoping to `.page a.btn` plus !important on the properties the theme
+ * touches is what keeps the pills intact inside Experience Builder.
+ */
+.page a.btn,
+.page button.btn {
+    display: inline-block !important;
+    border: none !important;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none !important;
+    padding: 17px 36px !important;
+    border-radius: 999px !important;
+    line-height: 1.2;
+    transition: transform 0.12s ease, filter 0.12s ease;
+}
+.page a.btn:hover { filter: brightness(1.05); transform: translateY(-1px); text-decoration: none !important; }
+.page a.btn:active { transform: translateY(0); }
+.page a.btn--green { background: var(--green) !important; color: var(--white) !important; }
+.page a.btn--dark  { background: var(--dark-btn) !important; color: var(--white) !important; }
+.page a.btn--gold  { background: var(--gold) !important; color: #3a2f00 !important; }
+.page a.btn--green:visited { color: var(--white) !important; }
+.page a.btn--dark:visited  { color: var(--white) !important; }
+.page a.btn--gold:visited  { color: #3a2f00 !important; }
+
+/* ---------- Hero ---------- */
+.hero { padding: 60px 0 78px; }
+.hero-inner {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    align-items: center;
+    gap: 40px;
+}
+.hero__eyebrow { color: var(--ink); margin-bottom: 14px; }
+.hero h1 {
+    font-size: clamp(38px, 5vw, 58px);
+    font-weight: 800;
+    line-height: 1.02;
+    letter-spacing: 0.005em;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+}
+.hero h1 .accent { color: var(--green); }
+.hero p {
+    text-transform: capitalize;
+    color: var(--ink-soft) !important;
+    max-width: 430px;
+    font-size: 15px;
+    margin-bottom: 26px;
+}
+.hero__cta { display: flex; gap: 14px; flex-wrap: wrap; }
+
+/* Membership card image */
+.card-stage { display: flex; justify-content: center; }
+.memcard-img {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    /*
+     * The photo is already shot at an angle, so no CSS rotation on top —
+     * stacking the two made it read as doubly tilted. drop-shadow (not
+     * box-shadow) follows the card's transparent edges instead of drawing
+     * a rectangle around the image.
+     */
+    filter: drop-shadow(0 18px 32px rgba(120, 90, 10, 0.30));
+}
+
+/* ---------- Partnership band ---------- */
+.divider-wave { display: block; width: 100%; height: 70px; }
+.divider-wave path { fill: var(--green); }
+
+.partnership { background: var(--green); padding: 6px 0 62px; margin-top: -1px; }
+.partnership-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+.partnership__text { max-width: 620px; }
+.partnership__text .eyebrow { margin-bottom: 10px; }
+.partnership h2 {
+    /*
+     * Must stay on one line — "LANDERS x PAG-IBIG FUND" reads badly broken
+     * across two. The clamp scales it down on narrow screens rather than
+     * wrapping, and the low minimum keeps it inside a phone viewport.
+     */
+    white-space: nowrap;
+    font-size: clamp(20px, 3.4vw, 40px);
+    font-weight: 800;
+    letter-spacing: 0.01em;
+    line-height: 1.05;
+    margin-bottom: 14px;
+}
+.partnership h2 .l { color: var(--white); }
+.partnership h2 .x { color: var(--white); font-weight: 600; margin: 0 6px; }
+.partnership h2 .pi-red { color: var(--pagibig-red); }
+.partnership h2 .pi-blue { color: var(--pagibig-blue); margin-left: 0.28em; }
+.partnership p { text-transform: capitalize; color: rgba(255,255,255,0.9); font-size: 14.5px; max-width: 480px; }
+
+/* ---------- Benefits ---------- */
+.benefits { padding: 74px 0 40px; text-align: center; }
+.benefits__eyebrow { color: var(--ink); letter-spacing: 0.22em; margin-bottom: 8px; }
+.benefits__title {
+    color: var(--green);
+    font-size: clamp(30px, 4vw, 44px);
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+}
+.benefits__sub {
+    text-transform: capitalize;
+    color: var(--ink-soft) !important;
+    max-width: 560px;
+    margin: 0 auto 44px;
+    font-size: 15px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+}
+
+/*
+ * Tiles are the approved marketing artwork. Headline copy is baked into
+ * each image, so no text is overlaid here. Images are square (1:1) —
+ * keeping the box square avoids cropping the artwork's own type.
+ */
+.bcard {
+    margin: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    aspect-ratio: 1 / 1;
+    background: #f2f2ee;
+    box-shadow: 0 10px 24px rgba(0,0,0,0.10);
+}
+.bcard img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* ---------- Bottom CTA ---------- */
+.cta-band {
+    background: var(--green);
+    border-radius: 14px;
+    margin: 48px auto 64px;
+    max-width: var(--maxw);
+    padding: 34px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 28px;
+    flex-wrap: wrap;
+}
+.cta-band .eyebrow { margin-bottom: 8px; }
+.cta-band h2 {
+    color: var(--white);
+    font-size: clamp(24px, 3.4vw, 34px);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    line-height: 1.05;
+}
+.cta-band p { text-transform: capitalize; color: rgba(255,255,255,0.9); font-size: 14px; margin-top: 6px; }
+
+/* ---------- Footer ---------- */
+.site-footer {
+    text-transform: capitalize;
+    background: var(--green-dark);
+    color: rgba(255,255,255,0.85);
+    text-align: center;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    padding: 20px 16px;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 860px) {
+    .hero-inner { grid-template-columns: 1fr; }
+    .card-stage { order: -1; margin-bottom: 12px; }
+    .grid { grid-template-columns: repeat(2, 1fr); }
+    .nav { gap: 20px; }
+}
+@media (max-width: 560px) {
+    .grid { grid-template-columns: 1fr; }
+    .brand__name { font-size: 18px; letter-spacing: 0.22em; }
+    .cta-band { padding: 26px 24px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .btn { transition: none; }
+}
+
+/* ---------- Registration modal ---------- */
+.modal {
+    position: fixed; inset: 0; z-index: 9000;
+    display: flex; align-items: center; justify-content: center; padding: 28px 20px;
+}
+.modal__scrim { position: absolute; inset: 0; background: rgba(35, 30, 10, 0.55); }
+.modal__panel {
+    position: relative;
+    width: 100%; max-width: 900px; max-height: 92vh; overflow: auto;
+    background: #faf9f0; border-radius: 18px;
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.35);
+    padding: 8px;
+}
+.modal__close {
+    position: absolute; top: 10px; right: 14px; z-index: 2;
+    width: 40px; height: 40px; border: none; border-radius: 50%;
+    background: rgba(0, 0, 0, 0.06); color: var(--ink);
+    font-size: 26px; line-height: 1; cursor: pointer;
+}
+.modal__close:hover { background: rgba(0, 0, 0, 0.12); }
+
+/* Buttons are now <button>, so keep the pill styling matched to the anchors. */
+.page button.btn {
+    display: inline-block !important;
+    appearance: none;
+    border: none !important;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 17px 36px !important;
+    border-radius: 999px !important;
+    line-height: 1.2;
+    transition: transform 0.12s ease, filter 0.12s ease;
+}
+.page button.btn:hover { filter: brightness(1.05); transform: translateY(-1px); }
+.page button.btn--green { background: var(--green) !important; color: var(--white) !important; }
+.page button.btn--gold  { background: var(--gold) !important; color: #3a2f00 !important; }
+
+@media (max-width: 720px) {
+    .modal { padding: 0; }
+    .modal__panel { max-height: 100vh; height: 100vh; border-radius: 0; }
+}
+
+/*
+ * Printing from inside the modal: neutralise the fixed positioning and
+ * overflow so the pass isn't clipped or trapped in a scroll container.
+ */
+@media print {
+    .modal { position: static; display: block; padding: 0; }
+    .modal__scrim, .modal__close { display: none !important; }
+    .modal__panel {
+        position: static; max-width: none; max-height: none;
+        overflow: visible; box-shadow: none; border-radius: 0;
+        background: #fff; padding: 0;
+    }
+}

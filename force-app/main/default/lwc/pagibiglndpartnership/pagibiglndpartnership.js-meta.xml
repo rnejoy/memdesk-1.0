@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>62.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>PAG-IBIG x Landers Partnership</masterLabel>
+    <description>Landing page for the Landers x Pag-IBIG one-day pass partnership.</description>
+    <targets>
+        <target>lightningCommunity__Page</target>
+        <target>lightningCommunity__Default</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightningCommunity__Default">
+            <property
+                name="membershipId"
+                type="String"
+                label="Day pass membership ID"
+                description="Shared Landers membership number encoded in the printed barcode."
+                default="20208800006500" />
+            <property
+                name="membershipName"
+                type="String"
+                label="Day pass membership name"
+                default="PAG IBIG LANDERS ALL STORE DAYPASS" />
+            <property
+                name="autoResetSeconds"
+                type="Integer"
+                label="Auto-reset after (seconds)"
+                description="Seconds on the pass screen before the kiosk returns to the scan step. 0 disables."
+                default="90" />
+            <property
+                name="registerUrl"
+                type="String"
+                label="Register Now URL (unused)"
+                description="No longer used - the CTAs open the registration modal. Retained because Experience Builder will not allow removing a property that a placed component still references."
+                default="#" />
+            <property
+                name="applyUrl"
+                type="String"
+                label="Apply Membership URL (unused)"
+                description="No longer used - the CTAs open the registration modal. Retained because Experience Builder will not allow removing a property that a placed component still references."
+                default="#" />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

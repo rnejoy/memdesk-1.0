@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Home_Branch__c</fullName>
+    <inlineHelpText>5.  Home Branch</inlineHelpText>
+    <label>Home Branch</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Balintawak</fullName>
+                <default>false</default>
+                <label>Balintawak</label>
+            </value>
+            <value>
+                <fullName>OTIS</fullName>
+                <default>false</default>
+                <label>OTIS</label>
+            </value>
+            <value>
+                <fullName>Cebu</fullName>
+                <default>false</default>
+                <label>Cebu</label>
+            </value>
+            <value>
+                <fullName>Alabang</fullName>
+                <default>false</default>
+                <label>Alabang</label>
+            </value>
+            <value>
+                <fullName>Arcovia</fullName>
+                <default>false</default>
+                <label>Arcovia</label>
+            </value>
+            <value>
+                <fullName>BGC</fullName>
+                <default>false</default>
+                <label>BGC</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

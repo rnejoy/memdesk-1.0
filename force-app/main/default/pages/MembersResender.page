@@ -1,0 +1,27 @@
+<apex:page controller="ContactListController" docType="html-5.0">
+	<apex:form >
+        <apex:pageBlock title="Contact Search">            
+            <apex:pageBlockSection columns="1">
+				<apex:input value="{!searchTerm}" label="Term" />
+				<apex:commandButton value="Search" action="{!searchContacts}" reRender="results"/>
+				<apex:commandButton value="Re-Send" action="{!reSend}" reRender="results"/>					                
+ 			</apex:pageBlockSection>
+ 			<apex:pageBlockSection title="Results" columns="2" id="results">
+                <apex:pageBlockTable value="{!contacts}" var="contact">
+                    <apex:column headerValue="ID">
+                        <apex:outputLink value="{!URLFOR('/' + contact.Id)}">{!contact.Id}</apex:outputLink>
+                    </apex:column>
+                    <apex:column headerValue="Name">
+                        <apex:outputText value="{!contact.Name}"/>
+                    </apex:column>
+                    <apex:column headerValue="Membership ID">
+                        <apex:outputText value="{!contact.Membership_ID__c}"/>
+                    </apex:column>
+                    <apex:column headerValue="Response Codes">
+                        <apex:outputText value="{!SUBSTITUTE(JSENCODE(contact.response_codes__c),'\\\n','<br/>')}" style="white-space:pre-wrap;" escape="false"/>
+                    </apex:column>                    
+                </apex:pageBlockTable>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

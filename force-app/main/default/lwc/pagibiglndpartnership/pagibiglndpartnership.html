@@ -1,0 +1,103 @@
+<template>
+    <div class="page">
+
+        <!-- Header -->
+        <header class="site-header">
+            <div class="wrap header-inner">
+                <div class="brand">
+                    <c-landers-mark class="logo-header"></c-landers-mark>
+                    <span class="brand__name">LANDERS</span>
+                </div>
+                <nav class="nav">
+                    <a href="#" onclick={handleHome}>HOME</a>
+                    <a href="#" onclick={handleViewBenefits}>MEMBERSHIP</a>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Hero -->
+        <section class="hero">
+            <div class="wrap hero-inner">
+                <div class="hero__text">
+                    <div class="eyebrow hero__eyebrow">Membership Sign Up</div>
+                    <h1><span class="accent">Join Landers,</span><br />Be a Member Now!</h1>
+                    <p>Unlock exclusive deals, member-only prices, and premium shopping privileges at all Landers Superstore locations nationwide.</p>
+                    <div class="hero__cta">
+                        <button type="button" class="btn btn--green" onclick={openKiosk}>Register Now!</button>
+                        <a href="#" class="btn btn--dark" onclick={handleViewBenefits}>View Benefits</a>
+                    </div>
+                </div>
+                <div class="card-stage">
+                    <img src={cardImg} class="memcard-img" alt="Landers membership card" />
+                </div>
+            </div>
+        </section>
+
+        <!-- Wave divider into partnership band -->
+        <svg class="divider-wave" viewBox="0 0 1440 70" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M0,52 C240,8 480,8 720,32 C960,56 1200,56 1440,20 L1440,70 L0,70 Z"></path>
+        </svg>
+
+        <!-- Partnership -->
+        <section class="partnership">
+            <div class="wrap partnership-inner">
+                <div class="partnership__text">
+                    <div class="eyebrow eyebrow--gold">Exclusive Partnership</div>
+                    <h2>
+                        <span class="l">LANDERS</span><span class="x">&times;</span><span class="pi-red">PAG-IBIG</span>&nbsp;<span class="pi-blue">FUND</span>
+                    </h2>
+                    <p>Pag-IBIG members enjoy a complimentary one-day shopping pass at any Landers Superstore. Simply scan your Pag-IBIG card to get started.</p>
+                </div>
+                <button type="button" class="btn btn--gold" onclick={openKiosk}>Apply Membership</button>
+            </div>
+        </section>
+
+        <!-- Benefits -->
+        <section class="benefits">
+            <div class="wrap">
+                <div class="eyebrow benefits__eyebrow">Why Join?</div>
+                <h2 class="benefits__title">Membership Benefits</h2>
+                <p class="benefits__sub">Being a Landers member means more than just shopping &mdash; it's a lifestyle of savings, privileges, and exclusive access.</p>
+
+                <div class="grid">
+                    <template for:each={benefits} for:item="benefit">
+                        <figure class="bcard" key={benefit.key}>
+                            <img src={benefit.src} alt={benefit.alt} loading="lazy" />
+                        </figure>
+                    </template>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bottom CTA -->
+        <section class="cta-band">
+            <div class="cta-band__text">
+                <div class="eyebrow eyebrow--gold">Ready to Join?</div>
+                <h2>Start Shopping at Landers</h2>
+                <p>Registration is quick, easy, and free for Pag-IBIG members.</p>
+            </div>
+            <button type="button" class="btn btn--gold" onclick={openKiosk}>Apply Membership</button>
+        </section>
+
+        <!-- Footer -->
+        <footer class="site-footer">
+            &copy; 2026 Landers Superstore. One-Day Pass Kiosk. All Rights Reserved.
+        </footer>
+
+        <!-- Registration modal -->
+        <template if:true={kioskOpen}>
+            <div class="modal" role="dialog" aria-modal="true" aria-label="Membership registration" onkeydown={handleModalKey}>
+                <div class="modal__scrim" onclick={closeKiosk}></div>
+                <div class="modal__panel">
+                    <button type="button" class="modal__close" onclick={closeKiosk} aria-label="Close registration">&times;</button>
+                    <c-pagibig-kiosk
+                        embedded
+                        auto-reset-seconds={autoResetSeconds}
+                        membership-id={membershipId}
+                        membership-name={membershipName}></c-pagibig-kiosk>
+                </div>
+            </div>
+        </template>
+
+    </div>
+</template>

@@ -1,0 +1,546 @@
+<template>
+    <div class="shell">
+        <main class="page">
+
+            <!-- ═══════════════════════════════════
+                 LEFT PANEL
+            ═══════════════════════════════════ -->
+            <section class="left-panel">
+                <img src={kiaCar} alt="Kia Vehicle" class="bg-img"/>
+                <div class="overlay"></div>
+                <div class="overlay-side"></div>
+
+                <div class="left-content">
+                    <div class="top-block">
+                        <div class="chip">
+                            <span class="chip-dot"></span>
+                            <span class="chip-txt">Member's Exclusive Offer</span>
+                        </div>
+
+                        <div class="anniv-mark">
+                            <img src={anniversaryIcon} alt="Landers 10th Anniversary" class="anniv-icon-img" />
+                            <div class="anniv-text">
+                                <span class="anniv-word">Landers</span>
+                                <span class="anniv-sub">Anniversary</span>
+                            </div>
+                        </div>
+
+                        <h1 class="hero-title">
+                            LANDERS<span class="gold">&times;</span>KIA
+                        </h1>
+
+                        <div class="divider-bar"></div>
+
+                        <div class="offer-frame">
+                            <div class="offer-frame-eyebrow">On Brand New Kia</div>
+                            <img src={amount400k} alt="₱400K Off" class="offer-amount-img" />
+                            <div class="offer-frame-sub">Plus 10,000 Landers Points</div>
+                            <span class="offer-frame-points">Limited Slots Only</span>
+                        </div>
+
+                        <p class="hero-sub">
+                            Exclusive to Landers members, enjoy exceptional savings on a brand-new Kia. 
+                            Register your interest today to unlock up to ₱400,000 off the SRP. 
+                            Plus, qualified members will receive 10,000 Landers points upon successful purchase.
+                        </p>
+
+                        <div class="stats-row">
+                            <div class="stat-item">
+                                <div class="stat-num">Limited</div>
+                                <div class="stat-lbl">Slots Only</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-num">2</div>
+                                <div class="stat-lbl">Models</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-num">Selected</div>
+                                <div class="stat-lbl">Branches</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="promo-card">
+                        <div class="promo-header">
+                            <div class="promo-icon">&#9670;</div>
+                            <div class="promo-title">Promo Mechanics</div>
+                        </div>
+                        <ul class="promo-list">
+                            <li class="promo-item">
+                                <span class="bullet">&#x25B8;</span>
+                                <span>All <strong>active Landers members</strong> are eligible to register for the member-exclusive Kia discount.</span>
+                            </li>
+                            <li class="promo-item">
+                                <span class="bullet">&#x25B8;</span>
+                                <span>Members must <strong>register via this link</strong> to avail the discount.</span>
+                            </li>
+                            <li class="promo-item">
+                                <span class="bullet">&#x25B8;</span>
+                                <span>Only <strong>limited slots</strong> are available on a <strong>first come, first served</strong> basis.</span>
+                            </li>
+                            <li class="promo-item">
+                                <span class="bullet">&#x25B8;</span>
+                                <span>Qualified members will receive an <strong>SMS confirmation</strong> of successful registration following internal queue monitoring.</span>
+                            </li>
+                            <li class="promo-item">
+                                <span class="bullet">&#x25B8;</span>
+                                <span>Only <strong>confirmed participants</strong> may claim the offer.</span>
+                            </li>
+                            <li class="promo-item">
+                                <span class="bullet">&#x25B8;</span>
+                                <span>Present your <strong>SMS confirmation</strong> upon claiming with KIA.</span>
+                            </li>
+                        </ul>
+                        <p class="promo-tnc">Terms and conditions applies.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══════════════════════════════════
+                 RIGHT PANEL
+            ═══════════════════════════════════ -->
+            <section class="right-panel">
+                <div class="right-inner">
+
+                    <!-- ══ FORM ══ -->
+                    <template if:true={isForm}>
+                        <div class="card">
+
+                            <!-- Card header bar -->
+                            <div class="card-header-bar">
+                                <div>
+                                    <div class="card-header-label">Member Registration</div>
+                                    <div class="card-header-title">Reserve Your Kia</div>
+                                </div>
+                            </div>
+
+                            <!-- Step progress -->
+                            <div class="step-progress">
+                                <div class="step-node">
+                                    <div class={activeStep1}>1</div>
+                                    <div class={activeName1}>Details</div>
+                                </div>
+                                <div class="step-connector"></div>
+                                <div class="step-node">
+                                    <div class={activeStep2}>2</div>
+                                    <div class={activeName2}>Preference</div>
+                                </div>
+                                <div class="step-connector"></div>
+                                <div class="step-node">
+                                    <div class="step-circle">3</div>
+                                    <div class="step-name">Review</div>
+                                </div>
+                                <div class="step-connector"></div>
+                                <div class="step-node">
+                                    <div class="step-circle">4</div>
+                                    <div class="step-name">Done</div>
+                                </div>
+                            </div>
+
+                            <div class="card-body">
+                                <template if:true={errorMessage}>
+                                    <p class="error-msg">{errorMessage}</p>
+                                </template>
+
+                                <!-- ── STEP 1: Details ── -->
+                                <template if:true={isStepDetails}>
+
+                                    <div class="form-section">Membership ID</div>
+                                    <div class="membership-field">
+                                        <div class="membership-input-row">
+                                            <lightning-input
+                                                label=""
+                                                data-field="memberId"
+                                                value={form.memberId}
+                                                onchange={handleChange}
+                                                placeholder="1020XXXXXXXXXX"
+                                                message-when-value-missing="Required"
+                                                variant="label-hidden"
+                                                class="membership-input">
+                                            </lightning-input>
+                                            <button
+                                                type="button"
+                                                onclick={handleVerifyMemberId}
+                                                disabled={verifyButtonDisabled}
+                                                class="verify-btn">
+                                                {verifyButtonLabel}
+                                            </button>
+                                        </div>
+
+                                        <template if:true={memberIdChecking}>
+                                            <p class="member-status checking">&#x29D7; Verifying membership ID…</p>
+                                        </template>
+                                        <template if:true={memberIdValid}>
+                                            <p class="member-status valid">&#10003; Membership ID verified</p>
+                                        </template>
+                                        <template if:true={memberIdInvalid}>
+                                            <p class="member-status invalid">&#10007; Membership ID not found. Please check and try again.</p>
+                                        </template>
+                                        <template if:true={memberIdDuplicate}>
+                                            <p class="member-status invalid">&#10007; This Membership ID has already been registered for this promo.</p>
+                                        </template>
+                                    </div>
+
+                                    <div class="form-section">Personal Information</div>
+
+                                    <div class="grid">
+                                        <lightning-input
+                                            label="First Name"
+                                            data-field="firstName"
+                                            value={maskedFirstName}
+                                            onchange={handleChange}
+                                            placeholder="Juan"
+                                            disabled={nameFieldsDisabled}
+                                            class={nameFieldClass}>
+                                        </lightning-input>
+
+                                        <lightning-input
+                                            label="Middle Name"
+                                            data-field="middleName"
+                                            value={maskedMiddleName}
+                                            onchange={handleChange}
+                                            placeholder={middleNamePlaceholder}
+                                            disabled={nameFieldsDisabled}
+                                            class={nameFieldClass}>
+                                        </lightning-input>
+
+                                        <lightning-input
+                                            label="Last Name"
+                                            data-field="lastName"
+                                            value={maskedLastName}
+                                            onchange={handleChange}
+                                            placeholder="Dela Cruz"
+                                            disabled={nameFieldsDisabled}
+                                            class={nameFieldClass}>
+                                        </lightning-input>
+
+                                        <lightning-input
+                                            label="Phone"
+                                            data-field="phone"
+                                            value={form.phone}
+                                            onchange={handleChange}
+                                            placeholder="09XX XXX XXXX">
+                                        </lightning-input>
+
+                                        <template if:true={phoneError}>
+                                            <p class="error-msg phone-error">{phoneError}</p>
+                                        </template>
+
+                                        <lightning-input
+                                            label="Email"
+                                            type="email"
+                                            data-field="email"
+                                            value={form.email}
+                                            onchange={handleChange}
+                                            class="full"
+                                            placeholder="juan@email.com">
+                                        </lightning-input>
+
+                                        <template if:true={emailError}>
+                                            <p class="error-msg full">{emailError}</p>
+                                        </template>
+                                    </div>
+
+                                </template>
+
+                                <!-- ── STEP 2: Preference ── -->
+                                <template if:true={isStepPreference}>
+
+                                    <div class="form-section">Car Model</div>
+
+                                    <div class="car-cards">
+                                        <template for:each={carCards} for:item="car">
+                                            <div key={car.value}
+                                                data-value={car.value}
+                                                class={car.cardClass}
+                                                onclick={handleCarSelect}>
+                                                <div class="car-card-name">{car.label}</div>
+                                                <template if:true={car.badge}>
+                                                    <div class="car-card-badge">{car.badge}</div>
+                                                </template>
+                                                <div class="car-card-price-wrapper">
+                                                    <span class="car-card-discount-price">{car.price}</span>
+                                                    <span class="car-card-original-price">{car.originalPrice}</span>
+                                                </div>
+                                                <button
+                                                    type="button"
+                                                    data-value={car.value}
+                                                    onclick={handleViewSpecs}
+                                                    class="car-card-specs-link">
+                                                    View Specs &amp; Photo →
+                                                </button>
+                                            </div>
+                                        </template>
+                                    </div>
+
+                                </template>
+                            </div><!-- /card-body -->
+
+                            <!-- Actions footer bar -->
+                            <div class="actions">
+                                <template if:true={isStepDetails}>
+                                    <lightning-button
+                                        variant="brand"
+                                        label="Next →"
+                                        onclick={handleNextDetails}
+                                        class="next-btn-right">
+                                    </lightning-button>
+                                </template>
+                                <template if:true={isStepPreference}>
+                                    <lightning-button
+                                        label="← Back"
+                                        onclick={handleBackPreference}
+                                        class="back-btn">
+                                    </lightning-button>
+                                    <lightning-button
+                                        variant="brand"
+                                        label="Review →"
+                                        onclick={handleNextPreference}
+                                        class="next-btn-right">
+                                    </lightning-button>
+                                </template>
+                            </div>
+
+                        </div>
+                    </template>
+
+                    <!-- ══ REVIEW ══ -->
+                    <template if:true={isReview}>
+                        <div class="card">
+
+                            <div class="card-header-bar">
+                                <div>
+                                    <div class="card-header-label">Step 3 of 4</div>
+                                    <div class="card-header-title">Confirm Registration</div>
+                                </div>
+                            </div>
+
+                            <div class="step-progress">
+                                <div class="step-node">
+                                    <div class="step-circle done">&#10003;</div>
+                                    <div class="step-name">Details</div>
+                                </div>
+                                <div class="step-connector"></div>
+                                <div class="step-node">
+                                    <div class="step-circle done">&#10003;</div>
+                                    <div class="step-name">Preference</div>
+                                </div>
+                                <div class="step-connector"></div>
+                                <div class="step-node">
+                                    <div class="step-circle active">3</div>
+                                    <div class="step-name active">Review</div>
+                                </div>
+                                <div class="step-connector"></div>
+                                <div class="step-node">
+                                    <div class="step-circle">4</div>
+                                    <div class="step-name">Done</div>
+                                </div>
+                            </div>
+
+                            <div class="card-body">
+                                <p class="card-sub" style="margin-bottom:14px;">Please review your details before submitting.</p>
+
+                                <!-- Applicant Details -->
+                                <div class="review-section-header">
+                                    <span class="review-section-title">Applicant Details</span>
+                                </div>
+                                <div class="review">
+                                    <div class="review-row">
+                                        <span class="review-lbl">Membership ID</span>
+                                        <span class="review-val">{form.memberId}</span>
+                                    </div>
+                                    <div class="review-row">
+                                        <span class="review-lbl">Full Name</span>
+                                        <span class="review-val">{fullName}</span>
+                                    </div>
+                                    <template if:true={showRelationship}>
+                                        <div class="review-row">
+                                            <span class="review-lbl">Relationship</span>
+                                            <span class="review-val">{form.relationship}</span>
+                                        </div>
+                                    </template>
+                                    <div class="review-row">
+                                        <span class="review-lbl">Phone</span>
+                                        <span class="review-val">{form.phone}</span>
+                                    </div>
+                                    <div class="review-row">
+                                        <span class="review-lbl">Email</span>
+                                        <span class="review-val">{form.email}</span>
+                                    </div>
+                                </div>
+
+                                <!-- Vehicle -->
+                                <div class="review-section-header" style="margin-top:12px;">
+                                    <span class="review-section-title">Vehicle</span>
+                                </div>
+                                <div class="review">
+                                    <div class="review-row">
+                                        <span class="review-lbl">Car Model</span>
+                                        <span class="review-val">{carLabel}</span>
+                                    </div>
+                                </div>
+
+                                <div class="consent-row">
+                                    <input
+                                        type="checkbox"
+                                        id="consent-checkbox"
+                                        checked={consentChecked}
+                                        onchange={handleConsentChange}
+                                        class="consent-checkbox" />
+                                    <p class="consent-text">I have read and agree to the <button type="button" onclick={handleOpenConsentModal} class="consent-link">Data Privacy Notice</button>.</p>
+                                </div>
+
+                                <template if:true={showRecaptchaFrame}>
+                                    <div class="recaptcha-wrapper">
+                                        <iframe
+                                            src={recaptchaIframeUrl}
+                                            title="reCAPTCHA"
+                                            class="recaptcha-frame">
+                                        </iframe>
+                                    </div>
+                                </template>
+
+                                <div class="recaptcha-notice">
+                                    This site is protected by reCAPTCHA and the Google
+                                    <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a> and
+                                    <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer">Terms of Service</a> apply.
+                                </div>
+
+                                <template if:true={errorMessage}>
+                                    <p class="error-msg">{errorMessage}</p>
+                                </template>
+                            </div>
+
+                            <div class="actions actions-review">
+                                <lightning-button
+                                    label="← Back"
+                                    onclick={handleBackReview}
+                                    class="back-btn">
+                                </lightning-button>
+                                <lightning-button
+                                    variant="brand"
+                                    label={submitLabel}
+                                    onclick={handleSubmit}
+                                    disabled={submitDisabled}
+                                    class="cta-btn-custom">
+                                </lightning-button>
+                            </div>
+
+                        </div>
+                    </template>
+
+                    <!-- ══ DONE ══ -->
+                    <template if:true={isDone}>
+                        <div class="card success-card">
+
+                            <div class="card-header-bar">
+                                <div>
+                                    <div class="card-header-label">Step 4 of 4</div>
+                                    <div class="card-header-title">You're In</div>
+                                </div>
+                            </div>
+
+                            <div class="card-body card-center">
+                                <div class="check-ring">
+                                    <lightning-icon
+                                        icon-name="utility:check"
+                                        size="medium"
+                                        alternative-text="Done">
+                                    </lightning-icon>
+                                </div>
+                                <h2 class="card-title">Registration Submitted!</h2>
+                                <p class="card-sub done-sub">
+                                    Thank you! If you are among the qualified applicants,
+                                    you will receive an <strong>SMS confirmation</strong> from the
+                                    Landers &times; Kia team.
+                                </p>
+
+                                <div class="next-steps">
+                                    <div class="next-step-item">
+                                        <div class="next-step-icon">&#128241;</div>
+                                        <div class="next-step-lbl">SMS</div>
+                                    </div>
+                                    <div class="next-step-connector"></div>
+                                    <div class="next-step-item">
+                                        <div class="next-step-icon">&#9989;</div>
+                                        <div class="next-step-lbl">Confirmation from Kia</div>
+                                    </div>
+                                    <div class="next-step-connector"></div>
+                                    <div class="next-step-item">
+                                        <div class="next-step-icon">&#128663;</div>
+                                        <div class="next-step-lbl">Claim your Kia</div>
+                                    </div>
+                                </div>
+
+                                <lightning-button
+                                    variant="brand"
+                                    label="Register Another Member"
+                                    onclick={handleReset}
+                                    class="cta-btn">
+                                </lightning-button>
+                            </div>
+                        </div>
+                    </template>
+
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- ══ SPECS / PHOTO MODAL ══ -->
+    <template if:true={specsModalOpen}>
+        <div class="specs-modal-backdrop" onclick={handleCloseSpecsModal}>
+            <div class="specs-modal" onclick={stopModalClose}>
+                <button type="button" class="specs-modal-close" onclick={handleCloseSpecsModal}>&#10005;</button>
+
+                <img src={specsModalData.image} alt={specsModalData.label} class="specs-modal-image" />
+
+                <div class="specs-modal-body">
+                    <div class="specs-modal-title">{specsModalData.label}</div>
+                    <div class="specs-modal-price-row">
+                        <span class="specs-modal-price">{specsModalData.price}</span>
+                        <span class="specs-modal-original-price">{specsModalData.originalPrice}</span>
+                    </div>
+
+                    <p class="specs-modal-summary">{specsModalData.summary}</p>
+                    <p class="specs-modal-colors">Colors: {specsModalData.colors}</p>
+
+                    <div class="specs-modal-section-label">Highlight Features</div>
+                    <ul class="specs-modal-list">
+                        <template for:each={specsModalData.features} for:item="feature">
+                            <li key={feature.id}>{feature.text}</li>
+                        </template>
+                    </ul>
+
+                    <button type="button" onclick={handleOpenFullSpecs} class="specs-modal-link">
+                        View Full Specs on Kia Philippines →
+                    </button>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- ══ DATA PRIVACY CONSENT MODAL ══ -->
+    <template if:true={consentModalOpen}>
+        <div class="specs-modal-backdrop" onclick={handleCloseConsentModal}>
+            <div class="specs-modal consent-modal" onclick={stopModalClose}>
+                <button type="button" class="specs-modal-close" onclick={handleCloseConsentModal}>&#10005;</button>
+
+                <div class="specs-modal-body consent-modal-body">
+                    <div class="specs-modal-title">Data Privacy Notice</div>
+
+                    <p class="consent-modal-text">
+                        To process your registration for the Landers Member Exclusive Discount in partnership with Kia, we will collect your Name, Email Address, and Mobile Phone Number. This information will be securely stored in our customer relationship management system (Salesforce) and shared between Landers and authorized Kia dealership representatives solely for the purpose of administering this promotion. They may contact you via email and/or mobile phone to provide details about the offer, including pricing, vehicle availability, and the next steps to avail of the promo.
+                    </p>
+                    <p class="consent-modal-text">
+                        I have read and understood the above and voluntarily consent to the collection of above mentioned data for the purpose of registering my interest in the Landers Member Exclusive Kia Promo. I further authorize Landers and its authorized Kia dealership representatives to contact me via email and/or mobile phone regarding my registration and this promotional offer.
+                    </p>
+
+                    <button type="button" class="specs-modal-link" onclick={handleCloseConsentModal}>
+                        I Understand, Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </template>
+</template>

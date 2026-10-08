@@ -1,0 +1,98 @@
+{
+  "appPageId" : "78d5f17d-633c-4e2a-b1a7-d863a35119d0",
+  "componentName" : "community_layout:sldsFlexibleLayout",
+  "dataProviders" : [ ],
+  "id" : "f82a52cd-2126-4649-9dfb-046762b47f62",
+  "label" : "Login",
+  "regions" : [ {
+    "components" : [ {
+      "componentAttributes" : {
+        "backgroundImageConfig" : "",
+        "backgroundImageOverlay" : "rgba(0,0,0,0)",
+        "componentSpacerSize" : "",
+        "layoutDirectionDesktop" : "row",
+        "layoutDirectionMobile" : "column",
+        "layoutDirectionTablet" : "column",
+        "maxContentWidth" : "",
+        "sectionColumnGutterWidth" : "",
+        "sectionConfig" : "{\"UUID\":\"9b72d5ff-c23c-4040-9cc9-3185b2fadc8a\",\"columns\":[{\"UUID\":\"7b13ef41-9a5e-4c52-8331-5d4d2c245f1f\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":null}]}",
+        "sectionMinHeight" : "",
+        "sectionVerticalAlign" : "flex-start"
+      },
+      "componentName" : "community_layout:section",
+      "id" : "9b72d5ff-c23c-4040-9cc9-3185b2fadc8a",
+      "regions" : [ {
+        "components" : [ {
+          "componentAttributes" : {
+            "alignment" : "left",
+            "imageInfo" : "",
+            "imageInfoMobile" : "",
+            "logoWidth" : 250
+          },
+          "componentName" : "dxp_content_layout:siteLogo",
+          "id" : "53e09a3c-e28d-4e8f-b128-f3ad6530dafc",
+          "renderPriority" : "NEUTRAL",
+          "renditionMap" : { },
+          "type" : "component"
+        }, {
+          "componentAttributes" : {
+            "forgotPasswordLabel" : "Forgot your password?",
+            "forgotPasswordUrl" : "/ForgotPassword",
+            "loginButtonLabel" : "Log In",
+            "passwordLabel" : "Password",
+            "selfRegisterLabel" : "Not a member?",
+            "selfRegisterUrl" : "/SelfRegister",
+            "startUrl" : "",
+            "usernameLabel" : "Username"
+          },
+          "componentName" : "community_login:loginForm",
+          "id" : "aa866a27-eb98-4e52-883d-c81b91345eda",
+          "renderPriority" : "NEUTRAL",
+          "renditionMap" : { },
+          "type" : "component"
+        }, {
+          "componentAttributes" : {
+            "employeeLoginLinkLabel" : "Are you an employee? Log in"
+          },
+          "componentName" : "community_login:employeeLoginLink",
+          "id" : "68ea31ad-7194-4b1c-b4fb-f559cc3e7ccd",
+          "renderPriority" : "NEUTRAL",
+          "renditionMap" : { },
+          "type" : "component"
+        } ],
+        "id" : "7b13ef41-9a5e-4c52-8331-5d4d2c245f1f",
+        "regionLabel" : "Column 1",
+        "regionName" : "col1",
+        "renditionMap" : { },
+        "type" : "region"
+      } ],
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "scopedBrandingSetId" : null,
+      "type" : "component"
+    } ],
+    "id" : "f52a11b5-8225-4d9c-8f1d-bfc3cf9db744",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "customHeadTags" : "",
+        "description" : "",
+        "pageTitle" : "Login",
+        "recordId" : "{!recordId}"
+      },
+      "componentName" : "community_builder:seoAssistant",
+      "id" : "5d6b2acb-b7e7-4c31-add7-d8ce1f499e7e",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "ff5f765d-d51b-4889-98e3-99179165244c",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "login-main"
+}

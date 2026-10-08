@@ -1,0 +1,14 @@
+<template>
+    <template if:true={log}>
+        <lightning-card title="Latest Push Details">
+            <p class="slds-p-around_medium">
+                {log.Decrypted_Response_Body__c}
+            </p>
+        </lightning-card>
+    </template>
+    <template if:false={log}>
+        <lightning-card title="Latest Push Details">
+            <p class="slds-p-around_medium">No Push Details found.</p>
+        </lightning-card>
+    </template>
+</template>

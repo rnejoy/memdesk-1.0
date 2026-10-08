@@ -1,0 +1,19 @@
+.header {
+    background: linear-gradient(
+        90deg,
+        #9EDB88 0%,   /* lighter */
+        #73B35B 50%,  /* main brand */
+        #4D8F3A 100%  /* darker */
+    );
+    padding: 15px 0;
+}
+
+
+.header-content {
+    max-width: 1000px;
+    margin: auto;
+}
+
+.logo-img {
+    height: 45px;
+}

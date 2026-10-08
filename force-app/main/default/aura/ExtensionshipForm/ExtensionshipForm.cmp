@@ -1,0 +1,347 @@
+<aura:component implements="lightning:isUrlAddressable,forceCommunity:availableForAllPageTypes"
+	access="global" controller="ExtensionFormcls">
+
+	<ltng:require scripts="{!$Resource.JsBarcode + '/jquery.min.js'}" 	  afterScriptsLoaded="{!c.handleAfterScriptsLoaded}"/>
+	<ltng:require scripts="{!$Resource.JsBarcode + '/email.js'}" 	  	  afterScriptsLoaded="{!c.handleAfterScriptsLoadedE}"/>
+	<ltng:require scripts="{!$Resource.JsBarcode + '/JsBarcode.min.js'}"  afterScriptsLoaded="{!c.handleAfterScriptsLoaded}"/>
+	<!-- component property -->
+	<aura:attribute name="screen" type="String" default="Prompt"/>
+	<!-- setup system today date and various URL related storage variables -->
+	<aura:attribute name="today" type="Date"/>
+	<aura:attribute name="leadSource"   type="String" default=""/>
+	<aura:attribute name="signupCode"   type="String" default=""/>
+	<aura:attribute name="signupName"   type="String" default=""/>
+	<aura:attribute name="accountId"    type="String" default=""/>
+	<aura:attribute name="membershipId" type="String" default=""/>
+	<aura:attribute name="customerType" type="String" default=""/>
+	<aura:attribute name="primaryExpiry" type="String" default=""/>
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+	<!-- QR Code hard-coded values -->
+	<aura:attribute name="storeObj" type="Store__c"
+		default="{'Name__c':''}"/>
+
+	<!-- Preparation of lead object with fields-->
+	<aura:attribute name="leadObj" type="Lead"
+		default="{'sobjectType':'lead',
+			'Store_Signup__c':'',
+			'Store_Signup_Code__c':'',
+
+			'Account_Id__c':'',
+			'Customer_Type__c':'',
+			'Customer_Sub_Type__c':'Extension',
+			'FirstName':'',
+			'MiddleName':'',
+			'LastName':'',
+			'Birthdate__c':'',
+			'Gender__c':'',
+			'Marital_Status__c':'',
+			'Nationality__c':'',
+			'Occupation__c':'',
+			'MobilePhone':'',
+			'Secondary_Mobile_No__c':'',
+			'Email':'',
+			'Street__c':'',
+			'Province__c':'',
+			'Province_Code__c':'',
+			'City__c':'',
+			'City_Code__c':'',
+			'Barangay__c':'',
+			'Barangay_Code__c':'',
+			'LeadSource':'',
+			'Canvasser_Name__c':'',
+			'Canvasser_Code__c':'',
+			'Campaign_Id__c':'',
+			'Membership_Type__c':'Member',
+			'Primary_Expiry_Date__c': '',
+			'ReferenceNumber__c':''}"/>
+
+	<!-- setup variables for storage -->
+	<!-- <aura:attribute name="Soptions" type="List" default="[]"/> -->
+	<aura:attribute name="Noptions" type="List" default="[]"/>
+	<aura:attribute name="Poptions" type="List" default="[]"/>
+	<aura:attribute name="Coptions" type="List" default="[]"/>
+	<aura:attribute name="Boptions" type="List" default="[]"/>
+
+	<aura:attribute name="FullName"    type="String" default=""/>
+	<aura:attribute name="RefNumber"   type="String" default=""/>
+	<aura:attribute name="Gender" 	   type="String" default=""/>
+	<aura:attribute name="Nationality" type="String" default=""/>
+
+	<aura:attribute name="showMFEntry"  type="Boolean" default="false"/>
+	<aura:attribute name="showConfirm"  type="Boolean" default="false"/>
+	<aura:attribute name="btisdisabled" type="Boolean" default="false"/>
+
+	<aura:renderIf isTrue="{!v.showMFEntry}">
+		<div class="c-container slds-text-body_medium">
+			<div class="slds">
+				<!-- First Name -->
+				<div class="slds-form-element">
+					<lightning:input aura:id="leadField" name="firstName" label="First Name"
+						value="{!v.leadObj.FirstName}" required="true" />
+				</div>
+				<!-- Middle Name -->
+				<div class="slds-form-element">
+					<lightning:input aura:id="leadField" name="middleName" label="Middle Name"
+						value="{!v.leadObj.MiddleName}" />
+				</div>
+				<!-- Last Name -->
+				<div class="slds-form-element">
+					<lightning:input aura:id="leadField" name="lastName" label="Last Name"
+						value="{!v.leadObj.LastName}" required="true" />
+				</div>
+				<!-- Birthdate -->
+				<div class="slds-form-element">
+					<lightning:input aura:id="leadField" type="date" name="bDate" label="Birthdate"
+						value="{!v.leadObj.Birthdate__c}" required="true" />
+				</div>
+				<!-- Gender -->
+				<div class="slds-form-element">
+					<lightning:select aura:id="leadField" name="gender" label="Gender"
+						value="{!v.leadObj.Gender__c}" required="true">
+						<option value="">Select Gender...</option>
+						<option value="Female">Female</option>
+						<option value="Male">Male</option>
+					</lightning:select>
+				</div>
+				<!-- Marital Status -->
+				<div class="slds-form-element">
+					<lightning:select aura:id="leadField" name="cstatus" label="Marital Status"
+						value="{!v.leadObj.Marital_Status__c}" required="true">
+						<option value="">Select Status...</option>
+						<option value="Single">Single</option>
+						<option value="Married">Married</option>
+						<option value="Widowed">Widowed</option>
+						<option value="Divorced">Divorced</option>
+						<option value="Separated">Separated</option>
+					</lightning:select>
+				</div>
+				<!-- Nationality -->
+				<div class="slds-form-element">
+					<lightning:select aura:id="leadField" name="nationality" label="Nationality"
+						value="{!v.leadObj.Nationality__c}" required="true">
+						<option value="" selected="selected">Select Nationality...</option>
+						<option value="Filipino">Filipino</option>
+						<aura:iteration var="item" items="{!v.Noptions}">
+							<option value="{!item}">{!item}</option>
+						</aura:iteration>
+					</lightning:select>
+				</div>
+				<!-- Occupation -->
+				<div class="slds-form-element">
+					<lightning:input aura:id="leadField" type="text" name="occupation" label="Occupation"
+					value="{!v.leadObj.Occupation__c}" required="true" />
+				</div>
+				<!-- Mobile No. -->
+				<div class="slds-form-element">
+					<lightning:input aura:id="leadField" type="text" name="mobileno" label="Mobile No."
+						value="{!v.leadObj.MobilePhone}" required="true" maxlength="11" placeholder="09NNNNNNNNN"/>
+				</div>
+				<!-- Secondary Mobile No. -->
+				<div class="slds-form-element">
+					<lightning:input aura:id="leadField" type="text" name="mobileno2" label="Secondary Mobile No."
+						value="{!v.leadObj.Secondary_Mobile_No__c}" maxlength="11" placeholder="09NNNNNNNNN"/>
+				</div>
+				<!-- Email -->
+				<div class="slds-form-element">
+					<lightning:input aura:id="leadField" type="email" name="email" label="Email"
+						value="{!v.leadObj.Email}" required="true" />
+				</div>
+				<!-- Street -->
+				<div class="slds-form-element">
+					<lightning:input aura:id="leadField" type="text" name="street" label="Street"
+						value="{!v.leadObj.Street__c}" required="true" />
+				</div>
+
+				<!-- the following fields are dependent picklists that come from custom objects -->
+				<!-- Province -->
+				<div class="slds-form-element">
+					<lightning:select aura:id="leadField" name="province" label="Province"
+						onchange="{!c.getCities}" required="true">
+						<option value="">Select Province...</option>
+						<aura:iteration var="item" items="{!v.Poptions}">
+							<option value="{!item.Code__c}">{!item.Name__c}</option>
+						</aura:iteration>
+					</lightning:select>
+				</div>
+				<!-- City -->
+				<div class="slds-form-element">
+					<lightning:select aura:id="leadField" name="city" label="City"
+						onchange="{!c.getBarangs}" required="true">
+						<option value="">Select City...</option>
+						<aura:iteration var="item" items="{!v.Coptions}">
+							<option value="{!item.Code__c}">{!item.Name__c}</option>
+						</aura:iteration>
+					</lightning:select>
+				</div>
+				<!-- Barangay -->
+				<div class="slds-form-element">
+					<lightning:select aura:id="leadField" name="barangay" label="Barangay"
+						onchange="{!c.saveBarangs}" required="true">
+						<option value="">Select Barangay...</option>
+						<aura:iteration var="item" items="{!v.Boptions}">
+							<option value="{!item.Code__c}">{!item.Name__c}</option>
+						</aura:iteration>
+					</lightning:select>
+				</div>
+
+				<div class="slds-form-element" style="margin-top: 30px;">
+					<div class="slds-form-element__control">
+						<div style="width: 100%; height: auto; padding: 20px 10px; background-color: #f2f2f2;">
+							<div style="margin-bottom: 10px; font-size: 16px;">By clicking Sign Up, I confirm that I am of Legal age (18 years and above)
+								and I have read and agree to the Landers'
+								<a href="https://epldtdev-landersph.cs72.force.com/memberv3/s/terms"
+									target="_blank" style="text-decoration: underline; color: blue;">Terms and Conditions</a> and
+								<a href="https://epldtdev-landersph.cs72.force.com/memberv3/s/privacy"
+									target="_blank" style="text-decoration: underline; color: blue;">Privacy Policy</a>.
+							</div>
+							<lightning:button variant="success" iconName="action:join_group" iconPosition="left" label="Sign Up" onclick="{!c.confirm}"/>
+						</div>
+					</div>
+					<div style="height: 50px;">
+						<div>
+							<p>leadSource:   {!v.leadSource}</p>
+							<p>signupStore:  {!v.signupCode} - {!v.signupName}</p>
+							<p>accountId:    {!v.accountId}</p>
+							<p>membershipId: {!v.membershipId}</p>
+							<p>customerType: {!v.customerType}</p>
+							<p>primaryExpiry: {!v.primaryExpiry}</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</aura:renderIf>
+
+	<aura:renderIf isTrue="{!v.showConfirm}">
+		<div class="c-container">
+			<div class="slds">
+				<p style="font-size: 18px;">Please make sure that all data entered are correct. If everything is in order, please click/tap the <b>Submit</b> button
+					to continue otherwise, please click/tap the <b>Edit Info</b> button to go back to the previous screen for correction.
+				</p>
+				<br/>
+				<table class="slds-table slds-table_bordered  slds-table_striped slds-table_fixed-layout">
+					<tbody>
+						<tr>
+							<td>First Name</td>
+							<td class="displayInfo">{!v.leadObj.FirstName}</td>
+						</tr>
+						<tr>
+							<td>Middle Name</td>
+							<td class="displayInfo">{!v.leadObj.MiddleName}</td>
+						</tr>
+						<tr>
+							<td>Last Name</td>
+							<td class="displayInfo">{!v.leadObj.LastName}</td>
+						</tr>
+						<tr>
+							<td>Birthdate</td>
+							<td class="displayInfo">{!v.leadObj.Birthdate__c}</td>
+						</tr>
+						<tr>
+							<td>Gender</td>
+							<td class="displayInfo">{!v.leadObj.Gender__c}</td>
+						</tr>
+						<tr>
+							<td>Marital Status</td>
+							<td class="displayInfo">{!v.leadObj.Marital_Status__c}</td>
+						</tr>
+						<tr>
+							<td>Nationality</td>
+							<td class="displayInfo">{!v.leadObj.Nationality__c}</td>
+						</tr>
+						<tr>
+							<td>Occupation</td>
+							<td class="displayInfo">{!v.leadObj.Occupation__c}</td>
+						</tr>
+						<tr>
+							<td>Mobile</td>
+							<td class="displayInfo">{!v.leadObj.MobilePhone}</td>
+						</tr>
+						<tr>
+							<td>2nd Mobile</td>
+							<td class="displayInfo">{!v.leadObj.Secondary_Mobile_No__c}</td>
+						</tr>
+						<tr>
+							<td>Email</td>
+							<td class="displayInfo">{!v.leadObj.Email}</td>
+						</tr>
+						<tr>
+							<td>Street</td>
+							<td class="displayInfo">{!v.leadObj.Street__c}</td>
+						</tr>
+						<tr>
+							<td>Province</td>
+							<td class="displayInfo">{!v.leadObj.Province__c}</td>
+						</tr>
+						<tr>
+							<td>City</td>
+							<td class="displayInfo">{!v.leadObj.City__c}</td>
+						</tr>
+						<tr>
+							<td>Barangay</td>
+							<td class="displayInfo">{!v.leadObj.Barangay__c}</td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="slds" style="margin-top: 20px;">
+					<lightning:button variant="brand" iconName="utility:edit" iconPosition="left" label="Edit Info" onclick="{!c.goBack}"/>
+					<lightning:button variant="success" iconName="action:upload" iconPosition="left" label="Submit" onclick="{!c.save}" disabled="{!v.btisdisabled}"/>
+				</div>
+				<div style="height: 50px;"></div>
+			</div>
+		</div>
+	</aura:renderIf>
+
+	<!-- <aura:renderIf isTrue="{!v.showThankYou}"> -->
+	<lightning:layout aura:id="thankyou" class="slds-hide">
+		<div class="c-container">
+			<div class="slds" style="font-family: verdana !important;">
+				<center>
+					<p style="font-size: 14px;"><b>Thank you! Your pre-registration is complete.</b></p>
+				</center>
+				<div style="width: 100%; height: 150px; padding: 0px; border: 2px solid #80af46; margin-top: 20px; display: flex; align-items: center;">
+					<div style="width: auto; height: auto; margin: 0px auto; font-weight: bold; line-height: 2.2em;">
+						<center>
+							<span style="display: block; font-size: 14px;">Reference ID:</span>
+							<div style="display: block; margin-bottom: 3px; font-size: 34px;">
+								{!v.RefNumber}
+							</div>
+							<!-- the barcode block -->
+							<div id="barcodediv" style="width: 99%; height: 50px; text-align: center; margin: auto; border: 1px solid #CCCCCC;">
+								<img id="barcode" style="width: 330px; margin-top: 0px;"/>
+							</div>
+							<span style="display: block; margin-top: 5px; font-size: 14px;">
+								{!v.FullName}
+							</span>
+						</center>
+					</div>
+				</div>
+				<div style="font-size: 14px; margin-top: 20px; font-weight: bold; line-height: 1.2em;">
+					You may now get your queuing number at the Membership Booth. Once your number is called, present
+					this to the Membership Officer.
+				</div>
+
+				<div style="font-size: 14px; margin-top: 10px; font-weight: bold; line-height: 1.2em;">
+					*Please take note of your reference number (best to screenshot) which can only be claimed or used
+					3 days from today ({!v.today}).
+				</div>
+
+				<div style="font-size: 14px; margin-top: 25px; font-weight: bold; line-height: 1.2em;">
+					<div>
+						3 Step Guide to getting your membership card:
+					</div>
+					<div style="margin-top: 7px;">
+						1. Prepare your government ID ahead of time.<br/>
+						2. Pay for the Membership fee.<br/>
+						3. Have your photo taken.<br/><br/>
+						In a few minutes, your printed Membership Card will be ready!
+					</div>
+					<br/><br/>
+				</div>
+				<div style="height: 50px;"></div>
+			</div>
+		</div>
+	</lightning:layout>
+	<!-- </aura:renderIf> -->
+</aura:component>

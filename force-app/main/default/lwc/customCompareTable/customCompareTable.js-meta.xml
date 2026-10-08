@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>62.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Hello LWC</masterLabel>
+    <description>Test project for LWC.</description>
+    <targets>
+        <target>analytics__Dashboard</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="analytics__Dashboard">
+            <hasStep>true</hasStep>
+            <property name="title" type="String" label="Title" description="Title of the component" required="true" />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

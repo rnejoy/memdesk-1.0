@@ -1,0 +1,67 @@
+{
+  "type" : "sfdc_cms__view",
+  "title" : "Login",
+  "contentBody" : {
+    "component" : {
+      "children" : [ {
+        "children" : [ {
+          "attributes" : {
+            "backgroundImageConfig" : "",
+            "backgroundImageOverlay" : "rgba(0,0,0,0)",
+            "componentSpacerSize" : "",
+            "layoutDirectionDesktop" : "row",
+            "layoutDirectionMobile" : "column",
+            "layoutDirectionTablet" : "column",
+            "maxContentWidth" : "",
+            "sectionColumnGutterWidth" : "",
+            "sectionConfig" : "{\"UUID\":\"4de70434-e604-49af-92f7-4e760ea4477c\",\"columns\":[{\"UUID\":\"6f87d7e0-0f47-4656-ac7b-ea5aeceaab54\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":null}]}",
+            "sectionMinHeight" : "",
+            "sectionVerticalAlign" : "flex-start"
+          },
+          "children" : [ {
+            "children" : [ {
+              "attributes" : { },
+              "definition" : "c:memdeskLogin",
+              "id" : "0c908b82-89a5-4fe5-a45f-320865efd1c1",
+              "type" : "component"
+            } ],
+            "id" : "6f87d7e0-0f47-4656-ac7b-ea5aeceaab54",
+            "name" : "col1",
+            "title" : "Column 1",
+            "type" : "region"
+          } ],
+          "definition" : "community_layout:section",
+          "id" : "4de70434-e604-49af-92f7-4e760ea4477c",
+          "type" : "component"
+        } ],
+        "id" : "5f5d4fa2-b38b-486a-8d3b-3bffda2fb2c9",
+        "name" : "content",
+        "title" : "Content",
+        "type" : "region"
+      }, {
+        "children" : [ {
+          "attributes" : {
+            "customHeadTags" : "",
+            "description" : "",
+            "pageTitle" : "Login",
+            "recordId" : "{!recordId}"
+          },
+          "definition" : "community_builder:seoAssistant",
+          "id" : "d35dcbfe-8442-4c4d-b40d-4d8a96a5f780",
+          "type" : "component"
+        } ],
+        "id" : "e013d39a-9433-4dc6-addb-91e484723b43",
+        "name" : "sfdcHiddenRegion",
+        "title" : "sfdcHiddenRegion",
+        "type" : "region"
+      } ],
+      "definition" : "community_layout:sldsFlexibleLayout",
+      "id" : "961f3223-6c55-4022-b502-2b808a0888b6",
+      "type" : "component"
+    },
+    "dataProviders" : [ ],
+    "themeLayoutType" : "BdPA2GwYQ1D9fHlZXUMHE2J9gSA8Zk",
+    "viewType" : "login-main"
+  },
+  "urlName" : "login"
+}

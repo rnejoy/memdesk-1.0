@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Associated_Member__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <label>Associated Member</label>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>API logs</relationshipLabel>
+    <relationshipName>API_logs</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

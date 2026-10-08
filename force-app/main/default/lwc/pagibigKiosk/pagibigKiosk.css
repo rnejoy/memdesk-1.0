@@ -1,0 +1,344 @@
+:host {
+    --green:      #6f9b41;
+    --green-dk:   #4f7a2c;
+    --green-lt:   #eaf3de;
+    --gold:       #f0c020;
+    --ink:        #2e2e2e;
+    --ink-soft:   #6b6b6b;
+    --dark-btn:   #3a332b;
+    --ivory:      #faf9f0;
+    --line:       #ddd9c9;
+    --danger:     #b3261e;
+
+    display: block;
+    font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+    color: var(--ink);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+.kiosk { min-height: 100vh; background: var(--ivory); display: flex; flex-direction: column; }
+.kiosk--embedded { min-height: 0; background: transparent; }
+.kiosk--embedded .k-body { padding: 4px 0 0; }
+.kiosk--embedded .k-panel { border: none; box-shadow: none; padding: 8px 4px 4px; }
+
+/* ---------- Header ---------- */
+.k-header { background: var(--green); padding: 16px 32px; }
+.k-brand { display: flex; align-items: center; gap: 14px; }
+.k-logo { width: 40px; height: 40px; }
+.k-brand__name {
+    color: #fff; font-weight: 700; font-size: 24px; letter-spacing: 0.30em;
+}
+
+.k-body { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 28px 24px 56px; }
+
+/* ---------- Progress ---------- */
+.k-steps {
+    display: flex; gap: 10px; list-style: none; margin: 0 0 26px; padding: 0;
+}
+.k-steps li {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 12px; font-weight: 600; letter-spacing: 0.12em;
+    text-transform: uppercase; color: #b0ab98;
+}
+.k-steps li + li::before {
+    content: ""; width: 34px; height: 2px; background: var(--line); margin-right: 2px;
+}
+.k-steps span {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: var(--line); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; letter-spacing: 0;
+}
+.k-steps .current { color: var(--green-dk); }
+.k-steps .current span { background: var(--green); }
+.k-steps .done { color: var(--ink-soft); }
+.k-steps .done span { background: var(--green-dk); }
+
+/* ---------- Panel ---------- */
+.k-panel {
+    width: 100%; max-width: 840px; background: #fff;
+    border: 1px solid var(--line); border-radius: 18px;
+    padding: 44px 48px 48px; text-align: center;
+    box-shadow: 0 18px 40px rgba(60, 50, 20, 0.07);
+}
+.k-eyebrow {
+    font-size: 12px; font-weight: 700; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--ink-soft); margin-bottom: 14px;
+}
+.k-title {
+    font-size: clamp(30px, 4vw, 42px); font-weight: 800; line-height: 1.08;
+    text-transform: uppercase; letter-spacing: 0.01em; margin-bottom: 12px;
+}
+.k-title--green { color: var(--green); }
+.k-lede { color: var(--ink-soft); font-size: 15px; max-width: 460px; margin: 0 auto 30px; }
+.notice {
+    background: var(--green-lt); color: var(--green-dk);
+    border-radius: 10px; padding: 12px 18px; font-size: 14px;
+    max-width: 520px; margin: 0 auto 26px;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+    appearance: none; border: none; cursor: pointer; font-family: inherit;
+    font-weight: 700; font-size: 14px; letter-spacing: 0.06em;
+    text-transform: uppercase; border-radius: 999px;
+    padding: 15px 30px; min-height: 52px;
+    transition: filter 0.12s ease, transform 0.12s ease;
+}
+.btn:hover:not(:disabled) { filter: brightness(1.06); transform: translateY(-1px); }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.btn--green { background: var(--green); color: #fff; }
+.btn--dark  { background: var(--dark-btn); color: #fff; }
+.btn--ghost { background: transparent; color: var(--ink-soft); border: 1px solid var(--line); }
+.btn--lg { padding: 18px 44px; font-size: 15px; min-height: 60px; }
+
+/* ---------- Step 1: scanner ---------- */
+.scan-frame {
+    position: relative; width: 300px; height: 300px; margin: 0 auto 28px;
+    border-radius: 14px; background: var(--green-lt); overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+}
+.scan-frame.is-error { background: #fdecea; }
+.scan-frame.is-blocked { background: #fdecea; }
+.scan-frame.is-blocked .corner { border-color: var(--danger); }
+.corner { position: absolute; width: 46px; height: 46px; border: 5px solid var(--green); }
+.scan-frame.is-error .corner { border-color: var(--danger); }
+.tl { top: 16px; left: 16px; border-right: none; border-bottom: none; border-radius: 8px 0 0 0; }
+.tr { top: 16px; right: 16px; border-left: none; border-bottom: none; border-radius: 0 8px 0 0; }
+.bl { bottom: 16px; left: 16px; border-right: none; border-top: none; border-radius: 0 0 0 8px; }
+.br { bottom: 16px; right: 16px; border-left: none; border-top: none; border-radius: 0 0 8px 0; }
+.scanline {
+    position: absolute; left: 34px; right: 34px; height: 3px;
+    background: var(--green); border-radius: 2px; opacity: 0.75;
+    animation: sweep 2.4s ease-in-out infinite;
+}
+.scan-frame.is-error .scanline { display: none; }
+@keyframes sweep {
+    0%, 100% { transform: translateY(-96px); }
+    50%      { transform: translateY(96px); }
+}
+.scan-hint {
+    position: relative; font-size: 14px; font-weight: 600;
+    color: var(--green-dk); letter-spacing: 0.04em;
+}
+.scan-hint--error { color: var(--danger); max-width: 200px; }
+.scan-hint--blocked {
+    color: var(--danger); max-width: 210px; font-size: 16px;
+    font-weight: 700; line-height: 1.35; letter-spacing: 0;
+}
+
+.manual { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; justify-content: center; }
+.manual__label {
+    width: 100%; font-size: 11px; font-weight: 700; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--ink-soft); margin-bottom: -4px;
+}
+.manual__input {
+    font-family: inherit; font-size: 20px; letter-spacing: 0.16em; text-align: center;
+    padding: 14px 18px; min-height: 56px; width: 340px;
+    border: 2px solid var(--line); border-radius: 10px; background: #fff; color: var(--ink);
+}
+.manual__input:focus { outline: none; border-color: var(--green); }
+
+/* ---------- Step 2: form ---------- */
+.form { text-align: left; }
+.f-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px 20px; }
+.f { display: flex; flex-direction: column; }
+.f--wide { grid-column: 1 / -1; }
+.f label {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--ink-soft); margin-bottom: 6px;
+}
+.f label i { color: var(--danger); font-style: normal; }
+.f input, .f select {
+    font-family: inherit; font-size: 15px; color: var(--ink);
+    padding: 12px 14px; min-height: 50px;
+    border: 1px solid var(--line); border-radius: 8px; background: #fff;
+}
+.f input:focus, .f select:focus { outline: none; border-color: var(--green); box-shadow: 0 0 0 3px var(--green-lt); }
+.f input.has-error { border-color: var(--danger); background: #fff8f7; }
+.f input.has-error:focus { border-color: var(--danger); box-shadow: 0 0 0 3px #fdecea; }
+.fe { color: var(--danger); font-size: 12px; margin-top: 4px; }
+.f input.locked { background: var(--green-lt); border-color: #cfe0b6; font-weight: 600; letter-spacing: 0.08em; }
+
+.consent { display: flex; gap: 12px; align-items: flex-start; margin: 26px 0 8px; font-size: 14px; color: var(--ink-soft); }
+.consent input { width: 22px; height: 22px; margin-top: 1px; accent-color: var(--green); flex: none; }
+
+.alert {
+    background: #fdecea; color: var(--danger); border-radius: 10px;
+    padding: 12px 16px; font-size: 14px; margin-top: 18px;
+}
+
+.form__actions { display: flex; gap: 14px; justify-content: center; margin-top: 30px; flex-wrap: wrap; }
+
+/* ---------- Step 3: pass ---------- */
+.pass {
+    width: 380px; margin: 0 auto 30px; background: #fff;
+    border: 1px solid var(--line); border-radius: 16px;
+    padding: 22px 26px 20px; text-align: left;
+    box-shadow: 0 14px 30px rgba(60, 50, 20, 0.10);
+}
+.pass__tag {
+    display: inline-block; background: #191919; color: #fff;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.14em;
+    text-transform: uppercase; padding: 7px 16px; border-radius: 999px; margin-bottom: 18px;
+}
+.pass__code { background: #fff; padding: 6px 0 10px; }
+/*
+ * Code 39 barcode rendered as a font. Large size + generous letter-spacing
+ * keeps the bars wide enough for an entrance scanner to read reliably.
+ */
+.pass__barcode { width: 100%; height: 76px; display: block; }
+.pass__barcode-img { display: none; }
+.pass__mid {
+    text-align: center; font-size: 14px; font-weight: 700;
+    letter-spacing: 0.18em; margin-top: 4px;
+}
+.pass__mname {
+    text-align: center; font-size: 9px; font-weight: 700; letter-spacing: 0.10em;
+    text-transform: uppercase; color: var(--ink-soft); margin-top: 2px;
+}
+.pass__meta {
+    display: flex; justify-content: space-between; gap: 16px;
+    border-top: 1px solid var(--line); padding-top: 12px;
+}
+.pass__meta span {
+    display: block; font-size: 10px; font-weight: 700; letter-spacing: 0.10em;
+    text-transform: uppercase; color: var(--ink-soft);
+}
+.pass__meta strong { font-size: 14px; font-weight: 700; letter-spacing: 0.04em; }
+.ta-r { text-align: right; }
+.pass__ref { margin-top: 10px; font-size: 11px; letter-spacing: 0.10em; color: var(--ink-soft); }
+
+.countdown { margin-top: 20px; font-size: 13px; color: var(--ink-soft); }
+
+/* ---------- Responsive ---------- */
+/*
+ * Price-checker screens are short. At 1024x600 the details form must fit
+ * without scrolling, so tighten everything vertically rather than falling
+ * back to a single column.
+ */
+@media (max-height: 720px) {
+    .k-body { padding: 14px 16px 24px; }
+    .k-steps { margin-bottom: 14px; }
+    .k-panel { padding: 22px 28px 26px; border-radius: 14px; }
+    .k-title { font-size: clamp(22px, 3vw, 30px); margin-bottom: 8px; }
+    .k-lede { font-size: 13px; margin-bottom: 16px; }
+    .k-eyebrow { margin-bottom: 8px; }
+    .scan-frame { width: 190px; height: 190px; margin-bottom: 16px; }
+    .corner { width: 32px; height: 32px; border-width: 4px; }
+    @keyframes sweep { 0%,100% { transform: translateY(-58px); } 50% { transform: translateY(58px); } }
+    .f-grid { gap: 10px 14px; }
+    .f input, .f select { min-height: 42px; padding: 8px 12px; font-size: 14px; }
+    .consent { margin: 14px 0 4px; font-size: 13px; }
+    .form__actions { margin-top: 16px; }
+    .btn { min-height: 46px; padding: 12px 24px; }
+    .btn--lg { min-height: 50px; padding: 14px 34px; font-size: 14px; }
+    .manual__input { min-height: 46px; font-size: 17px; width: 280px; }
+    .pass { margin-bottom: 16px; }
+}
+
+@media (max-width: 720px) {
+    .k-panel { padding: 32px 22px 36px; border-radius: 14px; }
+    .f-grid { grid-template-columns: repeat(2, 1fr); }
+    .manual__input { width: 100%; }
+    .scan-frame { width: 240px; height: 240px; }
+    .pass { width: 100%; }
+}
+
+@media (max-width: 520px) {
+    .f-grid { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .scanline { animation: none; }
+    .btn { transition: none; }
+}
+
+/*
+ * Print: only the pass leaves the printer. Site chrome outside this
+ * component needs the head-markup snippet documented in the README.
+ */
+@page {
+    /* 80mm roll, full-bleed. Thermal printers ignore margins anyway and
+       a non-zero margin here pushes the barcode off the printable area. */
+    size: 80mm auto;
+    margin: 0;
+}
+
+/*
+ * The site header/nav/footer live outside this shadow root, so they can't
+ * be hidden from here. The head-markup snippet (see README) sets
+ * `body * { visibility: hidden }` while printing; visibility is inherited,
+ * so re-declaring it on .pass and its descendants below is what brings the
+ * receipt back — and nothing else on the page comes with it.
+ */
+@media print {
+    :host { background: #fff; color: #000; }
+    .kiosk { min-height: auto; background: #fff; display: block; }
+    .k-header, .k-steps, .no-print { display: none !important; }
+    .k-panel {
+        border: none; box-shadow: none; padding: 0; margin: 0;
+        max-width: none; width: auto; text-align: left;
+    }
+
+    .pass, .pass * { visibility: visible !important; }
+
+    /*
+     * Whole symbol must fit the roll with a quiet zone each side, or it
+     * won't scan. 26pt fits *20208800006500* within ~62mm on a 72mm card;
+     * the padding is the mandatory clear space.
+     */
+    /*
+     * Print the rasterised PNG, not the inline SVG — Chrome drops scripted
+     * SVG when printing. Width is set so the barcode plus its quiet zones
+     * fit inside the 72mm card; do not widen past this.
+     */
+    .pass__barcode { display: none !important; }
+    .pass__barcode-img {
+        display: block !important; visibility: visible !important;
+        width: 60mm; height: auto; margin: 0 auto;
+        image-rendering: -webkit-optimize-contrast;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    /*
+     * Keep the on-screen card look on paper: the rounded border, the black
+     * pill, the divider — just sized to a 72mm printable width on the 80mm
+     * roll. Height is left to content so the strip tears off just below the
+     * card rather than at a fixed card height (impossible on a receipt roll).
+     */
+    .pass {
+        position: absolute; left: 0; top: 0;
+        width: 72mm; margin: 0; padding: 4mm;
+        border: 0.4mm solid #000 !important; border-radius: 3mm;
+        box-shadow: none;
+        -webkit-print-color-adjust: exact; print-color-adjust: exact;
+        page-break-inside: avoid; break-inside: avoid;
+    }
+    .pass__tag {
+        background: #000 !important; color: #fff !important;
+        -webkit-print-color-adjust: exact; print-color-adjust: exact;
+        font-size: 8pt; letter-spacing: 0.12em;
+        padding: 1.8mm 4mm; border-radius: 999px; margin-bottom: 3mm;
+    }
+    .pass__code { padding: 0 0 1mm; text-align: center; }
+    .pass__mid {
+        text-align: center; font-size: 12pt; font-weight: 700;
+        letter-spacing: 0.14em; margin-top: 1.5mm; color: #000;
+    }
+    .pass__mname {
+        text-align: center; font-size: 6.5pt; font-weight: 700;
+        letter-spacing: 0.08em; text-transform: uppercase;
+        color: #000; margin-top: 0.8mm;
+    }
+    .pass__meta {
+        display: flex; justify-content: space-between;
+        border-top: 0.3mm solid #000; padding-top: 2mm; margin-top: 3mm;
+    }
+    .pass__meta span   { font-size: 6pt; letter-spacing: 0.08em; color: #000; }
+    .pass__meta strong { font-size: 10pt; font-weight: 700; color: #000; }
+    .pass__meta .ta-r  { text-align: right; }
+    .pass__ref { font-size: 7pt; color: #000; margin-top: 2mm; }
+}

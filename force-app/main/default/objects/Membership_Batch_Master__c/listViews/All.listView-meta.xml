@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>All</fullName>
+    <columns>NAME</columns>
+    <columns>Company_Name__c</columns>
+    <columns>Status__c</columns>
+    <columns>Reference_Number__c</columns>
+    <columns>Campaign_Id__c</columns>
+    <columns>Number_Members__c</columns>
+    <columns>Membership_Start_Date__c</columns>
+    <columns>Extended_Expiry_Days__c</columns>
+    <columns>Membership_Expiry_Date__c</columns>
+    <columns>Store_Signup_Name__c</columns>
+    <columns>CREATEDBY_USER</columns>
+    <columns>Confirmed_By__c</columns>
+    <columns>Cancelled_By__c</columns>
+    <filterScope>Everything</filterScope>
+    <label>All</label>
+</ListView>

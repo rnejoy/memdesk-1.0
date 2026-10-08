@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Credit_Memo_Reason__c</fullName>
+    <label>Credit Memo Reason</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Change Item</fullName>
+                <default>false</default>
+                <label>Change Item</label>
+            </value>
+            <value>
+                <fullName>Wrong Pick up</fullName>
+                <default>false</default>
+                <label>Wrong Pick up</label>
+            </value>
+            <value>
+                <fullName>Over punched</fullName>
+                <default>false</default>
+                <label>Over punched</label>
+            </value>
+            <value>
+                <fullName>Under punched</fullName>
+                <default>false</default>
+                <label>Under punched</label>
+            </value>
+            <value>
+                <fullName>Defective</fullName>
+                <default>false</default>
+                <label>Defective</label>
+            </value>
+            <value>
+                <fullName>Bad Order</fullName>
+                <default>false</default>
+                <label>Bad Order</label>
+            </value>
+            <value>
+                <fullName>Double Scan</fullName>
+                <default>false</default>
+                <label>Double Scan</label>
+            </value>
+            <value>
+                <fullName>Others</fullName>
+                <default>false</default>
+                <label>Others</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

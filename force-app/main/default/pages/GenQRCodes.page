@@ -1,0 +1,479 @@
+<apex:page id="thePage" applyBodyTag="false" applyHtmlTag="true" showHeader="false" docType="html-5.0" controller="GenQRCodes">
+	<head>
+		<apex:slds />
+		<apex:includeScript value="{!URLFOR($Resource.JsBarcode, 'jquery.min.js')}"/>
+
+		<script>
+			//global working variables here
+			console.log('we are in GenQRCode VFPage');
+
+			function confirmGenQRC() {
+				if (confirm("Do you really want to generate new QR Codes now?"))
+					return true;
+				else
+					return false;
+			}
+
+			function checkRadio() {
+				var effmode = $("input[name='effmode']:checked").val();
+
+				if (effmode == 'L') {
+					var date = new Date();
+					date.setDate(date.getDate() + 2);
+					date = date.getFullYear() + '-' + right(('00' + (date.getMonth() + 1)), 2) + '-' + right(('00' + date.getDate()), 2);
+					$('#effdate').val(date);
+					$('#effdate').attr('min', date);
+					$('#laterdatediv').show();
+				}
+				else {
+					$('#laterdatediv').hide();
+				}
+			}
+
+			function right(str, chr) {
+				return str.slice(str.length-chr,str.length);
+			}
+
+			function jsfirst() {
+				console.log('we are in jsfirst');
+				console.log('band color: ' + $('#qrbandcolor').val());
+				generateQRCodesSFX($('#qrbandcolor').val());
+			}
+		</script>
+
+		<style>
+			html {
+				width: 100%;
+				height: 100%;
+				background-color: transparent !important;
+			}
+			body {
+				width: 1366px;
+				height: 80%;
+				font-size: 80%;
+			}
+			/* SF Class Overrides */
+				.pbBody {
+					/* width: 100% !important;
+					height: 100% !important; */
+					margin: 0px !important;
+				}
+				.mainTitle {
+					font-size: 22px !important;
+				}
+				.dataCol {
+					padding: 7px 10px !important;
+				}
+				.btn .aright {
+					float: right;
+				}
+				.dataCell {
+					padding: 2px 0px 2px 7px !important;
+					color: #555555 !important;
+				}
+				.slds-scope img {
+					height: 20px !important;
+				}
+			/* Custom Classes */
+				td.tdheader {
+					width: 22% !important;
+				}
+				td.tdprofile {
+					border: 1px solid #C2C2C2;
+					padding: 15px 0px;
+				}
+
+				.wrapperdiv {
+					width: 98%;
+					height: 100%;
+					margin: 10px auto 0 auto;
+					/* padding: 0 10px; */
+					/* border: 1px solid black; */
+				}
+					.wrapperdiv-left {
+						width: 79%;
+						height: 100%;
+						border: 1px solid #C2C2C2;
+						border-radius: 5px;
+						border-top: 2px solid #80af46;
+						float: left;
+						padding: 10px;
+						background-color: white;
+					}
+						.inner-div {
+							width: 100%;
+							height: 100%;
+						}
+							.inner-left {
+								width: 20%;
+								height: 100%;
+								float: left;
+							}
+							.inner-right {
+								width: 75%;
+								height: 100%;
+								/* border: 1px solid blue; */
+								float: right;
+							}
+					.wrapperdiv-right {
+						width: 20%;
+						height: 100%;
+						border: 1px solid #C2C2C2;
+						border-radius: 5px;
+						border-top: 2px solid #80af46;
+						float: right;
+						padding: 10px;
+						background-color: white;
+					}
+					.subh-wrapperdiv {
+						margin-left: 10px;
+					}
+					.subb-wrapperdiv {
+						margin: 30px 0 0 40px;
+					}
+						.subb-wrapperdiv .buttondiv {
+							margin-top: 50px;
+						}
+
+				.myInput {
+					width: 300px;
+					height: 35px;
+					padding-left: 7px !important;
+					border: 1px solid #C2C2C2 !important;
+					font-size: 16px !important;
+					outline: none !important;
+				}
+
+				.myTable1 {
+					counter-reset: rowCounter;
+					width: 90% !important;
+				}
+				.myTable1 .row {
+					counter-increment: rowCounter;
+					font-size: 12px !important;
+				}
+				.myTable1 .row .counter::before {
+					content: counter(rowCounter);
+				}
+
+				.apexbutton {
+					width: 80px;
+					height: 40px;
+					cursor: pointer;
+				}
+				.apexinput {
+					width: 218px !important;
+					height: 25px !important;
+					border: 1px solid #C2C2C2 !important;
+					color: #555555;
+					padding-left: 5px;
+				}
+				.apexinputX {
+					font-size: 20px;
+					/* text-align: center; */
+					padding-left: 7px;
+					color: #555555;
+				}
+				.apexinputW1 {
+					width: 150px !important;
+				}
+
+				.apexselect {
+					width: 227px !important;
+					height: 29px !important;
+					color: #555555;
+					border: 1px solid #C2C2C2 !important;
+				}
+				.apexselectW1 {
+					width: 65px !important;
+				}
+
+				.apexcheckbox {
+					width: 20px;
+					height: 20px;
+					margin-left: 20px;
+				}
+
+				label {
+					font-weight: bold;
+					color: #535353;
+				}
+
+				.divafterpanel {
+					width: 95%;
+					padding: 10px 10px 30px 10px;
+				}
+
+				.errorText {
+					color: red;
+					font-size: 16px;
+				}
+
+				.footertd {
+					width: 230px;
+				}
+
+				.membershipid {
+					height: 25px;
+					background-color: white;
+					border: 1px solid #FFEEBC;
+					float: left;
+					display: grid;
+					align-items: center;
+					text-align: center;
+				}
+
+				.shadow{
+					box-shadow: 0 10px 6px -6px #777;
+				}
+
+				.inbutton:hover {
+					background-image: linear-gradient(rgba(0, 0, 0, 0.1) 0 0);
+				}
+
+				input[type=radio] {
+					width: 20px;
+					height: 20px;
+					cursor: pointer;
+				}
+		</style>
+	</head>
+	<body class="slds-scope" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<div style="width: 100%; height: 100%; background-color: #F5F5F5; position: relative;">
+			<apex:form id="theForm">
+				<!-- Select Registration Type Campaign -->
+				<apex:pageBlock id="theBlock" title="QR Code Generator" rendered="{!showPromptCampaign}">
+					<div class="wrapperdiv">
+						<div class="subh-wrapperdiv">
+							<p style="font-size: 18px;">1. Please select the Campaign you want to be included in the QR Code (optional):</p>
+						</div>
+						<div class="subb-wrapperdiv">
+							<apex:pageBlockSection id="theSection" columns="1">
+								<apex:outputLabel value="Registration Type Campaigns"/>
+								<apex:outputPanel styleClass="requiredInput" layout="block">
+									<apex:selectList id="theSelect" value="{!CampaignId}" size="1" styleClass="myInput">
+										<apex:selectOptions value="{!CampaignOpts}"/>
+									</apex:selectList>
+								</apex:outputPanel>
+								<div class="buttondiv">
+									<apex:commandButton value="Next" action="{!goNext1}" reRender="theForm" styleClass="apexbutton"/>
+								</div>
+							</apex:pageBlockSection>
+						</div>
+					</div>
+				</apex:pageBlock>
+
+				<!-- Prompt for Stores to be included.. (optional) -->
+				<apex:pageBlock id="theBlock2" title="QR Code Generator" rendered="{!showPromptStores}">
+					<div class="wrapperdiv">
+						<div class="subh-wrapperdiv">
+							<p style="font-size: 18px;">2. Please select the Stores you want to generate new QR Code for (optional):</p>
+						</div>
+						<div class="subb-wrapperdiv" style="width: 47%;">
+							<apex:outputPanel >
+								<c:MultiselectPicklist leftLabel="Available Stores"
+									rightLabel="Selected Stores"
+									leftOption="{!allStores}"
+									rightOption="{!selectedStores}"
+
+									size="14"
+									width="250px"
+									fontsize="16px"
+									showUpDownButtons="false"/>
+							</apex:outputPanel>
+							<div class="buttondiv">
+								<apex:commandButton value="Previous" action="{!goPrev1}"
+										styleClass="apexbutton" style="margin-left: 20px;" reRender="theForm"/>
+								<apex:commandButton value="Next" action="{!goNext2a}"
+										styleClass="apexbutton" style="margin-left: 5px;"/>
+							</div>
+						</div>
+					</div>
+				</apex:pageBlock>
+
+				<!-- Prompt for Canvassers (Prompt for Store first) -->
+				<apex:pageBlock id="theBlock3a" title="QR Code Generator" rendered="{!showPromptCanvassa}">
+					<div class="wrapperdiv">
+						<div class="subh-wrapperdiv">
+							<p style="font-size: 18px;">3a. Please select the Canvassers you want to generate new QR Code for (optional):</p>
+						</div>
+						<div style="margin: 10px 0 0px 57px;">
+							<div style="font-size: 16px;">
+								Because of Salesforce limitation on Collection size (number of records read), we have to select a Store first.<br/>
+								The store selected will be used to filter the Canvassers to be read thereby limiting the number of records that<br/>
+								will be returned by Salesforce.
+								<br/><br/>
+								If no Store is selected, Canvasser list page will be skipped and process will go directly to prompt for generation
+								of QR Code/s.
+							</div>
+							<br/><br/>
+							<apex:outputPanel layout="block">
+								<apex:selectList size="1" value="{!StoreCode}" id="stores" styleClass="myInput" style="width: 250px !important;">
+									<apex:selectoptions value="{!StoreOpts}"/>
+									<!-- <apex:actionSupport event="onchange" action="{!filterCanvassers}" reRender="canvassPanel"/> -->
+								</apex:selectList>
+							</apex:outputPanel>
+						</div>
+						<div class="subb-wrapperdiv" style="width: 47%;">
+							<div class="buttondiv">
+								<apex:commandButton value="Previous" action="{!goPrev2a}"
+									styleClass="apexbutton" style="margin-left: 20px;" reRender="theForm"/>
+								<apex:commandButton value="Next" action="{!goNext2b}"
+									styleClass="apexbutton" style="margin-left: 5px;"/>
+							</div>
+						</div>
+					</div>
+				</apex:pageBlock>
+
+				<!-- Prompt for Canvassers (Actual Canvassers) -->
+				<apex:pageBlock id="theBlock3b" title="QR Code Generator" rendered="{!showPromptCanvassb}">
+					<div class="wrapperdiv">
+						<div class="subh-wrapperdiv">
+							<p style="font-size: 18px;">3b. Please select the Canvassers you want to generate new QR Code for (optional):</p>
+						</div>
+						<div style="margin: 25px 0 0 57px; font-size: 16px;">
+							Store selected: <b>{!StoreName}</b>
+						</div>
+						<div class="subb-wrapperdiv" style="width: 47%;">
+							<apex:outputPanel id="canvassPanel">
+								<c:MultiselectPicklist leftLabel="Available Canvassers"
+									rightLabel="Selected Canvassers"
+									leftOption="{!allCanvassers}"
+									rightOption="{!selectedCanvassers}"
+
+									size="14"
+									width="250px"
+									fontsize="16px"
+									showUpDownButtons="false"/>
+							</apex:outputPanel>
+							<div class="buttondiv">
+								<apex:commandButton value="Previous" action="{!goPrev2b}"
+									styleClass="apexbutton" style="margin-left: 20px;" reRender="theForm"/>
+								<apex:commandButton value="Next" action="{!goNext3}"
+									styleClass="apexbutton" style="margin-left: 5px;"/>
+							</div>
+						</div>
+					</div>
+				</apex:pageBlock>
+
+				<!-- Show Generation confirmation Screen -->
+				<apex:pageBlock id="theBlock5" title="QR Code Generator" rendered="{!showGenerateQRCodes}">
+					<div class="wrapperdiv">
+						<div class="subh-wrapperdiv">
+							<p style="font-size: 18px;">5. Generate QR Codes for Stores and Canvassers selected</p>
+						</div>
+						<div class="subb-wrapperdiv">
+							<div style='width: 100%; margin-left: 17px;'>
+								<table style="font-size: 16px;">
+									<tr>
+										<td colspan="3">Would you like the generated QR Codes to take effect</td>
+									</tr>
+									<tr style="height: 10px;"></tr>
+									<tr>
+										<td style="width: 200px;">
+											<div style="height: 30px; display: flex; align-items: center;">
+												<input type="radio" id="now" name="effmode" value="N" onclick="checkRadio();" checked="checked"/>
+												<label for="auto" style="margin-left: 5px;">Now?</label>
+											</div>
+										</td>
+										<td style="width: 200px;">
+											<div style="height: 30px; display: flex; align-items: center;">
+												<input type="radio" id="auto" name="effmode" value="T" onclick="checkRadio();"/>
+												<label for="auto" style="margin-left: 5px;">Tommorow?</label>
+											</div>
+										</td>
+										<td style="width: 300px;">
+											<div style="height: 30px; display: flex; align-items: center;">
+												<input type="radio" id="auto" name="effmode" value="L" onclick="checkRadio();"/>
+												<label for="auto" style="margin-left: 5px;">At a later date?</label>
+											</div>
+										</td>
+										<td>
+											Please choose color to hightlight a band for the QR code:<br/>
+											<input id="qrbandcolor" type="color" style="width: 120px; height: 30px;" value=""/>
+										</td>
+									</tr>
+									<tr style="height: 10px;"></tr>
+									<tr>
+										<td colspan="2"></td>
+										<td>
+											<div id="laterdatediv" style="margin-left: 25px; display: none;">
+												<div>
+													When would you want it to take effect?
+													<input id="effdate" type="date" class="myInput"/>
+												</div>
+												<div style="margin-top: 10px;">
+													Send email/s
+													<div>
+														<div style="height: 30px; display: flex; align-items: center;">
+															<input type="radio" name="effemail" value="EN" onclick="checkRadio2()" checked="checked"/>
+															<label for="auto" style="margin-left: 5px;">Now?</label>
+														</div>
+														<div style="height: 30px; display: flex; align-items: center;">
+															<input type="radio" name="effemail" value="ET" onclick="checkRadio2()"/>
+															<label for="auto" style="margin-left: 5px;">Tomorrow?</label>
+														</div>
+														<div style="height: 30px; display: flex; align-items: center;">
+															<input type="radio" name="effemail" value="EB" onclick="checkRadio2()"/>
+															<label for="auto" style="margin-left: 5px;">Day before effectivity?</label>
+														</div>
+													</div>
+												</div>
+											</div>
+										</td>
+										<td></td>
+									</tr>
+								</table>
+							</div>
+							<div class="buttondiv">
+								<apex:commandButton value="Previous" action="{!goPrev3}"
+									styleClass="apexbutton" style="margin-left: 20px;" reRender="theForm"/>
+								<button type="button" class="apexbutton" onclick="jsfirst()"
+									style="width: 145px; margin-left: 5px;">Generate QR Codes</button>
+							</div>
+						</div>
+					</div>
+				</apex:pageBlock>
+
+				<!-- Show Nothing to process Screen -->
+				<apex:pageBlock id="theBlock6" title="QR Code Generator" rendered="{!showCannotGenCodes}">
+					<div class="wrapperdiv">
+						<div class="subh-wrapperdiv">
+							<p style="font-size: 18px;">5. No Stores/Canvassers selected to generate QR Codes for!</p>
+						</div>
+						<div class="subb-wrapperdiv">
+							<apex:outputPanel >
+								<p style="width: 40%; margin-left: 18px; font-size: 16px;">
+									You haven't selected any Store or Canvasser to process. Please click on the
+									<b>Previous</b> button to select Stores and/or Canvassers to generate QR Code for
+									or you can immediately go back to the start by clicking on <b>Jump To Start</b>.
+								</p>
+							</apex:outputPanel>
+							<div class="buttondiv">
+								<apex:commandButton value="Previous" action="{!goPrev3}"
+									styleClass="apexbutton" style="margin-left: 20px;" reRender="theForm"/>
+								<apex:commandButton value="Jump To Start" action="{!jumpStart}"
+									styleClass="apexbutton" style="width: 145px; margin-left: 5px;"/>
+							</div>
+						</div>
+					</div>
+				</apex:pageBlock>
+
+				<!-- Show Success Screen -->
+				<apex:pageBlock id="theBlock7" title="QR Code Generator" rendered="{!showFinalScreen}">
+					<div class="wrapperdiv">
+						<div class="subh-wrapperdiv">
+							<p style="font-size: 18px;">QR Codes successfully generated for Stores and Canvassers selected!</p>
+						</div>
+					</div>
+				</apex:pageBlock>
+
+				<!-- Apex Action Functions Here -->
+				<apex:actionFunction name="generateQRCodesSFX" action="{!generateQRCodes}" reRender="theForm">
+					<apex:param name="a" assignTo="{!qrbandcolor}" value=""/>
+				</apex:actionFunction>
+				<!--  -->
+			</apex:form>
+		</div>
+	</body>
+</apex:page>

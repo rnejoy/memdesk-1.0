@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>What_do_you_do2__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(INCLUDES(What_do_you_do__c , &quot;Student&quot;), &quot;Student&quot;, 
+IF(INCLUDES(What_do_you_do__c , &quot;Freelancer&quot;), &quot;Freelancer&quot;,
+IF(INCLUDES(What_do_you_do__c , &quot;Employee/Job&quot;), &quot;Employee/Job&quot;,
+IF(INCLUDES(What_do_you_do__c , &quot;Business owner&quot;), &quot;Business owner&quot;,null
+)
+)
+)
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>What do you do?</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

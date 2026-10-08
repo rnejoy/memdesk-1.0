@@ -1,0 +1,33 @@
+<template>
+    <header class="hdr">
+        <div class="hdr-inner">
+
+            <!-- Brand / Logo -->
+            <div class="brand">
+                <template lwc:if={logoUrl}>
+                    <img src={logoUrl} alt="Landers" class="logo-img" />
+                </template>
+                <template lwc:else>
+                    <div class="logo-fallback">L</div>
+                </template>
+                <div class="brand-text">
+                    <div class="brand-name">LANDERS</div>
+                    <div class="brand-sub">Superstore</div>
+                </div>
+            </div>
+
+            <!-- Centre collab badge -->
+            <div class="collab-badge">
+                <span class="collab-x">&times;</span>
+                <span class="collab-partner">Kia</span>
+            </div>
+
+            <!-- Right tag -->
+            <div class="tag">
+                <span class="dot"></span>
+                <span class="tag-txt">Exclusive Partnership</span>
+            </div>
+
+        </div>
+    </header>
+</template>

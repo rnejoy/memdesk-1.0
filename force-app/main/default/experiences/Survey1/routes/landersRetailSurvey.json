@@ -1,0 +1,11 @@
+{
+  "activeViewId" : "bd1f013d-01c7-44e7-b316-c0877bc3e20c",
+  "appPageId" : "78d5f17d-633c-4e2a-b1a7-d863a35119d0",
+  "configurationTags" : [ ],
+  "devName" : "Landers_Retail_Survey__c",
+  "id" : "bd0a6910-3f78-41b7-a111-2ed8da034535",
+  "label" : "Landers Retail Survey",
+  "routeType" : "custom-landers-retail-survey",
+  "type" : "route",
+  "urlPrefix" : "landers-retail-survey"
+}

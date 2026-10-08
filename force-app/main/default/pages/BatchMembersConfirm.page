@@ -1,0 +1,183 @@
+<apex:page controller="BatchMemberConfirm">
+	<head>
+		<apex:slds />
+		<apex:includeScript value="https://code.jquery.com/jquery-2.2.4.js"/>
+		<script>
+			var Status = "{!Status}";
+			var NumMem = "{!NumMem}";
+			var NumMax = "{!NumMax}";
+			NumMem = NumMem * 1;
+			var IsHeadOffice = "{!IsHeadOffice}";
+			$(document).ready(function() {
+				if (IsHeadOffice == 'true') {
+					if (Status == 'Confirmed') {
+						$('#confirmeddiv').show();
+						if (NumMem <= NumMax)
+							$('#manualcondiv').show();
+                        //$('#manualcondiv').hide();
+					}
+					else
+						$('#promptdiv').show();
+				}
+				else
+					$('#notHOdiv').show();
+			});
+
+			function confirmBatch() {
+				if (confirm("Do you really want to Confirm this batch and schedule conversion for tonight?")) {
+					$('#processinfo').html('Scheduling this Batch for conversion to Members tonight. Please wait...');
+					$('#promptdiv').hide();
+					$('#finalscreen').show();
+					confirmBatchSFX();
+				}
+			}
+
+			function cancelBatch() {
+				if (confirm("Do you really want to Cancel this batch and delete Lead records associated with it?")) {
+					$('#processinfo').html('Cancelling this Batch and deleting Lead records. Please wait...');
+					$('#promptdiv').hide();
+					$('#finalscreen').show();
+					cancelBatchSFX();
+				}
+			}
+
+			function convertNow() {
+				if (confirm("Do you really want to Convert this batch to Members now?")) {
+					$('#processinfo').html('Invoking the Batchable Job now. Please wait...');
+                    $('#confirmeddiv').hide();
+					$('#finalscreen').show();
+					convertNowSFX();
+				}
+			}
+
+			function confirmsuccess() {
+				$('#confirmeddiv').show();
+				if (NumMem <= 3)
+					$('#manualcondiv').show();
+			}
+		</script>
+		<style>
+			/* Custom Classes */
+				.wrapperdiv {
+					width: 98%;
+					height: 100%;
+					margin: 10px auto 0 auto;
+				}
+				p {
+					margin-top: 10px !important;
+					font-size: 14px;
+				}
+			/* BUTTONS */
+				.button {
+					width: 120px;
+					height: 40px;
+					vertical-align: middle;
+					border-radius: 2px;
+					border: 1px;
+					font-family: verdana;
+					font-size: 12px;
+					font-weight: normal !important;
+					cursor: pointer;
+				}
+				.bblue {
+					background: #0078D7;
+					color: #FFFFFF !important;
+				}
+				.bblue:hover {
+					border: 2px solid #014F8F;
+				}
+				.bgreen {
+					background: #2C9F1C;
+					color: #FFFFFF !important;
+				}
+				.bgreen:hover {
+					border: 2px solid #193d19;
+				}
+				.bgray {
+					background: #CBCBCB;
+					color: #FFFFFF !important;
+				}
+				.bgray:hover {
+					border: 2px solid #797979;
+				}
+				.borange {
+					background: #FFA500;
+					color: #000000 !important;
+				}
+				.borange:hover {
+					border: 2px solid #BF7900;
+				}
+				.bsuccess {
+					background: #5CB85C;
+					color: #FFFFFF !important;
+				}
+				.bsuccess:hover {
+					border: 2px solid #3A773A;
+				}
+				.bwarning {
+					background: #F0AD4E;
+					color: #ffffff !important;
+				}
+				.bwarning:hover {
+					border: 2px solid #725122;
+				}
+				.bfailure {
+					background: #B9534F;
+					color: #FFFFFF !important;
+				}
+				.bfailure:hover {
+					border: 2px solid #70312F;
+				}
+		</style>
+	</head>
+	<apex:form id="theForm">
+		<apex:pageBlock id="theBlock" title="" rendered="{!showPrompt}">
+			<apex:facet name="header">
+				<div style="height: 35px; padding: 5px 5px; font-family: 'Salesforce Sans',Arial,sans-serif; font-size: 14px; color: #000000;">
+					<div id="headmsg1" style="float: left; font-weight: bold;">Head Office Confirmation</div>
+				</div>
+			</apex:facet>
+
+			<div class="wrapperdiv">
+				<div id="promptdiv" style="display: none;">
+					<p>If <b>Confirmed</b>, this batch of Lead records will be scheduled for conversion to Member records at midnight tonight.</p>
+					<p>If <b>Cancelled</b>, this batch can no longer be confirmed and all Lead records associated with it will be deleted. Please be careful.</p>
+					<div style="margin: 20px 0 15px 0;">
+						<button type="button" class="button bgreen"   onclick="confirmBatch()">Confirm Batch</button>
+						<button type="button" class="button bfailure" onclick="cancelBatch()" >Cancel Batch</button>
+					</div>
+				</div>
+
+				<div id="notHOdiv" style="display: none;">
+					<p>Your user profile is limited to only <b>View</b> the batch record and related data.</p>
+					<p><b>Confirmation</b> or <b>Cancellation</b> can only be done by Head Office.</p>
+				</div>
+
+				<div id="confirmeddiv" style="display: none; font-size: 16px;">
+					<div style="height: auto;">
+                        This batch is already <b>Confirmed</b>. 
+                        <!--and is scheduled for conversion at midnight tonight.-->
+                        <br />
+						<button type="button" class="button bblue" style="margin-top: 5px;" onclick="convertNow()">Convert Now!</button>                        
+					</div>
+					<div id="manualcondiv" style="display: none; margin-top: 10px;">
+
+					</div>
+				</div>
+
+				<div id="finalscreen" style="display: none;">
+					<p><span id="processinfo"></span></p>
+					<img src="{!$Resource.loadergif}" style="width: 100px !important; height: 100px !important;"/>
+				</div>
+			</div>
+		</apex:pageBlock>
+
+		<apex:pageBlock title="" rendered="{!showFinal}"></apex:pageBlock>
+
+		<!-- Apex Action Functions Here -->
+		<apex:actionFunction name="confirmBatchSFX" action="{!confirmBatch}" reRender="theForm" oncomplete="confirmsuccess()"/>
+		<apex:actionFunction name="cancelBatchSFX"  action="{!cancelBatch}"  reRender="theForm"/>
+		<apex:actionFunction name="convertNowSFX"   action="{!convertNow}"   reRender="theForm"/>
+		<!--  -->
+	</apex:form>
+</apex:page>

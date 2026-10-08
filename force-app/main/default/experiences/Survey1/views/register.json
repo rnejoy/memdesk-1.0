@@ -1,0 +1,90 @@
+{
+  "appPageId" : "78d5f17d-633c-4e2a-b1a7-d863a35119d0",
+  "componentName" : "community_layout:sldsFlexibleLayout",
+  "dataProviders" : [ ],
+  "id" : "4e6d3860-021b-4b02-a53b-34f436059472",
+  "label" : "Register",
+  "regions" : [ {
+    "components" : [ {
+      "componentAttributes" : {
+        "backgroundImageConfig" : "",
+        "backgroundImageOverlay" : "rgba(0,0,0,0)",
+        "componentSpacerSize" : "",
+        "layoutDirectionDesktop" : "row",
+        "layoutDirectionMobile" : "column",
+        "layoutDirectionTablet" : "column",
+        "maxContentWidth" : "",
+        "sectionColumnGutterWidth" : "",
+        "sectionConfig" : "{\"UUID\":\"c2bd9eb3-af60-4f6e-82a1-a41e213f2d8d\",\"columns\":[{\"UUID\":\"f88f8299-60b3-4eca-aeb9-accc5967b8f3\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":null}]}",
+        "sectionMinHeight" : "",
+        "sectionVerticalAlign" : "flex-start"
+      },
+      "componentName" : "community_layout:section",
+      "id" : "c2bd9eb3-af60-4f6e-82a1-a41e213f2d8d",
+      "regions" : [ {
+        "components" : [ {
+          "componentAttributes" : {
+            "alignment" : "left",
+            "imageInfo" : "",
+            "imageInfoMobile" : "",
+            "logoWidth" : 250
+          },
+          "componentName" : "dxp_content_layout:siteLogo",
+          "id" : "a1e88a0f-6990-4766-841a-d0b6194f44d5",
+          "renderPriority" : "NEUTRAL",
+          "renditionMap" : { },
+          "type" : "component"
+        }, {
+          "componentAttributes" : {
+            "cancelLinkLabel" : "Already have an account?",
+            "confirmPasswordLabel" : "Confirm Password",
+            "emailLabel" : "Email",
+            "firstnameLabel" : "First Name",
+            "includePasswordField" : true,
+            "lastnameLabel" : "Last Name",
+            "passwordLabel" : "Create Password",
+            "regConfirmUrl" : "./CheckPasswordResetEmail",
+            "submitButtonLabel" : "Sign Up"
+          },
+          "componentName" : "community_login:selfRegister",
+          "id" : "8dc5dd10-6b03-4e29-9457-83fbe8662cbe",
+          "renderPriority" : "NEUTRAL",
+          "renditionMap" : { },
+          "type" : "component"
+        } ],
+        "id" : "f88f8299-60b3-4eca-aeb9-accc5967b8f3",
+        "regionLabel" : "Column 1",
+        "regionName" : "col1",
+        "renditionMap" : { },
+        "type" : "region"
+      } ],
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "scopedBrandingSetId" : null,
+      "type" : "component"
+    } ],
+    "id" : "0ebabff4-b8b9-4ea2-b35b-4dce16d2fac1",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "customHeadTags" : "",
+        "description" : "",
+        "pageTitle" : "Register",
+        "recordId" : "{!recordId}"
+      },
+      "componentName" : "community_builder:seoAssistant",
+      "id" : "fde6ebf2-2383-4193-bde3-96041b1154a2",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "9c5f8271-1999-42b3-a989-3a5cef138e6f",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "self-register"
+}

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>All</fullName>
+    <columns>NAME</columns>
+    <columns>Branch__c</columns>
+    <columns>Transaction_Type__c</columns>
+    <columns>Transaction_Date__c</columns>
+    <columns>Source_of_Purchase__c</columns>
+    <columns>Status__c</columns>
+    <columns>Member__c</columns>
+    <columns>Credit_Memo_Reasons__c</columns>
+    <columns>Order_Total__c</columns>
+    <columns>CREATED_DATE</columns>
+    <columns>Total_Savings__c</columns>
+    <columns>CREATEDBY_USER.ALIAS</columns>
+    <filterScope>Everything</filterScope>
+    <label>All Transactions</label>
+</ListView>

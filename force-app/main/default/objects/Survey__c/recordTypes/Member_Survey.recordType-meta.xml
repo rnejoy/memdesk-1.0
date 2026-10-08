@@ -1,0 +1,543 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Member_Survey</fullName>
+    <active>true</active>
+    <label>Member Survey</label>
+    <picklistValues>
+        <picklist>Age__c</picklist>
+        <values>
+            <fullName>18-30</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>31-45</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>45-59</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>60 and above</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Are_you_like_to_renew_your_membership__c</picklist>
+        <values>
+            <fullName>No</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Yes</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Average_spend_per_Visit__c</picklist>
+        <values>
+            <fullName>Above Php5%2C000</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Below   Php2%2C500</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Php2%2C500-Php5%2C000</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Customer_Satisfaction_Rating__c</picklist>
+        <values>
+            <fullName>Bad%2C I%27m not Satisfied</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Good%2C I%27m Satisfied</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Do_you_do_online_Shopping__c</picklist>
+        <values>
+            <fullName>No</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Yes</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Do_you_gas_up_at_Caltex_Station__c</picklist>
+        <values>
+            <fullName>No</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Yes</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Gender__c</picklist>
+        <values>
+            <fullName>Female</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>I prefer not to say</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Male</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Home_Branch__c</picklist>
+        <values>
+            <fullName>Alabang</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Arcovia</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BGC</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Balintawak</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cebu</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>OTIS</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>How_often_do_you_visit__c</picklist>
+        <values>
+            <fullName>Once a month</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Once a week</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Once per Quarter</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Twice a Month</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Twice a week</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>How_would_you_rate_service_received__c</picklist>
+        <values>
+            <fullName>Neutral</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Not satisfied</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Satisfied</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Very dissatisfied</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Very satisfied</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Landers_offers_more_on__c</picklist>
+        <values>
+            <fullName>Imported Products</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Local products</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Landers_to_open_its_new_store__c</picklist>
+        <values>
+            <fullName>Always Available</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Arca South</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Bacolod</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Davao</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Fairview</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Makati</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Nuvali</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Vermosa</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Member_since__c</picklist>
+        <values>
+            <fullName>2018</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>2019</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>2020</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>2021</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>2022</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Prefer_design_for_Landers_store__c</picklist>
+        <values>
+            <fullName>Mall Type</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Warehouse Type</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Prefer_gas_station_aside_from_Caltex__c</picklist>
+        <values>
+            <fullName>Petron</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Shell</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Total</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Unioil</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Rate_on_customer_service__c</picklist>
+        <values>
+            <fullName>1</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>2</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>3</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>4</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>5</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Role_in_the_household__c</picklist>
+        <values>
+            <fullName>I am the primary decision maker and buyer of groceries in my household%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>I am the primary decision maker of what to buy%2C but somebody else goes to the groceries to buy for me%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>I only pick up groceries</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>I rarely buy groceries</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Store__c</picklist>
+        <values>
+            <fullName>Instore</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Landers%2Eph</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Think_about_our_product_assortment__c</picklist>
+        <values>
+            <fullName>Always Available</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Complete</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Family and Friends</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Incomplete</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Inconsistent Availability</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Price is Expensive</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Price is Reasonable</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>What_do_you_do__c</picklist>
+        <values>
+            <fullName>Business owner</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Employee%2FJob</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Freelancer</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Student</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>What_do_you_want_us_to_improve__c</picklist>
+        <values>
+            <fullName>Customer Service</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Food  Selection at Landers Central and%2For Doppio</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Product Assortment</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>What_is_your_total_household_income__c</picklist>
+        <values>
+            <fullName>Below Php20%2C000 per month</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Php100%2C100 or more per month</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Php20%2C100- Php30%2C000 per month</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Php30%2C100- Php50%2C000 per month</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Php50%2C100- Php100%2C000 per month</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Where_did_you_usually_shop__c</picklist>
+        <values>
+            <fullName>All Day</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Landmark</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Marketplace</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Puregold</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Rustans</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>S%26R</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SM supermarket</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Where_do_you_do_online_shopping__c</picklist>
+        <values>
+            <fullName>Go Robinsons</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Lazada</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Metromart</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pick-A- Roo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Shoppee</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Waltermart</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>www%2Elanders%2Eph</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Where_do_you_learn_about_our_promot__c</picklist>
+        <values>
+            <fullName>Email</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Facebook</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Family and Friends</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>In Store Materials</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Instagram</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SMS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Website</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Why_did_you_join_to_landers__c</picklist>
+        <values>
+            <fullName>Customer Service</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Discounted Fuel</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Landers Central%2FBarber Shop%2FDoppio%2FPharmacy</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Membership Price</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Product Assortment</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Proximity to Residence%2FOffice</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Would_you_recommend_landers__c</picklist>
+        <values>
+            <fullName>NO</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>YES</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>

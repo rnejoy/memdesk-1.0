@@ -1,0 +1,3 @@
+<design:component>
+    <design:attribute name="screen" label="Default Screen" description="This is the default screen to show"/>
+</design:component>

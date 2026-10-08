@@ -1,0 +1,95 @@
+<apex:page id="thePage" controller="MR_Statistics">
+	<head>
+		<apex:slds />
+		<apex:stylesheet value="https://cdnjs.cloudflare.com/ajax/libs/design-system/2.5.0/styles/salesforce-lightning-design-system.min.css"/>
+		<apex:includeScript value="https://code.jquery.com/jquery-2.2.4.js"/>
+		<apex:includeScript value="https://cdnjs.cloudflare.com/ajax/libs/jsrender/1.0.11/jsrender.min.js"/>
+
+		<script>
+			$(document).ready(function () {
+				console.log('we are in doc ready!');
+			});
+
+			Number.prototype.formatMoney = function(c, d, t, b) {
+				// number.formatMoney(2, ".", ",", false)
+				// c = decimal places				default is 2
+				// d = decimal separator			default is .
+				// t = thousandths separator		default is ,
+				// b = blank zeros					default is true
+				var n = this,
+				c = isNaN(c = Math.abs(c)) ? 2 : c,
+				d = d == undefined ? "." : d,
+				t = t == undefined ? "," : t,
+				b = b == undefined ? true : false,
+				s = n < 0 ? "-" : "",
+				i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + "",
+				j = (j = i.length) > 3 ? j % 3 : 0;
+
+				return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+				/*mid = mid.replace(/(?<=.)0*$/, '').replace(/\.$/, '');
+				if (b)
+					return mid == '0' ? '' : mid;
+				else
+					return mid;*/
+			}
+
+		</script>
+		<style>
+			.myTable1 {
+				counter-reset: rowCounter;
+				width: 40% !important;
+			}
+			.myTable1 .row {
+				counter-increment: rowCounter;
+				font-size: 14px !important;
+				height: 20px;
+			}
+			.myTable1 .row .counter::before {
+				content: counter(rowCounter);
+			}
+
+			.myTable2 {
+				counter-reset: rowCounter;
+				width: 30% !important;
+			}
+			.myTable2 .row {
+				counter-increment: rowCounter;
+				font-size: 16px !important;
+			}
+			.myTable2 .row .counter::before {
+				content: counter(rowCounter);
+			}
+		</style>
+	</head>
+
+	<apex:sectionHeader title="License/Profile/User Statistics"/>
+	<apex:form id="theForm">
+		<apex:pageBlock id="theBlock1" title="Organization User License Info:">
+			<apex:pageBlockSection columns="1">
+				<apex:pageBlockTable id="theTable1" value="{!liclist}" var="item" styleClass="myTable1" rowClasses="row">
+					<apex:column headerValue="#" style="width: 10%; text-align: center !important;">
+						<span class='counter'></span>
+					</apex:column>
+					<apex:column headerValue="License Type"   value="{!liclist[item]['LicenseDefinitionKey']}" style="width: 45%;"/>
+					<apex:column headerValue="Total Licenses" value="{!liclist[item]['TotalLicenses']}" style="width: 15%; text-align: right !important; padding-right: 10px;"/>
+					<apex:column headerValue="Used Licenses"  value="{!liclist[item]['UsedLicenses']}"  style="width: 15%; text-align: right !important; padding-right: 10px;"/>
+					<apex:column headerValue="Balance"        value="{!liclist[item]['BalLicenses']}"   style="width: 15%; text-align: right !important; padding-right: 10px;"/>
+				</apex:pageBlockTable>
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+
+		<apex:pageBlock id="theBlock2" title="Organic User Profile Distribution: {!orgnumber}">
+			<apex:pageBlockSection columns="1">
+				<apex:pageBlockTable id="theTable2" value="{!orglist}" var="item" styleClass="myTable2" rowClasses="row">
+					<apex:column headerValue="#" style="width: 10%; text-align: center !important;">
+						<span class='counter'></span>
+					</apex:column>
+					<apex:column headerValue="Profile"  value="{!orglist[item]['Profile']}" style="width: 60%;"/>
+					<apex:column headerValue="Count"    value="{!orglist[item]['Count']}"   style="width: 30%; text-align: right !important; padding-right: 10px;"/>
+				</apex:pageBlockTable>
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+
+		<!-- apex Functions -->
+	</apex:form>
+</apex:page>

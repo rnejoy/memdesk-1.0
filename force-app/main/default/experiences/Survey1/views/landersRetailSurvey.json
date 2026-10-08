@@ -1,0 +1,52 @@
+{
+  "appPageId" : "78d5f17d-633c-4e2a-b1a7-d863a35119d0",
+  "componentName" : "community_layout:sldsFlexibleLayout",
+  "dataProviders" : [ ],
+  "id" : "bd1f013d-01c7-44e7-b316-c0877bc3e20c",
+  "label" : "Landers Retail Survey",
+  "regions" : [ {
+    "components" : [ {
+      "componentAttributes" : {
+        "backgroundImageConfig" : "",
+        "backgroundImageOverlay" : "rgba(0,0,0,0)",
+        "sectionConfig" : "{\"UUID\":\"c5866aea-456f-45c4-8dbd-48ebc39aa789\",\"columns\":[{\"UUID\":\"cbbaaa6f-6c5e-40e2-9679-c1ac643a04ae\",\"columnName\":\"Column 1\",\"columnKey\":\"col1\",\"columnWidth\":\"12\",\"seedComponents\":[]}]}"
+      },
+      "componentName" : "community_layout:section",
+      "id" : "c5866aea-456f-45c4-8dbd-48ebc39aa789",
+      "regions" : [ {
+        "id" : "cbbaaa6f-6c5e-40e2-9679-c1ac643a04ae",
+        "regionLabel" : "Column 1",
+        "regionName" : "col1",
+        "renditionMap" : { },
+        "type" : "region"
+      } ],
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "scopedBrandingSetId" : null,
+      "type" : "component"
+    } ],
+    "id" : "ca7a7456-e568-4db9-9a08-91fcbc913646",
+    "regionName" : "content",
+    "type" : "region"
+  }, {
+    "components" : [ {
+      "componentAttributes" : {
+        "customHeadTags" : "",
+        "description" : "",
+        "pageTitle" : "Landers Retail Survey",
+        "recordId" : "{!recordId}"
+      },
+      "componentName" : "community_builder:seoAssistant",
+      "id" : "93e8a46c-04b8-4214-b5bc-606e51d7a198",
+      "renderPriority" : "NEUTRAL",
+      "renditionMap" : { },
+      "type" : "component"
+    } ],
+    "id" : "86e021e7-ef9a-4c9a-8027-13c0ae45391e",
+    "regionName" : "sfdcHiddenRegion",
+    "type" : "region"
+  } ],
+  "themeLayoutType" : "Inner",
+  "type" : "view",
+  "viewType" : "custom-landers-retail-survey"
+}

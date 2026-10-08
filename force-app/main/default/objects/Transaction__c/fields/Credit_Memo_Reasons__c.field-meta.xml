@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Credit_Memo_Reasons__c</fullName>
+    <label>Credit Memo Reasons</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Double Scan</fullName>
+                <default>false</default>
+                <label>Double Scan</label>
+            </value>
+            <value>
+                <fullName>Wrong Pick-Up</fullName>
+                <default>false</default>
+                <label>Wrong Pick-Up</label>
+            </value>
+            <value>
+                <fullName>Change Item</fullName>
+                <default>false</default>
+                <label>Change Item</label>
+            </value>
+            <value>
+                <fullName>Over Punch</fullName>
+                <default>false</default>
+                <label>Over Punch</label>
+            </value>
+            <value>
+                <fullName>Incomplete Set</fullName>
+                <default>false</default>
+                <label>Incomplete Set</label>
+            </value>
+            <value>
+                <fullName>Wrong Sign</fullName>
+                <default>false</default>
+                <label>Wrong Sign</label>
+            </value>
+            <value>
+                <fullName>Spoiled</fullName>
+                <default>false</default>
+                <label>Spoiled</label>
+            </value>
+            <value>
+                <fullName>Under Punched</fullName>
+                <default>false</default>
+                <label>Under Punched</label>
+            </value>
+            <value>
+                <fullName>Member Change of Mind</fullName>
+                <default>false</default>
+                <label>Member Change of Mind</label>
+            </value>
+            <value>
+                <fullName>Defective</fullName>
+                <default>false</default>
+                <label>Defective</label>
+            </value>
+            <value>
+                <fullName>Bad Order</fullName>
+                <default>false</default>
+                <label>Bad Order</label>
+            </value>
+            <value>
+                <fullName>Change in Size</fullName>
+                <default>false</default>
+                <label>Change in Size</label>
+            </value>
+            <value>
+                <fullName>Change in Color</fullName>
+                <default>false</default>
+                <label>Change in Color</label>
+            </value>
+            <value>
+                <fullName>Ecomm</fullName>
+                <default>false</default>
+                <label>Ecomm</label>
+            </value>
+            <value>
+                <fullName>Failed Delivery</fullName>
+                <default>false</default>
+                <label>Failed Delivery</label>
+            </value>
+            <value>
+                <fullName>Cancel Order</fullName>
+                <default>false</default>
+                <label>Cancel Order</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>
