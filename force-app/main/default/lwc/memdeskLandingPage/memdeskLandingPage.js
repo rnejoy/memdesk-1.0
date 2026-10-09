@@ -128,6 +128,8 @@ export default class MemdeskLandingPage extends LightningElement {
     pageSize = 4;
     selectedId = '';
 
+    showPrintModal = false;
+
     renderedCallback() {
         if (this.focusScanInput) {
             const input = this.template.querySelector('.scan-input');
@@ -308,6 +310,27 @@ export default class MemdeskLandingPage extends LightningElement {
                 boxClass: checked ? 'check-box is-checked' : 'check-box'
             };
         });
+    }
+
+    openPrintModal() {
+        if (this.isLead) {
+            this.showNotice('Printing is available for members only.');
+            return;
+        }
+        this.showPrintModal = true;
+    }
+
+    closePrintModal() {
+        this.showPrintModal = false;
+    }
+
+    handlePrintComplete() {
+        this.showPrintModal = false;
+        this.showNotice('Card printing completed.');
+    }
+
+    get pageClass() {
+        return this.showPrintModal ? 'page is-printing-card' : 'page';
     }
 
     get reachItems() {

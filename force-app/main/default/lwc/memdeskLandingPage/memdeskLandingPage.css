@@ -1338,3 +1338,9 @@ select.input {
 .override-card {
     cursor: pointer;
 }
+
+@media print {
+    .page.is-printing-card > :not(c-print-card-modal) {
+        display: none !important;
+    }
+}
