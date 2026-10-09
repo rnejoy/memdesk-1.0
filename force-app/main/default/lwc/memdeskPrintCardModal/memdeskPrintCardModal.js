@@ -13,7 +13,7 @@ const cardDate = (value) => {
     return match ? `${match[2]}/${match[3]}/${match[1]}` : '';
 };
 
-export default class PrintCardModal extends LightningElement {
+export default class memdeskPrintCardModal extends LightningElement {
     @api member;
     @api recordKey = '';
     @api idText = '';

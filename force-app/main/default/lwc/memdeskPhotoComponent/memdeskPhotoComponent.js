@@ -7,7 +7,7 @@ const MAX_SIDE = 640;                       // longest side after resizing, in p
 const MAX_FILE_BYTES = 10 * 1024 * 1024;    // 10 MB before resizing
 const DEFAULT_CAMERA = [{ value: '', label: 'Integrated Camera', selected: true }];
 
-export default class PhotoComponent extends LightningElement {
+export default class memdeskPhotoComponent extends LightningElement {
     @api recordKey = '';          // Contact Id / Membership ID / Lead Id
     @api recordType = 'Member';   // 'Member' or 'Lead'
     @api initialPhotoUrl = '';    // photo from the record's URL field
