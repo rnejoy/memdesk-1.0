@@ -116,7 +116,7 @@ public with sharing class MemdeskMemberController {
         for (String uiKey : MEMBER_FIELDS.keySet()) {
             String apiName = MEMBER_FIELDS.get(uiKey);
             Schema.SObjectField field = contactFields.get(apiName);
-            if (field != null && field.getDescribe().isAccessible()) {
+            if (field != null) {
                 found.put(uiKey, apiName);
                 selectFields.add(apiName);
             }

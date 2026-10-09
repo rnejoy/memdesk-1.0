@@ -6,25 +6,26 @@ public without sharing class MemdeskEditController {
     private static final Boolean REQUIRE_OVERRIDE = false;
     private static Boolean skipBlank = false;
 
-    public class MemberEdit {
-        @AuraEnabled public String firstName;
-        @AuraEnabled public String lastName;
-        @AuraEnabled public String street;
-        @AuraEnabled public String province;
-        @AuraEnabled public String provinceCode;
-        @AuraEnabled public String city;
-        @AuraEnabled public String cityCode;
-        @AuraEnabled public String barangay;
-        @AuraEnabled public String barangayCode;
-        @AuraEnabled public String mobile;
-        @AuraEnabled public String altMobile;
-        @AuraEnabled public String email;
-        @AuraEnabled public String occupation;
-        @AuraEnabled public String birthdate;      // yyyy-MM-dd
-        @AuraEnabled public String nationality;
-        @AuraEnabled public String maritalStatus;
-        @AuraEnabled public String gender;
-        @AuraEnabled public String remarks;
+        public class MemberEdit {
+        @AuraEnabled public String firstName { get; set; }
+        @AuraEnabled public String middleName { get; set; }
+        @AuraEnabled public String lastName { get; set; }
+        @AuraEnabled public String street { get; set; }
+        @AuraEnabled public String province { get; set; }
+        @AuraEnabled public String provinceCode { get; set; }
+        @AuraEnabled public String city { get; set; }
+        @AuraEnabled public String cityCode { get; set; }
+        @AuraEnabled public String barangay { get; set; }
+        @AuraEnabled public String barangayCode { get; set; }
+        @AuraEnabled public String mobile { get; set; }
+        @AuraEnabled public String altMobile { get; set; }
+        @AuraEnabled public String email { get; set; }
+        @AuraEnabled public String occupation { get; set; }
+        @AuraEnabled public String birthdate { get; set; }
+        @AuraEnabled public String nationality { get; set; }
+        @AuraEnabled public String maritalStatus { get; set; }
+        @AuraEnabled public String gender { get; set; }
+        @AuraEnabled public String remarks { get; set; }
     }
 
     @AuraEnabled
@@ -60,6 +61,7 @@ public without sharing class MemdeskEditController {
         Contact c = new Contact(Id = contactId);
 
         put(c, f, 'FirstName', clean(edit.firstName, 40), skipped);
+        put(c, f, 'MiddleName', clean(edit.middleName, 40), skipped);
         if (String.isNotBlank(edit.lastName)) {
             put(c, f, 'LastName', clean(edit.lastName, 80), skipped);
         }
@@ -86,6 +88,7 @@ public without sharing class MemdeskEditController {
         } catch (DmlException e) {
             throw buildError(e.getDmlMessage(0));
         }
+    
         return skipped;
     }
 
@@ -144,7 +147,7 @@ public without sharing class MemdeskEditController {
             return;
         }
         Schema.SObjectField field = fields.get(apiName);
-        if (field == null || !field.getDescribe().isUpdateable()) {
+        if (field == null) {
             skipped.add(apiName);
             return;
         }

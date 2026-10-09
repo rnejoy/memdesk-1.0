@@ -162,9 +162,6 @@ export default class MemdeskLandingPage extends LightningElement {
         return MIMI_PHOTO;
     }
 
-    // =====================================================================
-    // Load details and switch views
-    // =====================================================================
     async openDetailView(recordId, recordType) {
         this.resetEditState();
         this.detailKey = recordId;
@@ -237,9 +234,6 @@ export default class MemdeskLandingPage extends LightningElement {
         this.overrideError = '';
     }
 
-    // =====================================================================
-    // Messages and placeholders
-    // =====================================================================
     showNotice(message) {
         this.notice = message;
         clearTimeout(this.noticeTimer);
@@ -248,7 +242,6 @@ export default class MemdeskLandingPage extends LightningElement {
         }, 3500);
     }
 
-    // For buttons that are in the design but not built yet
     handlePlaceholderAction(event) {
         const name = event.currentTarget.dataset.name;
         this.showNotice(`${name} is not connected yet.`);
@@ -267,7 +260,6 @@ export default class MemdeskLandingPage extends LightningElement {
         }
     }
 
-    // Voucher validation is static for now
     handleVoucherInput(event) {
         this.voucherCode = event.target.value;
         this.voucherError = '';
@@ -288,9 +280,6 @@ export default class MemdeskLandingPage extends LightningElement {
         this.showNotice('Voucher validation is not connected yet.');
     }
 
-    // =====================================================================
-    // Reach / hear-about checkboxes (clerks can change them any time)
-    // =====================================================================
     initPrefs(m) {
         this.prefs = {
             reach: {
@@ -368,9 +357,6 @@ export default class MemdeskLandingPage extends LightningElement {
         }
     }
 
-    // =====================================================================
-    // Edit mode: manager override, then edit, then Save
-    // =====================================================================
     handleEditSave() {
         if (this.isSaving) {
             return;
@@ -425,11 +411,17 @@ export default class MemdeskLandingPage extends LightningElement {
         this.overrideFocused = false;
     }
 
+    handleOverrideClick(event) {
+        if (event.target.tagName === 'BUTTON') {
+           return;
+        }
+        this.checkOverride('OVERRIDE');
+    }
+
     get overrideIconClass() {
         return this.overrideFocused ? 'override-icon-wrap is-focused' : 'override-icon-wrap';
     }
 
-    // A barcode scanner types the code, then presses Enter
     handleOverrideScan(event) {
         if (event.key !== 'Enter') {
             return;
@@ -470,6 +462,7 @@ export default class MemdeskLandingPage extends LightningElement {
         const m = this.selectedMemberData || {};
         this.edit = {
             firstName: m.firstName || '',
+            middleName: m.middleName || '',
             lastName: m.lastName || '',
             street: m.street || '',
             provinceValue: '',
@@ -502,7 +495,6 @@ export default class MemdeskLandingPage extends LightningElement {
         );
     }
 
-    // Loads the dropdown lists and selects the member's current address
     async prepareLookups() {
         const m = this.selectedMemberData || {};
         try {
@@ -525,7 +517,6 @@ export default class MemdeskLandingPage extends LightningElement {
             const barangays = city ? (await getBarangays({ cityCode: city.value })) || [] : [];
             const barangay = this.matchOption(barangays, m.barangayCode, m.barangay);
 
-            // "text:" keeps a current value that is not in the list, so it is not lost
             this.cityOptions = cities;
             this.barangayOptions = barangays;
             this.edit = {
@@ -630,7 +621,7 @@ export default class MemdeskLandingPage extends LightningElement {
             const option = options.find((item) => item.value === value);
             return option ? option.label : '';
         };
-        // null = leave the saved code alone, '' = clear it
+      
         const codeOf = (value) => {
             if (!value) {
                 return '';
@@ -640,6 +631,7 @@ export default class MemdeskLandingPage extends LightningElement {
 
         return {
             firstName: e.firstName.trim(),
+            middleName: e.middleName.trim(),
             lastName: e.lastName.trim(),
             street: e.street.trim(),
             province: labelOf(this.provinceOptions, e.provinceValue),
@@ -661,6 +653,7 @@ export default class MemdeskLandingPage extends LightningElement {
     }
 
     async saveChanges() {
+        console.log('SAVE PAYLOAD', JSON.stringify(this.buildPayload()));
         this.errors = this.validateEdit();
         if (Object.keys(this.errors).some((key) => this.errors[key])) {
             this.showNotice('Please fix the highlighted fields.');
@@ -708,9 +701,6 @@ export default class MemdeskLandingPage extends LightningElement {
         return this.isRefreshing || this.isEditing;
     }
 
-    // =====================================================================
-    // Detail view: ID badge and field descriptors
-    // =====================================================================
     get hasDetails() {
         return Boolean(this.selectedMemberData);
     }
@@ -723,7 +713,6 @@ export default class MemdeskLandingPage extends LightningElement {
         return this.isLead ? 'Lead' : 'Membership ID';
     }
 
-    // 10501600108900 -> 1050-16001089-00
     get idText() {
         if (this.isLead) {
             return 'Not a member yet';
@@ -758,7 +747,6 @@ export default class MemdeskLandingPage extends LightningElement {
         return 'pill pill-neutral';
     }
 
-    // Select options: a placeholder, the member's current value if it is not in the list, then the list
     buildSelect(options, selected, placeholder) {
         const list = [{ value: '', label: placeholder }];
         if (selected && selected.startsWith('text:')) {
@@ -869,7 +857,7 @@ export default class MemdeskLandingPage extends LightningElement {
         const e = this.edit;
         return [
             this.editField('firstName', 'First Name', show(m.firstName), { maxlength: 40 }),
-            this.staticField('middleName', 'Middle Name', show(m.middleName)),
+            this.editField('middleName', 'Middle Name', show(m.middleName), { maxlength: 40 }),
             this.editField('lastName', 'Last Name', show(m.lastName), { maxlength: 80, required: true }),
             this.staticField('suffix', 'Suffix', show(m.suffix), false),
             this.editField('gender', 'Gender', show(m.gender), {
@@ -943,9 +931,6 @@ export default class MemdeskLandingPage extends LightningElement {
         ];
     }
 
-    // =====================================================================
-    // User menu
-    // =====================================================================
     toggleUserMenu() {
         this.showUserMenu = !this.showUserMenu;
     }
@@ -983,9 +968,6 @@ export default class MemdeskLandingPage extends LightningElement {
             .join('');
     }
 
-    // =====================================================================
-    // Barcode scan (search page)
-    // =====================================================================
     startScan() {
         this.isScanning = true;
         this.scanMessage = '';
@@ -1012,25 +994,6 @@ export default class MemdeskLandingPage extends LightningElement {
         this.isScanning = false;
     }
 
-    async handleOverrideClick(event) {
-        // Prevent dismissal if clicking the Cancel button inside the modal
-        if (event.target.tagName === 'BUTTON') {
-            return;
-        }
-
-        // 1. Dismiss the modal
-        this.showOverrideModal = false;
-        this.overrideError = '';
-        this.overrideBarcode = 'OVERRIDE';
-
-        // 2. Trigger edit mode directly
-        await this.startEditing();
-
-        // Optional notification message
-        if (typeof this.showNotice === 'function') {
-            this.showNotice('Edit mode activated.');
-        }
-    }
 
     async handleBarcode(code) {
         try {
@@ -1064,9 +1027,6 @@ export default class MemdeskLandingPage extends LightningElement {
         return this.scanMessage || 'Click here, then scan a barcode';
     }
 
-    // =====================================================================
-    // Search
-    // =====================================================================
     handleTypeChange(event) {
         this.searchType = event.currentTarget.dataset.type;
         if (this.hasSearched) {
@@ -1225,9 +1185,6 @@ export default class MemdeskLandingPage extends LightningElement {
         }
     }
 
-    // =====================================================================
-    // Results
-    // =====================================================================
     async handleSelectResult(event) {
         const id = event.currentTarget.dataset.id;
         if (id) {
