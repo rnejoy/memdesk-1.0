@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Landers_to_open_its_new_store__c</fullName>
+    <externalId>false</externalId>
     <inlineHelpText>19.  Where do you want Landers to open its new store? *  Mark only 1</inlineHelpText>
     <label>Landers to open its new store</label>
     <required>false</required>

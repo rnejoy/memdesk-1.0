@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Rate_on_customer_service__c</fullName>
+    <externalId>false</externalId>
     <inlineHelpText>25.  How would you rate our service on a scale of 1-5 with 5 as the highest?</inlineHelpText>
     <label>Rate on customer service</label>
     <required>false</required>

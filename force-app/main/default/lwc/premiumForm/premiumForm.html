@@ -1,0 +1,256 @@
+<template>
+    <section class="page">
+        <div class="left">
+            <div class="logo">
+                <img src={logoUrl} alt="Logo" class="logo__img" onerror={handleLogoError} if:true={showLogo} />
+                <span class="logo__placeholder" if:false={showLogo}>LOGO</span>
+            </div>
+
+            <div class="stage">
+                <div class="spotlight"></div>
+                <div class="floor-shadow"></div>
+                <div class="card">
+                    <img class="card__img" src={cardImageUrl} alt="Landers Executive card" if:true={hasCardImage} />
+                    <div class="card__sheen"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="right">
+            <div class="wrap">
+                <!-- 1. Confirmation -->
+                <template lwc:if={isSubmitted}>
+                    <div class="confirm" role="status">
+                        <h1 class="confirm__title">Complete Your Payment</h1>
+
+                        <p class="confirm__text">
+                            <strong>Next Step:</strong> You may now pay for your Landers Executive Membership at
+                            the Membership Counter. Please present the same valid ID as you have provided on the
+                            Application Form and a screenshot of this page showing your
+                            <strong> Reference Number.</strong>
+                        </p>
+
+                        <div class="barcode" lwc:if={hasBarcode}>
+                            <svg class="barcode__svg" viewBox="0 0 444 70" preserveAspectRatio="xMidYMid meet"
+                                role="img" aria-label="Reference number barcode">
+                                <template for:each={barcodeBars} for:item="bar">
+                                    <rect key={bar.key} x={bar.x} y="0" width={bar.width} height="70" fill="#000"></rect>
+                                </template>
+                            </svg>
+                            <p class="barcode__text">{result.referenceNumber}</p>
+                        </div>
+
+                        <dl class="summary">
+                            <div class="summary__row">
+                                <dt class="summary__label summary__label--strong">Reference Number</dt>
+                                <dd class="summary__value summary__value--strong">{result.referenceNumber}</dd>
+                            </div>
+                            <div class="summary__row">
+                                <dt class="summary__label">Full Name</dt>
+                                <dd class="summary__value">{result.fullName}</dd>
+                            </div>
+                            <div class="summary__row">
+                                <dt class="summary__label">Membership ID</dt>
+                                <dd class="summary__value summary__value--pending">{result.membershipId}</dd>
+                            </div>
+                            <div class="summary__row">
+                                <dt class="summary__label">Payment Method</dt>
+                                <dd class="summary__value">{result.paymentMethod}</dd>
+                            </div>
+                            <div class="summary__row">
+                                <dt class="summary__label">Date Applied</dt>
+                                <dd class="summary__value">{result.dateApplied}</dd>
+                            </div>
+                        </dl>
+
+                        <p class="confirm__text">
+                            Download the Landers App to view and redeem<br />your earned rebates
+                        </p>
+
+                        <div class="actions">
+                            <button type="button" class="btn" onclick={handleSubmitAnother}>Submit Another Application</button>
+                        </div>
+                    </div>
+                </template>
+
+                <!-- 2. Invalid link (no / unknown store code) or load failure -->
+                <template lwc:elseif={showNotice}>
+                    <div class="notice" role="alert">
+                        <div class="notice__icon">
+                            <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M12 7v6"></path>
+                                <circle cx="12" cy="17" r="0.6" fill="currentColor"></circle>
+                            </svg>
+                        </div>
+                        <h1 class="notice__title">{noticeTitle}</h1>
+                        <p class="notice__text">{noticeText}</p>
+                    </div>
+                </template>
+
+                <!-- 3. Application form -->
+                <template lwc:elseif={showForm}>
+                    <h1 class="title">Landers Executive Membership</h1>
+
+                    <form class="form" onsubmit={handleSubmit} novalidate>
+                        <div class="row">
+                            <div class="field">
+                                <label class="field__label">
+                                    <span class="field__text">First Name</span>
+                                    <input class="field__control" type="text" name="firstName" data-field="firstName" autocomplete="given-name" maxlength="40" value={form.firstName} oninput={handleChange} />
+                                </label>
+                                <p class="field__error" role="alert" lwc:if={errors.firstName}>{errors.firstName}</p>
+                            </div>
+                            <div class="field">
+                                <label class="field__label">
+                                    <span class="field__text">Middle Name (Optional)</span>
+                                    <input class="field__control" type="text" name="middleName" data-field="middleName" autocomplete="additional-name" maxlength="40" value={form.middleName} oninput={handleChange} />
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="field">
+                                <label class="field__label">
+                                    <span class="field__text">Last Name</span>
+                                    <input class="field__control" type="text" name="lastName" data-field="lastName" autocomplete="family-name" maxlength="80" value={form.lastName} oninput={handleChange} />
+                                </label>
+                                <p class="field__error" role="alert" lwc:if={errors.lastName}>{errors.lastName}</p>
+                            </div>
+                            <div class="field">
+                                <div class="field__label">
+                                    <span class="field__text">Gender</span>
+                                    <c-bpi-dropdown name="gender" data-field="gender" label="Gender" placeholder="Please select.." options={genderOptions} value={form.gender} error={errors.gender} onchange={handleComboChange}></c-bpi-dropdown>
+                                </div>
+                                <p class="field__error" role="alert" lwc:if={errors.gender}>{errors.gender}</p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="field">
+                                <label class="field__label">
+                                    <span class="field__text">Date of Birth</span>
+                                    <input class="field__control" type="date" name="birthdate" data-field="birthdate" value={form.birthdate} oninput={handleChange} />
+                                </label>
+                                <p class="field__error" role="alert" lwc:if={errors.birthdate}>{errors.birthdate}</p>
+                            </div>
+                            <div class="field">
+                                <div class="field__label">
+                                    <span class="field__text">Marital Status</span>
+                                    <c-bpi-dropdown name="maritalStatus" data-field="maritalStatus" label="Marital Status" placeholder="Please select.." options={maritalOptions} value={form.maritalStatus} error={errors.maritalStatus} onchange={handleComboChange}></c-bpi-dropdown>
+                                </div>
+                                <p class="field__error" role="alert" lwc:if={errors.maritalStatus}>{errors.maritalStatus}</p>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="field">
+                                <div class="field__label">
+                                    <span class="field__text">Nationality</span>
+                                    <c-bpi-dropdown name="nationality" data-field="nationality" label="Nationality" placeholder="Please select.." options={nationalityOptions} value={form.nationality} error={errors.nationality} onchange={handleComboChange}></c-bpi-dropdown>
+                                </div>
+                                <p class="field__error" role="alert" lwc:if={errors.nationality}>{errors.nationality}</p>
+                            </div>
+                            <div class="field">
+                                <div class="field__label">
+                                    <span class="field__text">Occupation</span>
+                                    <c-bpi-dropdown name="occupation" data-field="occupation" label="Occupation" placeholder="Please select.." options={occupationOptions} value={form.occupation} error={errors.occupation} onchange={handleComboChange}></c-bpi-dropdown>
+                                </div>
+                                <p class="field__error" role="alert" lwc:if={errors.occupation}>{errors.occupation}</p>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="field__label">
+                                <span class="field__text">Mobile Number</span>
+                                <div class="phone field__control-wrap" data-field="mobile">
+                                    <span class="phone__prefix">+63</span>
+                                    <input class="phone__input" type="tel" inputmode="numeric" name="mobile" autocomplete="tel-national" placeholder="9XX XXX XXXX" maxlength="10" value={form.mobile} oninput={handleMobileInput} />
+                                </div>
+                            </label>
+                            <p class="field__error" role="alert" lwc:if={errors.mobile}>{errors.mobile}</p>
+                        </div>
+
+                        <div class="field">
+                            <label class="field__label">
+                                <span class="field__text">Email Address</span>
+                                <input class="field__control" type="email" name="email" data-field="email" autocomplete="email" maxlength="80" value={form.email} oninput={handleChange} />
+                            </label>
+                            <p class="field__error" role="alert" lwc:if={errors.email}>{errors.email}</p>
+                        </div>
+
+                        <h2 class="section">Present Address</h2>
+
+                        <div class="field">
+                            <label class="field__label">
+                                <span class="field__text">Country</span>
+                                <input class="field__control field__control--locked" type="text" name="country" value="Philippines" readonly tabindex="-1" />
+                            </label>
+                        </div>
+
+                        <div class="row">
+                            <div class="field">
+                                <div class="field__label">
+                                    <span class="field__text">State / Province</span>
+                                    <c-bpi-dropdown name="province" data-field="province" label="State / Province" placeholder="Please select.." options={provinceOptions} value={form.province} error={errors.province} onchange={handleProvinceChange}></c-bpi-dropdown>
+                                </div>
+                                <p class="field__error" role="alert" lwc:if={errors.province}>{errors.province}</p>
+                            </div>
+                            <div class="field">
+                                <div class="field__label">
+                                    <span class="field__text">City / District</span>
+                                    <c-bpi-dropdown name="city" data-field="city" label="City / District" placeholder={cityPlaceholder} options={cityOptions} value={form.city} disabled={isCityDisabled} error={errors.city} onchange={handleCityChange}></c-bpi-dropdown>
+                                </div>
+                                <p class="field__error" role="alert" lwc:if={errors.city}>{errors.city}</p>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <div class="field__label">
+                                <span class="field__text">Barangay</span>
+                                <c-bpi-dropdown name="barangay" data-field="barangay" label="Barangay" placeholder={barangayPlaceholder} options={barangayOptions} value={form.barangay} disabled={isBarangayDisabled} error={errors.barangay} onchange={handleComboChange}></c-bpi-dropdown>
+                            </div>
+                            <p class="field__error" role="alert" lwc:if={errors.barangay}>{errors.barangay}</p>
+                        </div>
+
+                        <div class="field">
+                            <label class="field__label">
+                                <span class="field__text">Street Address</span>
+                                <input class="field__control" type="text" name="street" data-field="street" autocomplete="street-address" maxlength="100" placeholder="House / Unit No., Street, Subdivision" value={form.street} oninput={handleChange} />
+                            </label>
+                            <p class="field__error" role="alert" lwc:if={errors.street}>{errors.street}</p>
+                        </div>
+
+                        <div class="field">
+                            <div class="field__label">
+                                <span class="field__text">Preferred Shopping Branch</span>
+                                <c-bpi-dropdown name="store" data-field="store" label="Preferred Shopping Branch" placeholder="Please select.." options={storeOptions} value={form.store} error={errors.store} onchange={handleComboChange}></c-bpi-dropdown>
+                            </div>
+                            <p class="field__error" role="alert" lwc:if={errors.store}>{errors.store}</p>
+                        </div>
+
+                        <div class="field field--checkbox">
+                            <label class="checkbox__label">
+                                <input class="checkbox__input" type="checkbox" name="agreeTerms" data-field="agreeTerms"
+                                    checked={isAgreed} onchange={handleCheckboxChange} />
+                                <span class="checkbox__text">
+                                    I agree to the
+                                    <a href="/executivemicrosite/terms-and-conditions" target="_blank" rel="noopener noreferrer" class="link--highlight"> LANDERS TERMS AND CONDITIONS</a>,
+                                    and
+                                    <a href="/executivemicrosite/terms-and-conditions" target="_blank" rel="noopener noreferrer" class="link--highlight"> PRIVACY POLICY </a>
+                                    for the application of my Landers membership.
+                                </span>
+                            </label>
+                            <p class="field__error" role="alert" lwc:if={errors.agreeTerms}>{errors.agreeTerms}</p>
+                        </div>
+
+                        <p class="banner" role="alert" lwc:if={formError}>{formError}</p>
+
+                        <div class="actions">
+                            <button type="submit" class="btn" disabled={isSubmitting}>{submitLabel}</button>
+                        </div>
+                    </form>
+                </template>
+            </div>
+        </div>
+    </section>
+</template>

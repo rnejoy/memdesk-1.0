@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>What_do_you_want_us_to_improve__c</fullName>
+    <externalId>false</externalId>
     <inlineHelpText>23.  What do you want us to improve? *</inlineHelpText>
     <label>What do you want us to improve</label>
     <required>false</required>

@@ -1,6 +1,7 @@
 import { LightningElement, api } from 'lwc';
 import MEMDESK_LOGIN_LOGO from '@salesforce/resourceUrl/memdeskLoginLogo';
 import MIMI_PHOTO from '@salesforce/resourceUrl/mimi';
+import SCAN_ICON from '@salesforce/resourceUrl/scanner';
 import searchRecords from '@salesforce/apex/MemdeskSearchController.searchRecords';
 import getMemberByBarcode from '@salesforce/apex/MemdeskSearchController.getMemberByBarcode';
 import getMemberDetails from '@salesforce/apex/MemdeskMemberController.getMemberDetails';
@@ -57,6 +58,7 @@ const isTrue = (value) => value === true || value === 'true';
 
 export default class MemdeskLandingPage extends LightningElement {
     memdeskLoginLogo = MEMDESK_LOGIN_LOGO;
+    scanIcon = SCAN_ICON;
 
     @api storeName = 'Alabang';
     @api userName = 'Override User';
@@ -389,6 +391,13 @@ export default class MemdeskLandingPage extends LightningElement {
         } else {
             this.requestEdit();
         }
+    }
+
+    handleCancelEdit() {
+        if (this.isSaving) {
+            return;
+        }
+        this.resetEditState();
     }
 
     requestEdit() {
@@ -929,7 +938,7 @@ export default class MemdeskLandingPage extends LightningElement {
             this.editField('altMobile', 'Secondary / Alt. Mobile Number', show(m.altMobileNumber), {
                 inputType: 'tel',
                 maxlength: 16,
-                actionHref: m.altMobileNumber ? `sms:${m.altMobileNumber}` : '',
+                actionHref: `sms:${m.altMobileNumber || ''}`,
                 actionLabel: 'Send a message',
                 isSms: true
             }),

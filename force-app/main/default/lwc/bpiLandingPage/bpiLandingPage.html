@@ -1,0 +1,95 @@
+<template>
+    <section class="hero">
+    
+        <div class="hero__left">
+    
+            <div class="hero__logo">
+                <img src={logoUrl} alt="Logo" class="hero__logo-img" onerror={handleLogoError} if:true={showLogo} />
+                <span class="hero__logo-placeholder" if:false={showLogo}>LOGO</span>
+            </div>
+
+            <div class="hero__stage">
+                <div class="hero__spotlight"></div>
+                <div class="hero__floor-shadow"></div>
+                <div class="hero__card">
+                    <img
+                        class="hero__card-img"
+                        src={cardImageUrl}
+                        alt="Landers Executive card"
+                        if:true={hasCardImage}
+                    />
+                    <div class="hero__card-sheen"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero__right">
+            <div class="content">
+                <!-- Title -->
+                <header class="content__header">
+                    <h1 class="content__title">
+                        <span class="content__new">NEW</span> Landers Executive Membership
+                    </h1>
+                </header>
+
+                <div class="block">
+                    <div class="block__head">
+                        <div class="block__icon">
+                            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <rect x="3" y="6" width="15" height="11" rx="2"></rect>
+                                <path d="M3 10h15"></path>
+                                <path d="M20 4v6h-4"></path>
+                                <path d="M20 10a8 8 0 0 0-3-5"></path>
+                            </svg>
+                        </div>
+                        <h2 class="block__title">UNLIMITED 2% Rebate on Landers Purchases</h2>
+                    </div>
+                    <ul class="block__list">
+                        <li>Straight 2% unlimited rebate with Landers Executive Membership</li>
+                    </ul>
+                </div>
+
+                <div class="block">
+                    <div class="block__head">
+                        <div class="block__icon">
+                            <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6l7-3z"></path>
+                                <path d="M9 11l3 3 3-3"></path>
+                            </svg>
+                        </div>
+                        <h2 class="block__title">Landers Executive Exclusive Benefits</h2>
+                    </div>
+                    <ul class="block__list">
+                        <li>Free delivery for online orders at landers.ph and Landers app for a lower minimum spend of ₱3,000. Exclusions apply.</li>
+                        <li>Waived Personal Shoppers Fee for online orders at landers.ph and Landers app</li>
+                    </ul>
+                </div>
+
+                <div class="block block--perks">
+                    <div class="block__head">
+                        <div class="block__icon">
+                            <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <circle cx="12" cy="9" r="5.5"></circle>
+                                <path d="M12 6.5l.9 1.8 2 .3-1.45 1.4.35 2-1.8-.95-1.8.95.35-2L9.1 8.6l2-.3z"></path>
+                                <path d="M8.5 13.5L7 20l5-2.5 5 2.5-1.5-6.5"></path>
+                            </svg>
+                        </div>
+                        <h2 class="block__title">Access to all Landers Membership Perks and benefits.</h2>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button type="button" class="btn btn--primary" onclick={handleApply}>APPLY NOW</button>
+                    <a class="actions__terms" href={termsUrl} target="_blank" rel="noopener">
+                        Terms and Conditions
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="12" cy="12" r="9.5"></circle>
+                            <path d="M12 11v5"></path>
+                            <circle cx="12" cy="7.8" r="0.6" fill="currentColor"></circle>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+</template>

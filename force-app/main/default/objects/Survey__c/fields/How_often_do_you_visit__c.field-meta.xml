@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>How_often_do_you_visit__c</fullName>
+    <externalId>false</externalId>
     <inlineHelpText>7.  How often do you visit?*</inlineHelpText>
     <label>How often do you visit?</label>
     <required>false</required>

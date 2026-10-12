@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Do_you_gas_up_at_Caltex_Station__c</fullName>
+    <externalId>false</externalId>
     <inlineHelpText>10.  Do you gas up at Caltex Station?</inlineHelpText>
     <label>Do you gas up at Caltex Station?</label>
     <required>false</required>

@@ -1,0 +1,73 @@
+<template>
+    <section class="page">
+        <!-- Left Sticky Panel -->
+        <div class="left">
+            <div class="logo">
+                <img src={logoUrl} alt="Logo" class="logo__img" onerror={handleLogoError} if:true={showLogo} />
+                <span class="logo__placeholder" if:false={showLogo}>LOGO</span>
+            </div>
+            <div class="stage">
+                <div class="spotlight"></div>
+                <div class="floor-shadow"></div>
+                <div class="card">
+                    <img class="card__img" src={cardImageUrl} alt="Landers Executive card" if:true={hasCardImage} />
+                    <div class="card__sheen"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Content Panel -->
+        <div class="right">
+            <div class="wrap doc-content">
+                <h1 class="title">PRIVACY POLICY</h1>
+
+                <p>At Landers Superstore, we value your trust. So we are committed to protecting your privacy and ensuring that your personal information is always secured.</p>
+
+                <h2>Information Collection</h2>
+                <p>We may collect information about you in various methods, such as when:</p>
+                <ul class="doc-list">
+                    <li>You apply for membership</li>
+                    <li>You choose to participate in our promotions, programs and other offers</li>
+                    <li>You create an account on our website or in our mobile applications</li>
+                    <li>You directly provide information directly to us via phone call, SMS or e-mail</li>
+                    <li>You take a survey or interact with us in various other ways</li>
+                </ul>
+
+                <h2>Types of Information We Collect</h2>
+                <p>The personal information that we may collect include:</p>
+                <ul class="doc-list">
+                    <li>Your name, birthday, home address, mobile number, landline, and email address</li>
+                    <li>Your financial account information, such as credit card number and other payment information</li>
+                    <li>Your facial image or face data, such as a photograph of your face, when you activate your digital membership card</li>
+                </ul>
+
+                <h2>Collection, Use, Sharing, Retention, and Deletion of Face Data</h2>
+                <p>Because face data is sensitive personal information, we explain our practices for it separately and in full below:</p>
+                <p><strong>Collection & Intended Use:</strong> When you activate your digital membership card, we use face detection to capture a photo of you. This photo is used only to: (a) activate and generate your digital membership card, and (b) verify your identity for physical membership card printing when you visit a Landers Superstore branch. We do not use your face data for advertising, profiling, analytics, or any purpose other than these two.</p>
+                <p><strong>Disclosure & Sharing:</strong> Your face data is not shared with, sold to, licensed to, or disclosed to any third party, including our research and marketing partners referenced below. It is used exclusively for the purposes stated above.</p>
+                <p><strong>Storage & Retention:</strong> Your face data is stored only in our internal Customer Relationship Management system (Salesforce) and is retained for as long as your membership remains active. It is deleted when your membership is deactivated or your account deletion request is completed.</p>
+                <p><strong>Revoking Consent & Deletion:</strong> You may revoke your consent to face data collection, or request that your face data be deleted, at any time — separately from deleting your entire account — by submitting a request through our Contact Us form (Enquiry Type: My Account / Account Deactivation) or by emailing our Data Protection Officer at <a href="mailto:dataprotectionofficer@landers.ph" class="link">dataprotectionofficer@landers.ph</a>. Revoking consent will deactivate your digital membership card feature but will not otherwise affect your membership. We will process your request as promptly as possible.</p>
+
+                <h2>Use & Sharing of Information</h2>
+                <p>Though we may collect your personal information, we will not, in anyway, use or disclose it without your consent. In most cases, however, we may use it to:</p>
+                <ul class="doc-list">
+                    <li>Send you an e-mail or SMS to answer your queries and respond to your requests</li>
+                    <li>Update and inform you about our upcoming promotions and offers, advisories, and other content we think may be of interest to you</li>
+                </ul>
+                <p>In some cases, we may also share your personal information with trusted third parties, such as research agencies and digital agencies, to help us collate and analyze consumer feedback regarding our products, services, and marketing campaigns.</p>
+                <p>If we do share your personal information with a third party, it is our responsibility to ensure that they keep your information secure, prevent it from misuse, and only allow them to use it in a manner that adheres with our policy.</p>
+                <p>You may request for your user account to be deleted. You can do so by submitting a request from our Contact Us form indicating My Account / Account Deactivation as the Enquiry Type. Once submitted, our Customer Support team will reach out to you regarding this request and will make sure to resolve it in a timely manner. Customer Support may reach out to you via e-mail or phone within 3 business days of submitting the request. It may take up to 30 days from the beginning of the deletion process to properly delete your account and personal data associated with it.</p>
+
+                <h2>Information Security</h2>
+                <p>We take security seriously. That's why we implement strict technical, administrative, and physical security procedures to help prevent loss, misuse, unauthorized access, disclosure and alteration of any personal information. Landers Superstore shall not be held liable for any damage that may be suffered in case of loss, misuse, unauthorized access, disclosure and alteration of any personal information which is not on account of or due to the fault of Landers Superstore.</p>
+
+                <h2>Privacy Policy Update</h2>
+                <p>To keep up with change, we may update this privacy statement from time to time. We will post our new privacy statement and we will let you know.</p>
+
+                <h2>Questions and Feedback</h2>
+                <p>We welcome your questions, comments, and concerns about our privacy statement. Should you have any concerns, or would like to request that your data be deleted from our system, you may email our Data Protection Officer at <a href="mailto:dataprotectionofficer@landers.ph" class="link">dataprotectionofficer@landers.ph</a>.</p>
+
+            </div>
+        </div>
+    </section>
+</template>

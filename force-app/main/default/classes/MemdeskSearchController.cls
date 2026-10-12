@@ -34,7 +34,8 @@ public with sharing class MemdeskSearchController {
 
     private static List<SearchResultWrapper> searchLeads(String searchText, String firstName, String middleName, String lastName) {
         List<SearchResultWrapper> results = new List<SearchResultWrapper>();
-        String query = 'SELECT Id, FirstName, MiddleName, LastName FROM Lead WHERE IsConverted = false';
+        Boolean hasRef = Schema.SObjectType.Lead.fields.getMap().containsKey('ReferenceNumber__c');
+        String query = 'SELECT Id, FirstName, MiddleName, LastName' + (hasRef ? ', ReferenceNumber__c' : '') + ' FROM Lead WHERE IsConverted = false';
 
         String lastNameLike = String.isNotBlank(lastName) ? '%' + String.escapeSingleQuotes(lastName.trim()) + '%' : null;
         String firstNameLike = String.isNotBlank(firstName) ? '%' + String.escapeSingleQuotes(firstName.trim()) + '%' : null;
@@ -57,7 +58,8 @@ public with sharing class MemdeskSearchController {
         for (Lead l : Database.query(query)) {
             SearchResultWrapper wrapper = new SearchResultWrapper();
             wrapper.id = l.Id;
-            wrapper.membershipId = l.Id; // Fallback to Id for leads
+            String ref = hasRef ? String.valueOf(l.get('ReferenceNumber__c')) : null;
+            wrapper.membershipId = String.isNotBlank(ref) ? ref : l.Id;
             wrapper.firstName = l.FirstName != null ? l.FirstName : '';
             wrapper.middleName = l.MiddleName != null ? l.MiddleName : '';
             wrapper.lastName = l.LastName != null ? l.LastName : '';

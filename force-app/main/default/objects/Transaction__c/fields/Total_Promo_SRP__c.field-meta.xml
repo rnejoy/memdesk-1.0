@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Total_Promo_SRP__c</fullName>
+    <externalId>false</externalId>
     <label>Total Promo SRP</label>
     <summarizedField>Transaction_Details__c.Promo_SRP__c</summarizedField>
     <summaryForeignKey>Transaction_Details__c.Transaction__c</summaryForeignKey>

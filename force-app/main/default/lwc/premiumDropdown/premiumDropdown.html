@@ -1,0 +1,38 @@
+<template>
+    <div class="dd">
+        <div
+            class={triggerClass}
+            role="combobox"
+            tabindex={tabIndexValue}
+            aria-haspopup="listbox"
+            aria-expanded={ariaExpanded}
+            aria-disabled={ariaDisabled}
+            aria-label={label}
+            onclick={handleTriggerClick}
+            onkeydown={handleKeyDown}
+            onblur={handleBlur}
+        >
+            <span class="dd__text">{displayText}</span>
+            <svg class={chevronClass} viewBox="0 0 14 8" width="14" height="8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M1 1l6 6 6-6"></path>
+            </svg>
+        </div>
+
+        <ul class="dd__list" role="listbox" lwc:if={isOpen} onmousedown={handleListMouseDown}>
+            <template lwc:if={hasItems}>
+                <template for:each={items} for:item="item">
+                    <li
+                        key={item.key}
+                        class={item.className}
+                        role="option"
+                        aria-selected={item.selected}
+                        data-index={item.index}
+                        onclick={handleOptionClick}
+                        onmouseenter={handleOptionHover}
+                    >{item.label}</li>
+                </template>
+            </template>
+            <li class="dd__empty" lwc:else>No options available</li>
+        </ul>
+    </div>
+</template>

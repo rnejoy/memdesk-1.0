@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Prefer_gas_station_aside_from_Caltex__c</fullName>
+    <externalId>false</externalId>
     <inlineHelpText>11.  What Particular Gas Station do you prefer aside from Landers Caltex? *</inlineHelpText>
     <label>Prefer gas station aside from Caltex</label>
     <required>false</required>

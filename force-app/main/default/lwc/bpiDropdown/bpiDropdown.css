@@ -1,0 +1,115 @@
+:host {
+    display: block;
+}
+
+.dd {
+    position: relative;
+}
+
+/* Same look as .field__control in the form */
+.dd__trigger {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    width: 100%;
+    height: 3rem;
+    padding: 0 1rem;
+    border: 1px solid #e3e3e3;
+    border-radius: 6px;
+    background-color: #fafafa;
+    color: #2b2f3a;
+    font-family: inherit;
+    font-size: 0.875rem;
+    line-height: 1.2;
+    cursor: pointer;
+    user-select: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.dd__trigger:focus,
+.dd__trigger.is-open {
+    outline: none;
+    border-color: #82b044;
+    box-shadow: 0 0 0 3px rgba(130, 176, 68, 0.22);
+    background-color: #ffffff;
+}
+
+.dd__trigger.has-error {
+    border-color: #d64545;
+}
+
+.dd__trigger.has-error:focus,
+.dd__trigger.has-error.is-open {
+    box-shadow: 0 0 0 3px rgba(214, 69, 69, 0.18);
+}
+
+.dd__trigger[aria-disabled='true'] {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.dd__text {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dd__trigger.is-placeholder .dd__text {
+    color: #6b7280;
+}
+
+.dd__chevron {
+    flex: 0 0 auto;
+    color: #6b7280;
+    transition: transform 0.15s ease;
+}
+
+.dd__chevron.is-open {
+    transform: rotate(180deg);
+}
+
+/* Option list */
+.dd__list {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    z-index: 20;
+    box-sizing: border-box;
+    max-height: 15rem;
+    margin: 0;
+    padding: 0.25rem;
+    overflow-y: auto;
+    list-style: none;
+    border: 1px solid #e3e3e3;
+    border-radius: 6px;
+    background: #ffffff;
+    box-shadow: 0 10px 24px -6px rgba(0, 0, 0, 0.18);
+}
+
+.dd__option {
+    padding: 0.65rem 0.75rem;
+    border-radius: 4px;
+    color: #2b2f3a;
+    font-size: 0.875rem;
+    cursor: pointer;
+}
+
+.dd__option.is-active {
+    background: #f1f6e8;
+}
+
+.dd__option.is-selected {
+    color: #5f8a2b;
+    font-weight: 500;
+}
+
+.dd__empty {
+    padding: 0.65rem 0.75rem;
+    color: #6b7280;
+    font-size: 0.8125rem;
+}

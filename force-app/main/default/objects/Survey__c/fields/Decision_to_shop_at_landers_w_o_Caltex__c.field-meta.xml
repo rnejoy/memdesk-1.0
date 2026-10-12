@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Decision_to_shop_at_landers_w_o_Caltex__c</fullName>
+    <externalId>false</externalId>
     <inlineHelpText>20  Will it impact your decision to shop at Landers without Caltex?</inlineHelpText>
     <label>Decision to shop at landers w/o Caltex</label>
     <required>false</required>

@@ -3,6 +3,7 @@
     <fullName>IsActive__c</fullName>
     <defaultValue>true</defaultValue>
     <description>this will control whether any QR Code assigned to a Canvasser, can still be used or not</description>
+    <externalId>false</externalId>
     <label>IsActive</label>
     <trackTrending>false</trackTrending>
     <type>Checkbox</type>

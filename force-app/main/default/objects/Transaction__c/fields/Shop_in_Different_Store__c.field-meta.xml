@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Shop_in_Different_Store__c</fullName>
+    <externalId>false</externalId>
     <formula>IF(LEFT(Member__r.Membership_ID__c, 4)!=Branch__c,TRUE,FALSE )</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
     <label>Shop in Different Store</label>

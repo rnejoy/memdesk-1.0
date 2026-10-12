@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Are_you_like_to_renew_your_membership__c</fullName>
+    <externalId>false</externalId>
     <inlineHelpText>15.  Are you likely to renew your membership once it expires?</inlineHelpText>
     <label>Are you like to renew your membership?</label>
     <required>false</required>

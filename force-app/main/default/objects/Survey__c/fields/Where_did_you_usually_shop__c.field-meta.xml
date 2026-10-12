@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Where_did_you_usually_shop__c</fullName>
+    <externalId>false</externalId>
     <inlineHelpText>9.  Aside from Landers, where do you usually shop*</inlineHelpText>
     <label>Where did you usually shop</label>
     <required>false</required>

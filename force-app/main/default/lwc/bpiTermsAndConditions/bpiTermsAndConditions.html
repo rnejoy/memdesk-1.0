@@ -1,0 +1,162 @@
+<template>
+    <section class="page">
+        <!-- Left Sticky Panel -->
+        <div class="left">
+            <div class="logo">
+                <img src={logoUrl} alt="Logo" class="logo__img" onerror={handleLogoError} if:true={showLogo} />
+                <span class="logo__placeholder" if:false={showLogo}>LOGO</span>
+            </div>
+            <div class="stage">
+                <div class="spotlight"></div>
+                <div class="floor-shadow"></div>
+                <div class="card">
+                    <img class="card__img" src={cardImageUrl} alt="Landers Executive card" if:true={hasCardImage} />
+                    <div class="card__sheen"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Content Panel -->
+        <div class="right">
+            <div class="wrap doc-content">
+                <h1 class="title">TERMS AND CONDITIONS AND PRIVACY POLICY</h1>
+
+                <h2>1. Membership</h2>
+                <p>Landers provides a membership subscription that allows our members exclusive access to Landers Superstores, Landers.ph, and the Landers mobile app. Any individual above 18 years of age is qualified to apply for a membership subscription. Membership subscription application is bound by the rules of Landers Superstore, which may be altered without prior notice. Landers Superstore also reserves the right to refuse membership to any applicant. Membership can be nullified without notice or cause.</p>
+
+                <h2>2. Membership Cards and Fees</h2>
+                <ul class="doc-list">
+                    <li><strong>2.1. Fee Structure:</strong> Your Landers membership subscription fee shall be continuously billed annually on the anniversary date of the Primary Cardholder's application date until cancelled, giving members access to exclusive perks and all physical Landers Superstores, the Landers.ph website, and the Landers mobile app. The Primary Card, as well as any Extension Card issued in relation to the foregoing (for Premium and Business members), shall be continuously billed annually on the Primary Cardholder's anniversary date.</li>
+                    <li><strong>2.2. Payment Method on File:</strong> As the subscriber to Landers membership, you must provide us with one or more Payment Methods. "Payment Method" means a current, valid, and accepted payment method. Unless you cancel your membership on or before the expiration of the term, you authorize us to charge the membership subscription fee for the next year to your Payment Method on file.</li>
+                    <li><strong>2.3. Offers and Promotions:</strong> We may offer a number of membership types and promotions, including subscriptions offered by third parties in conjunction with the provision of their own products and services. Memberships and promotions offered by third parties are subject to their own terms and conditions. Some membership types and promotions may have differing conditions and limitations, which will be disclosed at your sign-up or in other communications made available to you. You can find specific details regarding your Landers membership subscription by visiting the Membership Desk at any Landers store or visiting Landers.ph and clicking on the "My Membership" link in your profile.</li>
+                </ul>
+
+                <h2>3. Renewal, Revision, or Deletion of Cards</h2>
+                <ul class="doc-list">
+                    <li><strong>3.1. Automatic Renewal:</strong> By enrolling in a Landers membership, the Primary Cardholder agrees to a continuous annual renewal of the Landers membership subscription fee and is responsible for ensuring that the Payment Method has sufficient funds. The applicable membership subscription fee and any other charges incurred in connection with the membership will be automatically billed to the Payment Method on record. If the charge is unsuccessful for any reason, Landers may retry billing using the same Payment Method.</li>
+                    <li><strong>3.2. Third-Party Billing:</strong> If the membership was availed through a third-party Payment Method, billing and payment management may be subject to the terms of the applicable third party, and relevant billing details may be accessed through the member's account with such provider.</li>
+                    <li><strong>3.3. Renewal Rates:</strong> The Landers membership subscription fee will be charged annually on your anniversary date at the prevailing rate at the time of renewal. Upon successful payment, the membership will be extended for one (1) year.</li>
+                </ul>
+
+                <h2>4. Payment Method</h2>
+                <ul class="doc-list">
+                    <li><strong>4.1. Account Authorization:</strong> To sign up for a Landers membership subscription, you must provide one or more Payment Methods. You authorize us to charge any Payment Method associated with your account in case your primary Payment Method is declined or no longer available to us for payment of your Landers membership subscription fee. You remain responsible for any uncollected amounts. If a payment is not successfully settled due to expiration, insufficient funds, or otherwise, and you do not cancel your account, we may suspend your Landers membership access until we have successfully charged a valid Payment Method. For some Payment Methods, the issuer may charge you certain fees, such as foreign transaction fees or other fees relating to the processing of your Payment Method.</li>
+                    <li><strong>4.2. Updating Payment Methods:</strong> You can update your Payment Methods by going to the Landers Membership Desk in-store, or by visiting the Landers.ph website or app, clicking the "Account" page, and proceeding to "My Payment Methods". We may also update your Payment Methods using information provided by the payment service providers. Following any update, you authorize us to continue to charge the applicable Payment Method(s).</li>
+                </ul>
+
+                <h2>5. Cancellation of Membership</h2>
+                <ul class="doc-list">
+                    <li><strong>5.1. Cancellation Period:</strong> Automatic renewal of the Landers membership fee can be cancelled by the primary member on or before seven (7) days prior to the expiration of the term. If not cancelled on or before such period, the subscription shall be automatically renewed for another term of one (1) year.</li>
+                    <li><strong>5.2. Access After Cancellation:</strong> Once the subscription membership is cancelled, you will continue to have access to Landers perks, including, but not limited to, the redemption of points, through the end of your billing period or your signup anniversary date.</li>
+                    <li><strong>5.3. Refund Policy:</strong> To the extent permitted by applicable law, payments are non-refundable and we do not provide refunds or credits for any partial membership periods or unused months of Landers membership.</li>
+                    <li><strong>5.4. How to Cancel:</strong> To cancel, proceed to any Landers Membership Desk in-store. If you signed up for Landers membership using your account with a third party as a Payment Method and wish to cancel your subscription, you may need to do so through such third party, for example by visiting your account with the applicable third party and turning off auto-renew, or by unsubscribing from the Landers membership through that third party.</li>
+                </ul>
+
+                <h2>6. Membership Payment</h2>
+                <p>Membership payment can be made via cash, debit card, credit card, or e-wallets authorized by Landers Superstore.</p>
+
+                <h2>7. Return or Refund</h2>
+                <p>The Landers Superstore member, his or her extension, and Landers Superstore agree that the return, replacement, or exchange of merchandise, or a request for a refund, is subject to the following rules:</p>
+                <ul class="doc-list">
+                    <li><strong>7.1.</strong> Replacement or exchange will be done in the branch of Landers Superstore where the item was purchased.</li>
+                    <li><strong>7.2.</strong> All defective merchandise for replacement or exchange must be returned within seven (7) days from the date of purchase, along with the original Landers Superstore sales receipt.</li>
+                    <li><strong>7.3.</strong> Non-food merchandise must be returned complete with original packaging, manual, and factory seals intact.</li>
+                    <li><strong>7.4.</strong> Undergarments are not returnable nor exchangeable. Items which are the subject of a "Service Center" are not refundable and will be returned to an authorized Service Center for repair under the manufacturer's warranty.</li>
+                    <li><strong>7.5.</strong> Replacement or exchange of perishable items is valid only within 24 hours from the date of purchase. Food items to be returned should be at least 75% intact.</li>
+                    <li><strong>7.6.</strong> For every return and refund, the member will be issued a credit memo for the same value refunded or returned. There will be no cash refund.</li>
+                    <li><strong>7.7. Warranty Policy:</strong> Landers Superstore honors all manufacturers' warranties with respect only to locally-sourced items and/or products manufactured within the Philippines. With respect to foreign-sourced and/or imported items, the warranty of Landers Superstore shall be limited only to the manufacturer's representations as indicated in the items' labels. The Landers Superstore Warranty Policy does not apply to any product, or part thereof, which has been damaged through electrical voltage fluctuation, improper installation, misuse, alteration, attempts at repair, neglect, accident, removal or defacement of factory seals or serial numbers, or damage from fire, flood, wind, or water.</li>
+                    <li><strong>7.8. General Policies:</strong> Landers Superstore promotes family bonding. As such, members are welcome to bring their children and guests. However, only members are allowed to purchase merchandise using his or her membership card. Responsible parenting is also encouraged inside the superstore; children should not be left unattended. Opening of merchandise before purchase is not permitted. Members are responsible for any opened or damaged merchandise by their guests, children, or themselves. Landers Superstore reserves the right to inspect backpacks, diaper bags, or briefcases.</li>
+                </ul>
+
+                <h2>8. Use &amp; Sharing of Information (Privacy Policy)</h2>
+                <p>The personal information you have shared in this membership form will not be used in any way, or disclosed, without your consent. In most cases, however, you hereby signify your consent for us to use it to:</p>
+                <ul class="doc-list">
+                    <li><strong>8.1.</strong> Send you notifications, such as but not limited to e-mail, call, SMS, Viber, and in-app push notifications, to offer promotions, answer your queries, and respond to your requests;</li>
+                    <li><strong>8.2.</strong> Update and inform you about our upcoming promotions and offers, advisories, and other content that may be of interest to you;</li>
+                    <li><strong>8.3.</strong> Auto-create an online account on Landers.ph; and</li>
+                    <li><strong>8.4.</strong> Such other cases as authorized under the Data Privacy Act of 2012.</li>
+                </ul>
+                <p>By submitting this membership form, you also agree to give Landers full rights to all information shared for purposes of promotions and advertising, marketing, research, and the like. The member agrees to receive promotional materials via direct communications, such as, but not limited to, calls, email, and SMS notifications.</p>
+                <p>You further agree to give Landers full rights to share your personal information with trusted third parties, such as research agencies and digital agencies, to help us collate and analyze consumer feedback regarding our products, services, and marketing campaigns.</p>
+                <p>If we do share your personal information with a third party, it is our responsibility to ensure that they keep your information secure, prevent it from misuse, and only use it in a manner that adheres to our policy.</p>
+
+                <h2>9. Checking of Receipts</h2>
+                <p>To ensure that you have been charged correctly for the merchandise received, all receipts will be verified upon leaving the superstore.</p>
+
+                <h2>10. Not a Depository</h2>
+                <p>Landers Superstore does not assume the obligation of a depository or safe-keeper of any vehicle and/or any content or part thereof while inside our parking area. Landers Superstore members solely assume all risks to their vehicle and its contents when using the parking area. Therefore, Landers Superstore is not responsible for any damage or loss to your vehicle while at the parking area. Landers Superstore shall not be responsible for any damage or loss caused, directly or indirectly, by defects in merchandise not purchased from the store.</p>
+
+                <h2>11. Loyalty Points / Rebates (Landers Executive and Landers Business Members)</h2>
+                <ul class="doc-list doc-list--alpha">
+                    <li><strong>a.</strong> Members will earn an unlimited 2% rebate on eligible Landers purchases from Landers retail, online, Central, and Doppio, computed on the net amount (net of discount and VAT). One (1) point is equivalent to ₱1.00.</li>
+                    <li><strong>b.</strong> Earned points are posted a minimum of 8 days after the transaction in the app and will be valid until 14 months from the transaction date. Forfeiture of rebates shall not be related to the time of online account creation but shall always depend on the transaction from which the rebates were earned.</li>
+                    <li><strong>c.</strong> Active members may use or redeem their points at Landers Retail (offline and online), Landers Central, and Doppio. Points cannot, however, be exchanged for cash, Landers gift certificates, or other payment forms.</li>
+                    <li>
+                        <strong>d.</strong> Exclusions for points / rebates earning are as follows:
+                        <ul class="doc-list doc-list--nested">
+                            <li>Transactions at Federal Barbers, Caltex (including Solane), and Capital Care</li>
+                            <li>Landers Online Marketplace orders</li>
+                            <li>Payments using the following: Landers points, LCC Points (via the Maya App), any Landers Gift Certificate, and other points used for payment</li>
+                            <li>Not applicable to CCM payments</li>
+                            <li>Online: Delivery and Personal Shopper Fees</li>
+                        </ul>
+                    </li>
+                    <li><strong>e.</strong> The registration or creation of the membership account in the Landers App is mandatory to view and redeem Landers rebates. Loyalty Rewards Program account users must register online via the Application in order to earn points and use such earned points for redemption. Failure to register using the Application will restrict the account user from redeeming rewards until such time as he or she is properly registered online.</li>
+                    <li><strong>f.</strong> The Loyalty Rewards Program is inseparably associated with Internet availability.</li>
+                    <li><strong>g.</strong> Landers reserves the right to adjust earned or accrued Landers rebates as it sees fit, including, but not limited to, the deduction of points arising from disputed transactions, or those from returned goods or refunds.</li>
+                    <li><strong>h.</strong> Members should keep transaction receipts, which may be required in case of a request for points verification by the member.</li>
+                    <li><strong>i.</strong> For the redemption of Landers rebates, the rebates or points reflected in Landers' transaction records shall be deemed final and correct. Landers has the exclusive right to determine the available number of rebates (points) to be awarded to or available for redemption by the member.</li>
+                    <li><strong>j.</strong> Redeemed rebates are non-transferable.</li>
+                    <li><strong>k.</strong> Redeemed rebates cannot be restored and are non-refundable, nor can they be sold or transferred for cash or credit, under any circumstance.</li>
+                    <li><strong>l.</strong> Redeemed rebates are subject to Landers' return and exchange policy.</li>
+                    <li><strong>m.</strong> Landers shall not be liable for fraud, misuse, or other misconduct involving the earning, redemption, or use of Landers rebates, which may result in the immediate cancellation or termination of the involved Landers Membership account and the forfeiture of the rebates or points in connection thereto.</li>
+                    <li><strong>n.</strong> Employees of Landers' partner merchants or suppliers are subject to their respective employers' policies on the earning and redemption of Landers rebates / points.</li>
+                    <li><strong>o.</strong> Other guidelines, promotions, and offerings for earning and using Landers rebates are provided in the Platform and in collaterals posted by Landers, which may be updated at any time without need of prior notice.</li>
+                </ul>
+
+                <h2>12. Terms and Conditions Governing Membership Features</h2>
+
+                <h3>a. Automatic Membership Renewal</h3>
+                <ul class="doc-list">
+                    <li><strong>a.1.</strong> By maintaining an active Landers membership paid through subscription, the Member expressly consents to the automatic renewal of their Landers membership upon expiration.</li>
+                    <li><strong>a.2.</strong> The prevailing membership renewal fee shall be automatically charged to the Member's payment method on file based on the membership's renewal date and the published membership fee.</li>
+                    <li><strong>a.3.</strong> The Member authorizes the issuing bank to automatically process and charge such renewal fee without the need for additional notice or consent.</li>
+                </ul>
+
+                <h3>b. Effect of Credit Card Cancellation</h3>
+                <ul class="doc-list">
+                    <li><strong>b.1.</strong> The cancellation, suspension, or non-renewal of the payment method on file shall not automatically result in the termination of the Member's Landers Premium or Executive Membership.</li>
+                    <li><strong>b.2.</strong> The Member shall remain responsible for ensuring continued membership validity through alternative payment methods, if applicable.</li>
+                    <li><strong>b.3.</strong> Landers shall not be held liable for any delay, disruption, or suspension of membership privileges arising from bank-related issues.</li>
+                </ul>
+
+                <h3>c. Exclusive Perks and Promotional Benefits</h3>
+                <ul class="doc-list">
+                    <li><strong>c.1.</strong> Certain Landers membership perks, privileges, discounts, or promotional offers may be exclusive to select memberships.</li>
+                    <li><strong>c.2.</strong> Such benefits shall be governed by the specific terms and conditions issued by Landers and may be modified, suspended, or discontinued without prior notice.</li>
+                </ul>
+
+                <h3>d. Data Sharing and Use of Information</h3>
+                <ul class="doc-list">
+                    <li><strong>d.1.</strong> By applying for a Landers membership, the Member grants Landers the authority to collect, process, and securely share necessary personal and account information for the purpose of administering membership benefits.</li>
+                    <li><strong>d.2.</strong> Data sharing shall be limited to what is required under applicable laws, including privacy regulations.</li>
+                </ul>
+
+                <h3>e. Lost or Stolen Membership Cards</h3>
+                <ul class="doc-list">
+                    <li><strong>e.1.</strong> Loss or theft of a Landers Membership Card shall not, by itself, impact the validity of the Member's Landers membership.</li>
+                    <li><strong>e.2.</strong> Members shall report the loss or theft of their Landers Membership Card directly to the issuing bank for proper handling and replacement.</li>
+                </ul>
+
+                <h3>f. Landers' Rights</h3>
+                <ul class="doc-list">
+                    <li><strong>f.1.</strong> Landers reserves the right, at its sole discretion and without prior notice, to modify, suspend, or terminate any membership benefits, subject to applicable laws and agreements with issuing banks.</li>
+                    <li><strong>f.2.</strong> Landers may suspend or terminate a membership for violations of these Terms and Conditions or for conduct detrimental to the Membership Program.</li>
+                </ul>
+
+                <h2>13. Consent and Agreement</h2>
+                <p>By submitting this membership application form, the applicant warrants that he or she has read and understood, and gives his or her unqualified conformity to, these terms and conditions of membership.</p>
+            </div>
+        </div>
+    </section>
+</template>

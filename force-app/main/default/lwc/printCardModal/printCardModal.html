@@ -1,0 +1,110 @@
+<template>
+    <div class="pc-backdrop" onclick={handleBackdropClick} onkeydown={handleKeydown}>
+        <div class="pc-modal" role="dialog" aria-modal="true" aria-label="Print membership card" tabindex="-1">
+            <div class="pc-left">
+                <div class="pc-head">
+                    <span class="pc-head-icon">
+                        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+                            <path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6" />
+                            <rect x="6" y="14" width="12" height="8" rx="1" />
+                        </svg>
+                    </span>
+                    <div>
+                        <h2 class="pc-title">Print Membership Card</h2>
+                        <p class="pc-sub">Review the card, adjust text if needed, then print.</p>
+                    </div>
+                </div>
+
+                <div class="pc-tabs" role="group" aria-label="Print view">
+                    <button type="button" class={previewTabClass} data-tab="preview" onclick={handleTab}>Preview</button>
+                    <button type="button" class={readyTabClass} data-tab="ready" onclick={handleTab}>Ready to Print</button>
+                </div>
+
+                <div class="pc-body">
+                    <div class="pc-card-wrap">
+                        <div class={cardClass}>
+                            <div class="pc-card-main">
+                                <div class="pc-card-left" style={textBlockStyle}>
+                                    <div class="pc-name" style={nameStyle}>{cardName}</div>
+                                    <div class="pc-id" style={idStyle}>{idText}</div>
+                                    <template lwc:if={barcodeSrc}>
+                                        <img class="pc-barcode" src={barcodeSrc} alt="" />
+                                    </template>
+                                    <ul class="pc-terms">
+                                        <li>This card is exclusively yours and non-transferable.</li>
+                                        <li>Please present this card at the entrance and upon purchase.</li>
+                                        <li>This card is super accepted in all Landers Superstore.</li>
+                                    </ul>
+                                </div>
+                                <div class="pc-card-right">
+                                    <img class="pc-photo" src={cardPhoto} alt="Member photo" />
+                                    <div class="pc-dates">
+                                        <span>MEMBER SINCE</span>
+                                        <strong>{cardSince}</strong>
+                                        <span>VALID THRU</span>
+                                        <strong>{cardThru}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pc-stripe"></div>
+                            <div class="pc-card-foot">
+                                <img class="pc-logo" src={logoUrl} alt="" />
+                                <span>www.landers.ph</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pc-controls">
+                        <div class="pc-control">
+                            <span class="pc-control-label">Card Text</span>
+                            <div class="pc-stepper">
+                                <button type="button" class="pc-step-btn" data-delta="-1" onclick={handleTextSize} disabled={adjustDisabled} aria-label="Decrease card text size">-</button>
+                                <span class="pc-step-value">{cardTextSize}</span>
+                                <button type="button" class="pc-step-btn" data-delta="1" onclick={handleTextSize} disabled={adjustDisabled} aria-label="Increase card text size">+</button>
+                            </div>
+                        </div>
+                        <div class="pc-control">
+                            <span class="pc-control-label">Text Position</span>
+                            <div class="pc-stepper">
+                                <button type="button" class="pc-step-btn" data-delta="-1" onclick={handleTextPos} disabled={adjustDisabled} aria-label="Move text up">-</button>
+                                <button type="button" class="pc-step-btn" data-delta="1" onclick={handleTextPos} disabled={adjustDisabled} aria-label="Move text down">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pc-right">
+                <button type="button" class="pc-close" onclick={handleClose} aria-label="Close">x</button>
+                <div class="pc-steps-title">Print Steps</div>
+                <ul class="pc-steps">
+                    <template for:each={printSteps} for:item="step">
+                        <li key={step.id} class="pc-step">
+                            <template lwc:if={step.printed}>
+                                <span class="check-box">
+                                    <svg class="check-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><polyline points="20 6 9 17 4 12" /></svg>
+                                </span>
+                            </template>
+                            <template lwc:else>
+                                <span class="pc-num">{step.number}</span>
+                            </template>
+                            <div class="pc-step-text">
+                                <strong>{step.label}</strong>
+                                <span>{step.status}</span>
+                            </div>
+                            <button type="button" class="pc-print-btn" data-id={step.id} onclick={handlePrintStep} disabled={step.btnDisabled}>{step.btnLabel}</button>
+                        </li>
+                    </template>
+                </ul>
+
+                <template lwc:if={allPrinted}>
+                    <button type="button" class="btn-light pc-complete" onclick={handleComplete}>Complete Printing</button>
+                </template>
+                <template lwc:else>
+                    <p class="pc-hint">Kindly configure the right printer to use once system pop up window opens.</p>
+                </template>
+            </div>
+        </div>
+    </div>
+</template>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Do_you_do_online_Shopping__c</fullName>
+    <externalId>false</externalId>
     <inlineHelpText>12.  Do you do online Shopping?</inlineHelpText>
     <label>Do you do online Shopping?</label>
     <required>false</required>

@@ -37,9 +37,13 @@ public without sharing class MemdeskLookupController {
             return result;
         }
         for (Schema.PicklistEntry entry : field.getDescribe().getPicklistValues()) {
-            if (entry.isActive()) {
-                result.add(new Option(entry.getValue(), entry.getLabel()));
+            if (!entry.isActive()) {
+                continue;
             }
+            if (fieldApiName == 'Gender__c' && !new Set<String>{ 'male', 'female' }.contains(entry.getLabel().trim().toLowerCase())) {
+                continue;
+            }
+            result.add(new Option(entry.getValue(), entry.getLabel()));
         }
         return result;
     }

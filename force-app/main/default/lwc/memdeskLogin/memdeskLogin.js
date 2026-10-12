@@ -3,6 +3,7 @@ import MEMDESK_LOGIN_BG from '@salesforce/resourceUrl/memdeskLoginBg';
 import MEMDESK_LOGIN_CENTER_IMG from '@salesforce/resourceUrl/memdeskLoginPhoto';
 import MEMDESK_LOGIN_LOGO from '@salesforce/resourceUrl/memdeskLoginLogo';
 import userExists from '@salesforce/apex/LoginAuthController.userExists';
+import getStoreByEmail from '@salesforce/apex/LoginAuthController.getStoreByEmail';
 
 export default class MemdeskLogin extends LightningElement {
     memdeskLoginBg = MEMDESK_LOGIN_BG;
@@ -12,7 +13,7 @@ export default class MemdeskLogin extends LightningElement {
     // View state
     isLoggedIn = false;
     loggedInUser = '';
-    loggedInStore = 'Alabang'; 
+    loggedInStore = '';
 
     email = '';
     password = '';
@@ -168,7 +169,17 @@ export default class MemdeskLogin extends LightningElement {
                 return;
             }
 
+            const store = await getStoreByEmail({
+                email: this.email.trim()
+            });
+
+            if (!store) {
+                this.errorMessage = 'No store is assigned to this account. Please contact your administrator.';
+                return;
+            }
+
             // ACCOUNT EXISTS -> Switch to landing page view
+            this.loggedInStore = store;
             this.loggedInUser = this.email.trim().split('@')[0];
             this.isLoggedIn = true;
         } catch (error) {
@@ -183,6 +194,7 @@ export default class MemdeskLogin extends LightningElement {
 
     handleLogout() {
         this.isLoggedIn = false;
+        this.loggedInStore = '';
         this.email = '';
         this.password = '';
         this.clearErrors();
