@@ -10,7 +10,7 @@
                 <div class="spotlight"></div>
                 <div class="floor-shadow"></div>
                 <div class="card">
-                    <img class="card__img" src={cardImageUrl} alt="Landers Executive card" if:true={hasCardImage} />
+                    <img class="card__img" src={cardImageUrl} alt="Landers Premium card" if:true={hasCardImage} />
                     <div class="card__sheen"></div>
                 </div>
             </div>
@@ -24,7 +24,7 @@
                         <h1 class="confirm__title">Complete Your Payment</h1>
 
                         <p class="confirm__text">
-                            <strong>Next Step:</strong> You may now pay for your Landers Executive Membership at
+                            <strong>Next Step:</strong> You may now pay for your Landers Premium Membership at
                             the Membership Counter. Please present the same valid ID as you have provided on the
                             Application Form and a screenshot of this page showing your
                             <strong> Reference Number.</strong>
@@ -89,7 +89,7 @@
 
                 <!-- 3. Application form -->
                 <template lwc:elseif={showForm}>
-                    <h1 class="title">Landers Executive Membership</h1>
+                    <h1 class="title">Landers Premium Membership</h1>
 
                     <form class="form" onsubmit={handleSubmit} novalidate>
                         <div class="row">
@@ -119,7 +119,7 @@
                             <div class="field">
                                 <div class="field__label">
                                     <span class="field__text">Gender</span>
-                                    <c-bpi-dropdown name="gender" data-field="gender" label="Gender" placeholder="Please select.." options={genderOptions} value={form.gender} error={errors.gender} onchange={handleComboChange}></c-bpi-dropdown>
+                                    <c-premium-dropdown name="gender" data-field="gender" label="Gender" placeholder="Please select.." options={genderOptions} value={form.gender} error={errors.gender} onchange={handleComboChange}></c-premium-dropdown>
                                 </div>
                                 <p class="field__error" role="alert" lwc:if={errors.gender}>{errors.gender}</p>
                             </div>
@@ -234,9 +234,9 @@
                                     checked={isAgreed} onchange={handleCheckboxChange} />
                                 <span class="checkbox__text">
                                     I agree to the
-                                    <a href="/executivemicrosite/terms-and-conditions" target="_blank" rel="noopener noreferrer" class="link--highlight"> LANDERS TERMS AND CONDITIONS</a>,
+                                    <a href="/premiummicrosite/terms-and-conditions" target="_blank" rel="noopener noreferrer" class="link--highlight"> LANDERS TERMS AND CONDITIONS</a>,
                                     and
-                                    <a href="/executivemicrosite/terms-and-conditions" target="_blank" rel="noopener noreferrer" class="link--highlight"> PRIVACY POLICY </a>
+                                    <a href="/premiummicrosite/privacy-policy" target="_blank" rel="noopener noreferrer" class="link--highlight"> PRIVACY POLICY </a>
                                     for the application of my Landers membership.
                                 </span>
                             </label>

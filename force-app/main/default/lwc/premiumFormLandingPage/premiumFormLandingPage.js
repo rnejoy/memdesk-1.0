@@ -3,15 +3,15 @@ import LOGO from '@salesforce/resourceUrl/bpiLandersLogo';
 // import HERO_IMG from '@salesforce/resourceUrl/heroImage';
 import CARD_IMAGE from '@salesforce/resourceUrl/bpiLandingImage';
 
-export default class bpiLandingPage extends LightningElement {
+export default class premiumLandingPage extends LightningElement {
     logoUrl = LOGO; 
     heroImageUrl = '';
     cardImageUrl = CARD_IMAGE;
     showLogo = false;
 
-    applyUrl = '/executivemicrosite/apply-membership';
+    applyUrl = '/premiummicrosite/apply-premium';
     renewUrl = '/s/renew';
-    termsUrl = '/executivemicrosite/terms-and-conditions';
+    termsUrl = '/premiummicrosite/terms-and-conditions';
 
     connectedCallback() {
         this.showLogo = !!this.logoUrl;

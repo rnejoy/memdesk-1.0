@@ -289,7 +289,7 @@ public with sharing class premiumApplicationController {
         rec.put('city_code__c', request.cityCode);
         rec.put('barangay_code__c', request.barangayCode);
 
-        rec.put('Customer_Type__c', 'Executive');
+        rec.put('Customer_Type__c', 'Premium');
         rec.put('Membership_Type__c', 'Member');
         rec.put('Customer_Sub_Type__c', 'Primary');
         if (APPLICANT_OBJECT == 'Lead') {

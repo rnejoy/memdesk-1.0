@@ -1,10 +1,9 @@
 import { LightningElement, wire, track } from 'lwc';
-import getProvinces from '@salesforce/apex/BpiApplicationController.getProvinces';
-import getCities from '@salesforce/apex/BpiApplicationController.getCities';
-import getBarangays from '@salesforce/apex/BpiApplicationController.getBarangays';
-import getStores from '@salesforce/apex/BpiApplicationController.getStores';
-import submitApplication from '@salesforce/apex/BpiApplicationController.submitApplication';
-import { loadScript } from 'lightning/platformResourceLoader';
+import getProvinces from '@salesforce/apex/premiumApplicationController.getProvinces';
+import getCities from '@salesforce/apex/premiumApplicationController.getCities';
+import getBarangays from '@salesforce/apex/premiumApplicationController.getBarangays';
+import getStores from '@salesforce/apex/premiumApplicationController.getStores';
+import submitApplication from '@salesforce/apex/premiumApplicationController.submitApplication';
 import LOGO from '@salesforce/resourceUrl/bpiLandersLogo';
 // import HERO_IMG from '@salesforce/resourceUrl/heroImage';
 import CARD_IMAGE from '@salesforce/resourceUrl/bpiLandingImage';
@@ -116,7 +115,7 @@ const BAR_NARROW = 2;
 const BAR_WIDE = 5;
 const BAR_QUIET = 20;
 
-export default class BpiApplicationForm extends LightningElement {
+export default class premiumForm extends LightningElement {
 
     @track form = {};
     @track errors = {};
@@ -424,7 +423,7 @@ export default class BpiApplicationForm extends LightningElement {
         const firstInvalid = this.template.querySelector('.is-invalid');
         if (firstInvalid) {
             firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            const focusTarget = firstInvalid.matches('input, select, c-bpi-dropdown')
+            const focusTarget = firstInvalid.matches('input, select, c-premium-dropdown')
                 ? firstInvalid
                 : firstInvalid.querySelector('input');
             if (focusTarget) {
