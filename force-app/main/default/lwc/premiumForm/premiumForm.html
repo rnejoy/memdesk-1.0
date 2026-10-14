@@ -136,7 +136,7 @@
                             <div class="field">
                                 <div class="field__label">
                                     <span class="field__text">Marital Status</span>
-                                    <c-bpi-dropdown name="maritalStatus" data-field="maritalStatus" label="Marital Status" placeholder="Please select.." options={maritalOptions} value={form.maritalStatus} error={errors.maritalStatus} onchange={handleComboChange}></c-bpi-dropdown>
+                                    <c-premium-dropdown name="maritalStatus" data-field="maritalStatus" label="Marital Status" placeholder="Please select.." options={maritalOptions} value={form.maritalStatus} error={errors.maritalStatus} onchange={handleComboChange}></c-premium-dropdown>
                                 </div>
                                 <p class="field__error" role="alert" lwc:if={errors.maritalStatus}>{errors.maritalStatus}</p>
                             </div>
@@ -146,14 +146,14 @@
                             <div class="field">
                                 <div class="field__label">
                                     <span class="field__text">Nationality</span>
-                                    <c-bpi-dropdown name="nationality" data-field="nationality" label="Nationality" placeholder="Please select.." options={nationalityOptions} value={form.nationality} error={errors.nationality} onchange={handleComboChange}></c-bpi-dropdown>
+                                    <c-premium-dropdown name="nationality" data-field="nationality" label="Nationality" placeholder="Please select.." options={nationalityOptions} value={form.nationality} error={errors.nationality} onchange={handleComboChange}></c-premium-dropdown>
                                 </div>
                                 <p class="field__error" role="alert" lwc:if={errors.nationality}>{errors.nationality}</p>
                             </div>
                             <div class="field">
                                 <div class="field__label">
                                     <span class="field__text">Occupation</span>
-                                    <c-bpi-dropdown name="occupation" data-field="occupation" label="Occupation" placeholder="Please select.." options={occupationOptions} value={form.occupation} error={errors.occupation} onchange={handleComboChange}></c-bpi-dropdown>
+                                    <c-premium-dropdown name="occupation" data-field="occupation" label="Occupation" placeholder="Please select.." options={occupationOptions} value={form.occupation} error={errors.occupation} onchange={handleComboChange}></c-premium-dropdown>
                                 </div>
                                 <p class="field__error" role="alert" lwc:if={errors.occupation}>{errors.occupation}</p>
                             </div>
@@ -191,14 +191,14 @@
                             <div class="field">
                                 <div class="field__label">
                                     <span class="field__text">State / Province</span>
-                                    <c-bpi-dropdown name="province" data-field="province" label="State / Province" placeholder="Please select.." options={provinceOptions} value={form.province} error={errors.province} onchange={handleProvinceChange}></c-bpi-dropdown>
+                                    <c-premium-dropdown name="province" data-field="province" label="State / Province" placeholder="Please select.." options={provinceOptions} value={form.province} error={errors.province} onchange={handleProvinceChange}></c-premium-dropdown>
                                 </div>
                                 <p class="field__error" role="alert" lwc:if={errors.province}>{errors.province}</p>
                             </div>
                             <div class="field">
                                 <div class="field__label">
                                     <span class="field__text">City / District</span>
-                                    <c-bpi-dropdown name="city" data-field="city" label="City / District" placeholder={cityPlaceholder} options={cityOptions} value={form.city} disabled={isCityDisabled} error={errors.city} onchange={handleCityChange}></c-bpi-dropdown>
+                                    <c-premium-dropdown name="city" data-field="city" label="City / District" placeholder={cityPlaceholder} options={cityOptions} value={form.city} disabled={isCityDisabled} error={errors.city} onchange={handleCityChange}></c-premium-dropdown>
                                 </div>
                                 <p class="field__error" role="alert" lwc:if={errors.city}>{errors.city}</p>
                             </div>
@@ -207,7 +207,7 @@
                         <div class="field">
                             <div class="field__label">
                                 <span class="field__text">Barangay</span>
-                                <c-bpi-dropdown name="barangay" data-field="barangay" label="Barangay" placeholder={barangayPlaceholder} options={barangayOptions} value={form.barangay} disabled={isBarangayDisabled} error={errors.barangay} onchange={handleComboChange}></c-bpi-dropdown>
+                                <c-premium-dropdown name="barangay" data-field="barangay" label="Barangay" placeholder={barangayPlaceholder} options={barangayOptions} value={form.barangay} disabled={isBarangayDisabled} error={errors.barangay} onchange={handleComboChange}></c-premium-dropdown>
                             </div>
                             <p class="field__error" role="alert" lwc:if={errors.barangay}>{errors.barangay}</p>
                         </div>
@@ -223,7 +223,7 @@
                         <div class="field">
                             <div class="field__label">
                                 <span class="field__text">Preferred Shopping Branch</span>
-                                <c-bpi-dropdown name="store" data-field="store" label="Preferred Shopping Branch" placeholder="Please select.." options={storeOptions} value={form.store} error={errors.store} onchange={handleComboChange}></c-bpi-dropdown>
+                                <c-premium-dropdown name="store" data-field="store" label="Preferred Shopping Branch" placeholder="Please select.." options={storeOptions} value={form.store} error={errors.store} onchange={handleComboChange}></c-premium-dropdown>
                             </div>
                             <p class="field__error" role="alert" lwc:if={errors.store}>{errors.store}</p>
                         </div>

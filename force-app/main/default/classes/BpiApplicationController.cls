@@ -296,6 +296,9 @@ public with sharing class BpiApplicationController {
             rec.put('Company', firstName + ' ' + lastName); // required on Lead
         }
 
+        Map<String, Object> raw = (Map<String, Object>) JSON.deserializeUntyped(requestJson);
+        bpiRecaptcha.verify((String) raw.get('recaptchaToken'), 'submit_application');
+        
         // Generate the reference number; retry if it collides with an existing one.
         // Requires ReferenceNumber__c to be marked Unique so Salesforce raises DUPLICATE_VALUE.
         String referenceNumber;

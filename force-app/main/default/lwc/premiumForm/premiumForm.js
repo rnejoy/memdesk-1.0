@@ -1,13 +1,11 @@
-import { LightningElement, wire, track } from 'lwc';
+import { LightningElement, wire } from 'lwc';
 import getProvinces from '@salesforce/apex/premiumApplicationController.getProvinces';
 import getCities from '@salesforce/apex/premiumApplicationController.getCities';
 import getBarangays from '@salesforce/apex/premiumApplicationController.getBarangays';
 import getStores from '@salesforce/apex/premiumApplicationController.getStores';
 import submitApplication from '@salesforce/apex/premiumApplicationController.submitApplication';
 import LOGO from '@salesforce/resourceUrl/bpiLandersLogo';
-// import HERO_IMG from '@salesforce/resourceUrl/heroImage';
 import CARD_IMAGE from '@salesforce/resourceUrl/bpiLandingImage';
-
 
 const GENDERS = ['Male', 'Female'];
 const MARITAL_STATUSES = ['Single', 'Married', 'Widowed', 'Separated', 'Divorced', 'Living Together'];
@@ -45,9 +43,6 @@ const GENDER_OPTIONS = toOptions(GENDERS);
 const MARITAL_OPTIONS = toOptions(MARITAL_STATUSES);
 const NATIONALITY_OPTIONS = toOptions(NATIONALITIES);
 const OCCUPATION_OPTIONS = toOptions(OCCUPATIONS);
-
-const RECAPTCHA_SITE_KEY = '6LcdpuotAAAAAFVZdy4ig9ZMDR9UgVfC9amsdmG5';
-const RECAPTCHA_SRC = `https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`;
 
 const REQUIRED_FIELDS = {
     firstName: 'First name',
@@ -87,9 +82,6 @@ const EMPTY_FORM = {
     store: ''
 };
 
-
-
-
 const toTenDigitMobile = (raw) => {
     let digits = String(raw || '').replace(/\D/g, '');
     if (digits.startsWith('63') && digits.length > 10) {
@@ -115,10 +107,7 @@ const BAR_NARROW = 2;
 const BAR_WIDE = 5;
 const BAR_QUIET = 20;
 
-export default class premiumForm extends LightningElement {
-
-    @track form = {};
-    @track errors = {};
+export default class PremiumForm extends LightningElement {
     logoUrl = LOGO;
     cardImageUrl = CARD_IMAGE;
     showLogo = false;
@@ -147,13 +136,6 @@ export default class premiumForm extends LightningElement {
 
     isAgreed = false;
 
-    handleCheckboxChange(event) {
-    this.isAgreed = event.target.checked;
-    if (this.isAgreed) {
-        this.clearError('agreeTerms');
-    }
-}
-
     connectedCallback() {
         this.showLogo = !!this.logoUrl;
         this.signupStoreCode = this.readStoreFromUrl();
@@ -170,6 +152,13 @@ export default class premiumForm extends LightningElement {
 
     handleLogoError() {
         this.showLogo = false;
+    }
+
+    handleCheckboxChange(event) {
+        this.isAgreed = event.target.checked;
+        if (this.isAgreed) {
+            this.clearError('agreeTerms');
+        }
     }
 
     get hasCardImage() {
@@ -202,7 +191,7 @@ export default class premiumForm extends LightningElement {
     get noticeText() {
         return this.loadFailed
             ? 'We could not load the application page. Please refresh and try again.'
-            : 'To apply for a Landers Executive Membership, please scan the QR code at the Membership Counter of your Landers store.';
+            : 'To apply for a Landers Premium Membership, please scan the QR code at the Membership Counter of your Landers store.';
     }
 
     @wire(getProvinces)
@@ -487,19 +476,8 @@ export default class premiumForm extends LightningElement {
         this.cities = [];
         this.barangays = [];
         this.result = null;
+        this.isAgreed = false;
         this.isSubmitted = false;
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-
-    recaptchaRequested = false;
-
-    renderedCallback() {
-    if (this.recaptchaRequested) {
-        return;
-    }
-    this.recaptchaRequested = true;
-    loadScript(this, RECAPTCHA_SRC).catch((e) => {
-        console.error('reCAPTCHA failed to load', e); // eslint-disable-line no-console
-    });
-}
 }

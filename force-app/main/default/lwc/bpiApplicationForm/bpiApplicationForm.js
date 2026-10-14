@@ -1,14 +1,11 @@
-import { LightningElement, wire, track } from 'lwc';
+import { LightningElement, wire } from 'lwc';
 import getProvinces from '@salesforce/apex/BpiApplicationController.getProvinces';
 import getCities from '@salesforce/apex/BpiApplicationController.getCities';
 import getBarangays from '@salesforce/apex/BpiApplicationController.getBarangays';
 import getStores from '@salesforce/apex/BpiApplicationController.getStores';
 import submitApplication from '@salesforce/apex/BpiApplicationController.submitApplication';
-import { loadScript } from 'lightning/platformResourceLoader';
 import LOGO from '@salesforce/resourceUrl/bpiLandersLogo';
-// import HERO_IMG from '@salesforce/resourceUrl/heroImage';
 import CARD_IMAGE from '@salesforce/resourceUrl/bpiLandingImage';
-
 
 const GENDERS = ['Male', 'Female'];
 const MARITAL_STATUSES = ['Single', 'Married', 'Widowed', 'Separated', 'Divorced', 'Living Together'];
@@ -47,8 +44,10 @@ const MARITAL_OPTIONS = toOptions(MARITAL_STATUSES);
 const NATIONALITY_OPTIONS = toOptions(NATIONALITIES);
 const OCCUPATION_OPTIONS = toOptions(OCCUPATIONS);
 
-const RECAPTCHA_SITE_KEY = '6LcdpuotAAAAAFVZdy4ig9ZMDR9UgVfC9amsdmG5';
-const RECAPTCHA_SRC = `https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`;
+const RECAPTCHA_SITE_KEY = '6LeBTu4tAAAAAGM-H8baP-U-tgKKkMCmGdTEOFcW';
+// The api.js script is loaded by the site's Head Markup, not by this component.
+// Must match the action string checked in Apex: bpiRecaptcha.verify(token, 'submit_application')
+const RECAPTCHA_ACTION = 'submit_application';
 
 const REQUIRED_FIELDS = {
     firstName: 'First name',
@@ -88,9 +87,6 @@ const EMPTY_FORM = {
     store: ''
 };
 
-
-
-
 const toTenDigitMobile = (raw) => {
     let digits = String(raw || '').replace(/\D/g, '');
     if (digits.startsWith('63') && digits.length > 10) {
@@ -117,9 +113,6 @@ const BAR_WIDE = 5;
 const BAR_QUIET = 20;
 
 export default class BpiApplicationForm extends LightningElement {
-
-    @track form = {};
-    @track errors = {};
     logoUrl = LOGO;
     cardImageUrl = CARD_IMAGE;
     showLogo = false;
@@ -149,15 +142,38 @@ export default class BpiApplicationForm extends LightningElement {
     isAgreed = false;
 
     handleCheckboxChange(event) {
-    this.isAgreed = event.target.checked;
-    if (this.isAgreed) {
-        this.clearError('agreeTerms');
+        this.isAgreed = event.target.checked;
+        if (this.isAgreed) {
+            this.clearError('agreeTerms');
+        }
     }
-}
 
     connectedCallback() {
         this.showLogo = !!this.logoUrl;
         this.signupStoreCode = this.readStoreFromUrl();
+    }
+
+    // Asks Google for a fresh v3 token. Tokens expire after ~2 minutes and are
+    // single-use, so call this right before submitting, never earlier.
+    // api.js comes from the site Head Markup; wait briefly in case it is still loading.
+    async getRecaptchaToken() {
+        for (let i = 0; i < 50 && !(window.grecaptcha && window.grecaptcha.ready); i++) {
+            // eslint-disable-next-line no-await-in-loop
+            await new Promise((r) => setTimeout(r, 100));
+        }
+        const g = window.grecaptcha;
+        if (!g || !g.ready) {
+            throw new Error('reCAPTCHA is not loaded (check the site Head Markup)');
+        }
+        return new Promise((resolve, reject) => {
+            g.ready(() => {
+                g.execute(RECAPTCHA_SITE_KEY, { action: RECAPTCHA_ACTION })
+                    .then(resolve)
+                    .catch((err) => {
+                        reject(new Error(String((err && err.message) || err)));
+                    });
+            });
+        });
     }
 
     readStoreFromUrl() {
@@ -448,6 +464,22 @@ export default class BpiApplicationForm extends LightningElement {
         const f = this.form;
         this.isSubmitting = true;
         try {
+            // Fetch the token last, right before the Apex call (expires in ~2 min).
+            let recaptchaToken;
+            try {
+                recaptchaToken = await this.getRecaptchaToken();
+            } catch (captchaError) {
+                const detail = String((captchaError && captchaError.message) || captchaError);
+                console.error('reCAPTCHA error:', detail); // eslint-disable-line no-console
+                console.error('grecaptcha present?', typeof window.grecaptcha, // eslint-disable-line no-console
+                    window.grecaptcha && typeof window.grecaptcha.execute);
+                // TEMP DEBUG: shows the real reason on the form. Remove the "(detail)" part once fixed.
+                this.formError =
+                    'We could not verify that you are not a robot. Please refresh the page and try again. (' +
+                    detail + ')';
+                return;
+            }
+
             const response = await submitApplication({
                 requestJson: JSON.stringify({
                     firstName: f.firstName ? f.firstName.trim() : '',
@@ -466,7 +498,8 @@ export default class BpiApplicationForm extends LightningElement {
                     street: f.street ? f.street.trim() : '',
                     storeCode: f.store,
                     signupStoreCode: this.signupStoreCode,
-                    agreedToTerms: this.isAgreed
+                    agreedToTerms: this.isAgreed,
+                    recaptchaToken
                 })
             });
             this.result = response;
@@ -489,18 +522,7 @@ export default class BpiApplicationForm extends LightningElement {
         this.barangays = [];
         this.result = null;
         this.isSubmitted = false;
+        this.isAgreed = false;
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-
-    recaptchaRequested = false;
-
-    renderedCallback() {
-    if (this.recaptchaRequested) {
-        return;
-    }
-    this.recaptchaRequested = true;
-    loadScript(this, RECAPTCHA_SRC).catch((e) => {
-        console.error('reCAPTCHA failed to load', e); // eslint-disable-line no-console
-    });
-}
 }
