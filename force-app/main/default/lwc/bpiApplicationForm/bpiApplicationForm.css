@@ -600,3 +600,17 @@ select.field__control:disabled {
     font-weight: 600;
     letter-spacing: 2px;
 }
+
+/* ---------- reCAPTCHA widget ---------- */
+.recaptcha-wrapper {
+    display: flex;
+    justify-content: center;
+    margin: 1rem 0 0.5rem;
+}
+
+.recaptcha-frame {
+    width: 304px;
+    height: 78px;
+    max-width: 100%;
+    border: 0;
+}

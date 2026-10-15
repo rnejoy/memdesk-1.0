@@ -259,21 +259,76 @@
     height: 6em;
 }
 
+/* Viewfinder corner brackets */
+.scan-tile::before {
+    content: "";
+    position: absolute;
+    inset: 0.9em;
+    pointer-events: none;
+    --c: #5f8f2a;
+    --t: 0.18em;
+    --l: 1.3em;
+    background:
+        linear-gradient(var(--c), var(--c)) top left / var(--l) var(--t),
+        linear-gradient(var(--c), var(--c)) top left / var(--t) var(--l),
+        linear-gradient(var(--c), var(--c)) top right / var(--l) var(--t),
+        linear-gradient(var(--c), var(--c)) top right / var(--t) var(--l),
+        linear-gradient(var(--c), var(--c)) bottom left / var(--l) var(--t),
+        linear-gradient(var(--c), var(--c)) bottom left / var(--t) var(--l),
+        linear-gradient(var(--c), var(--c)) bottom right / var(--l) var(--t),
+        linear-gradient(var(--c), var(--c)) bottom right / var(--t) var(--l);
+    background-repeat: no-repeat;
+    border-radius: 0.2em;
+    animation: scanBracketPulse 2.4s ease-in-out infinite;
+}
+
+/* Laser line - always alive; faster/brighter while listening */
 .scan-line {
     position: absolute;
-    left: 1em;
-    right: 1em;
-    top: 50%;
-    height: 0.2em;
-    background: #e53935;
+    left: 1.1em;
+    right: 1.1em;
+    top: 1.5em;
+    height: 0.18em;
+    background: linear-gradient(90deg, rgba(229, 57, 53, 0) 0%, #e53935 20%, #ff6f60 50%, #e53935 80%, rgba(229, 57, 53, 0) 100%);
     border-radius: 0.1em;
-    box-shadow: 0 0 0.5em rgba(229, 57, 53, 0.7);
-    opacity: 0;
+    box-shadow: 0 0 0.6em 0.1em rgba(229, 57, 53, 0.55), 0 0 1.6em 0.3em rgba(229, 57, 53, 0.25);
+    opacity: 0.85;
+    will-change: transform;
+    animation: scanSweep 2.6s ease-in-out infinite;
+}
+
+/* Soft red wash that follows the line */
+.scan-line::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 100%;
+    height: 1.6em;
+    background: linear-gradient(to top, rgba(229, 57, 53, 0.18), rgba(229, 57, 53, 0));
+    pointer-events: none;
+}
+
+/* Icon gently "breathes" so the whole tile feels live */
+.scan-tile .override-icon,
+.scan-tile .gun-icon {
+    animation: scanIconPulse 2.6s ease-in-out infinite;
 }
 
 .scan-card.is-scanning .scan-line {
     opacity: 1;
-    animation: scanMove 1.4s ease-in-out infinite alternate;
+    animation-duration: 1.2s;
+    box-shadow: 0 0 0.7em 0.15em rgba(229, 57, 53, 0.75), 0 0 2em 0.4em rgba(229, 57, 53, 0.35);
+}
+
+.scan-card.is-scanning .scan-tile::before {
+    --c: #e53935;
+    animation-duration: 1.2s;
+}
+
+.scan-card.is-scanning .scan-tile .override-icon,
+.scan-card.is-scanning .scan-tile .gun-icon {
+    animation-duration: 1.2s;
 }
 
 .scan-title {
@@ -1244,15 +1299,30 @@ textarea.input {
     to { transform: rotate(360deg); }
 }
 
-@keyframes scanMove {
-    from { top: 18%; }
-    to { top: 80%; }
+@keyframes scanSweep {
+    0%   { transform: translateY(0); }
+    50%  { transform: translateY(6.4em); }
+    100% { transform: translateY(0); }
+}
+
+@keyframes scanIconPulse {
+    0%, 100% { transform: scale(1);    filter: brightness(1); }
+    50%      { transform: scale(1.04); filter: brightness(1.06); }
+}
+
+@keyframes scanBracketPulse {
+    0%, 100% { opacity: 0.55; }
+    50%      { opacity: 1; }
 }
 
 @media (prefers-reduced-motion: reduce) {
     .detail-container,
     .notice,
     .modal-backdrop,
+    .scan-line,
+    .scan-tile::before,
+    .scan-tile .override-icon,
+    .scan-tile .gun-icon,
     .scan-card.is-scanning .scan-line {
         animation: none;
     }

@@ -8,7 +8,7 @@ public with sharing class bpiRecaptcha {
     public static String getSiteKey() {
         Recaptcha_Setting__mdt setting = getSetting();
         if (setting == null || String.isBlank(setting.Site_Key__c)) {
-            throw new AuraHandledException('reCAPTCHA is not configured for this org.');
+            throw err('reCAPTCHA is not configured for this org.');
         }
         return setting.Site_Key__c;
     }
@@ -21,46 +21,46 @@ public with sharing class bpiRecaptcha {
     }
 
     // Plain Apex entry point (no @AuraEnabled boundary) so other server-side
-    // code — like RegistrationController.createRegistration — can verify the
+    // code, like BpiApplicationController.submitApplication, can verify the
     // captcha as part of its own transaction, rather than relying on the
     // client having called verifyCaptcha first. Throws on any failure.
     public static void verify(String token, String action) {
         if (String.isBlank(token)) {
-            throw new AuraHandledException('Missing captcha token.');
+            throw err('Missing captcha token.');
         }
 
         Recaptcha_Setting__mdt setting = getSetting();
         if (setting == null || String.isBlank(setting.Secret_Key__c)) {
-            throw new AuraHandledException('reCAPTCHA is not configured for this org.');
+            throw err('reCAPTCHA is not configured for this org.');
         }
 
         HttpResponse res = sendVerifyRequest(setting.Secret_Key__c, token);
 
         if (res.getStatusCode() != 200) {
-            throw new AuraHandledException('Captcha verification service is unavailable. Please try again.');
+            throw err('Captcha verification service is unavailable. Please try again.');
         }
 
         Map<String, Object> result = (Map<String, Object>) JSON.deserializeUntyped(res.getBody());
 
         Boolean success = result.get('success') == true;
         if (!success) {
-            throw new AuraHandledException('Captcha verification failed. Please try again.');
+            throw err('Captcha verification failed. Please try again.');
         }
 
-        // v3 responses include a score (0–1) and the action name; v2 checkbox/image
+        // v3 responses include a score (0-1) and the action name; v2 checkbox/image
         // challenge responses include neither. Only enforce these when present, so
         // this method works correctly against either captcha type without changes.
         if (result.get('score') != null) {
             Decimal score    = (Decimal) result.get('score');
             Decimal minScore = setting.Score_Threshold__c != null ? setting.Score_Threshold__c : DEFAULT_SCORE_THRESHOLD;
             if (score < minScore) {
-                throw new AuraHandledException('Captcha verification failed. Please try again.');
+                throw err('Captcha verification failed. Please try again.');
             }
         }
 
         Object returnedAction = result.get('action');
         if (String.isNotBlank(action) && returnedAction != null && action != (String) returnedAction) {
-            throw new AuraHandledException('Captcha verification failed. Please try again.');
+            throw err('Captcha verification failed. Please try again.');
         }
     }
 
@@ -77,7 +77,7 @@ public with sharing class bpiRecaptcha {
         try {
             return new Http().send(req);
         } catch (Exception e) {
-            throw new AuraHandledException('Unable to reach the captcha verification service. Please try again.');
+            throw err('Unable to reach the captcha verification service. Please try again.');
         }
     }
 
@@ -89,5 +89,13 @@ public with sharing class bpiRecaptcha {
             LIMIT 1
         ];
         return settings.isEmpty() ? null : settings[0];
+    }
+
+    // setMessage is required so the real text reaches the LWC (e.body.message)
+    // instead of the generic "Script-thrown exception".
+    private static AuraHandledException err(String message) {
+        AuraHandledException e = new AuraHandledException(message);
+        e.setMessage(message);
+        return e;
     }
 }

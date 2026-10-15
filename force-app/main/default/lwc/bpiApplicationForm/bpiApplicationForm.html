@@ -243,11 +243,20 @@
                             <p class="field__error" role="alert" lwc:if={errors.agreeTerms}>{errors.agreeTerms}</p>
                         </div>
 
+                        <div class="recaptcha-wrapper" lwc:if={recaptchaIframeUrl}>
+                            <iframe src={recaptchaIframeUrl} title="reCAPTCHA" class="recaptcha-frame"></iframe>
+                        </div>
+
                         <p class="banner" role="alert" lwc:if={formError}>{formError}</p>
 
                         <div class="actions">
                             <button type="submit" class="btn" disabled={isSubmitting}>{submitLabel}</button>
                         </div>
+                        <p style="font-size:0.75rem;margin-top:0.75rem;text-align:center;">
+                            This site is protected by reCAPTCHA and the Google
+                            <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a> and
+                            <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer">Terms of Service</a> apply.
+                        </p>
                     </form>
                 </template>
             </div>

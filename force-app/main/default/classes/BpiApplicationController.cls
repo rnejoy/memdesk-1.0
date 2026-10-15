@@ -191,6 +191,18 @@ public with sharing class BpiApplicationController {
             throw err('Missing application request data.');
         }
 
+        // 1. Verify the captcha FIRST: before parsing, validation, SOQL or any DML.
+        //    (Apex forbids a callout after DML, and this stops bots from probing
+        //    the validation or burning queries.)
+        Map<String, Object> raw;
+        try {
+            raw = (Map<String, Object>) JSON.deserializeUntyped(requestJson);
+        } catch (Exception e) {
+            throw err('Invalid application data format received.');
+        }
+        BpiRecaptchaController.verify((String) raw.get('recaptchaToken'), null);
+
+        // 2. Parse the typed request.
         ApplicationRequest request;
         try {
             request = (ApplicationRequest) JSON.deserialize(requestJson, ApplicationRequest.class);
@@ -296,9 +308,6 @@ public with sharing class BpiApplicationController {
             rec.put('Company', firstName + ' ' + lastName); // required on Lead
         }
 
-        Map<String, Object> raw = (Map<String, Object>) JSON.deserializeUntyped(requestJson);
-        bpiRecaptcha.verify((String) raw.get('recaptchaToken'), 'submit_application');
-        
         // Generate the reference number; retry if it collides with an existing one.
         // Requires ReferenceNumber__c to be marked Unique so Salesforce raises DUPLICATE_VALUE.
         String referenceNumber;

@@ -6,6 +6,8 @@ import getStores from '@salesforce/apex/BpiApplicationController.getStores';
 import submitApplication from '@salesforce/apex/BpiApplicationController.submitApplication';
 import LOGO from '@salesforce/resourceUrl/bpiLandersLogo';
 import CARD_IMAGE from '@salesforce/resourceUrl/bpiLandingImage';
+import getRecaptchaSiteKey from '@salesforce/apex/BpiRecaptchaController.getSiteKey';
+import RECAPTCHA_WIDGET from '@salesforce/resourceUrl/recaptchaWidget';
 
 const GENDERS = ['Male', 'Female'];
 const MARITAL_STATUSES = ['Single', 'Married', 'Widowed', 'Separated', 'Divorced', 'Living Together'];
@@ -44,10 +46,9 @@ const MARITAL_OPTIONS = toOptions(MARITAL_STATUSES);
 const NATIONALITY_OPTIONS = toOptions(NATIONALITIES);
 const OCCUPATION_OPTIONS = toOptions(OCCUPATIONS);
 
-const RECAPTCHA_SITE_KEY = '6LeBTu4tAAAAAGM-H8baP-U-tgKKkMCmGdTEOFcW';
-// The api.js script is loaded by the site's Head Markup, not by this component.
-// Must match the action string checked in Apex: bpiRecaptcha.verify(token, 'submit_application')
-const RECAPTCHA_ACTION = 'submit_application';
+// reCAPTCHA (v2 checkbox) runs inside the shared recaptchaWidget static-resource iframe,
+// the same one kiaxlndApplication uses. The site key comes from BpiRecaptchaController.getSiteKey()
+// (its own 'Bpi' custom metadata record, separate from the Kia 'Default' record).
 
 const REQUIRED_FIELDS = {
     firstName: 'First name',
@@ -151,29 +152,60 @@ export default class BpiApplicationForm extends LightningElement {
     connectedCallback() {
         this.showLogo = !!this.logoUrl;
         this.signupStoreCode = this.readStoreFromUrl();
+        this._onCaptchaMessage = this.handleCaptchaMessage.bind(this);
+        window.addEventListener('message', this._onCaptchaMessage);
+        getRecaptchaSiteKey()
+            .then((key) => {
+                this.recaptchaSiteKey = key;
+            })
+            .catch((error) => {
+                console.error('Unable to load captcha configuration:', error); // eslint-disable-line no-console
+                this.formError = 'Captcha is unavailable right now. Please try again later.';
+            });
     }
 
-    // Asks Google for a fresh v3 token. Tokens expire after ~2 minutes and are
-    // single-use, so call this right before submitting, never earlier.
-    // api.js comes from the site Head Markup; wait briefly in case it is still loading.
-    async getRecaptchaToken() {
-        for (let i = 0; i < 50 && !(window.grecaptcha && window.grecaptcha.ready); i++) {
-            // eslint-disable-next-line no-await-in-loop
-            await new Promise((r) => setTimeout(r, 100));
+    disconnectedCallback() {
+        window.removeEventListener('message', this._onCaptchaMessage);
+    }
+
+    recaptchaSiteKey = '';
+    captchaToken = '';
+    captchaFrameVisible = true;
+
+    get recaptchaIframeUrl() {
+        return this.recaptchaSiteKey && this.captchaFrameVisible
+            ? RECAPTCHA_WIDGET + '?key=' + encodeURIComponent(this.recaptchaSiteKey)
+            : '';
+    }
+
+    // Messages from the widget iframe: token, expiry, or error.
+    handleCaptchaMessage(event) {
+        const data = event.data;
+        if (!data || !data.type) {
+            return;
         }
-        const g = window.grecaptcha;
-        if (!g || !g.ready) {
-            throw new Error('reCAPTCHA is not loaded (check the site Head Markup)');
+        if (data.type === 'recaptcha-token') {
+            this.captchaToken = data.token;
+            if (this.formError) {
+                this.formError = '';
+            }
+        } else if (data.type === 'recaptcha-expired') {
+            this.captchaToken = '';
+            this.formError = 'Captcha expired. Please tick "I\'m not a robot" again.';
+        } else if (data.type === 'recaptcha-error') {
+            this.captchaToken = '';
+            this.formError = data.message || 'Captcha failed to load. Please refresh and try again.';
         }
-        return new Promise((resolve, reject) => {
-            g.ready(() => {
-                g.execute(RECAPTCHA_SITE_KEY, { action: RECAPTCHA_ACTION })
-                    .then(resolve)
-                    .catch((err) => {
-                        reject(new Error(String((err && err.message) || err)));
-                    });
-            });
-        });
+    }
+
+    // A token is single-use: clear it and rebuild the iframe so the checkbox resets.
+    resetCaptcha() {
+        this.captchaToken = '';
+        this.captchaFrameVisible = false;
+        // eslint-disable-next-line @lwc/lwc/no-async-operation
+        setTimeout(() => {
+            this.captchaFrameVisible = true;
+        }, 0);
     }
 
     readStoreFromUrl() {
@@ -464,19 +496,9 @@ export default class BpiApplicationForm extends LightningElement {
         const f = this.form;
         this.isSubmitting = true;
         try {
-            // Fetch the token last, right before the Apex call (expires in ~2 min).
-            let recaptchaToken;
-            try {
-                recaptchaToken = await this.getRecaptchaToken();
-            } catch (captchaError) {
-                const detail = String((captchaError && captchaError.message) || captchaError);
-                console.error('reCAPTCHA error:', detail); // eslint-disable-line no-console
-                console.error('grecaptcha present?', typeof window.grecaptcha, // eslint-disable-line no-console
-                    window.grecaptcha && typeof window.grecaptcha.execute);
-                // TEMP DEBUG: shows the real reason on the form. Remove the "(detail)" part once fixed.
-                this.formError =
-                    'We could not verify that you are not a robot. Please refresh the page and try again. (' +
-                    detail + ')';
+            const recaptchaToken = this.captchaToken;
+            if (!recaptchaToken) {
+                this.formError = 'Please tick "I\'m not a robot" above before submitting.';
                 return;
             }
 
@@ -508,6 +530,7 @@ export default class BpiApplicationForm extends LightningElement {
         } catch (e) {
             this.formError =
                 (e && e.body && e.body.message) || 'Something went wrong. Please try again.';
+            this.resetCaptcha();
         } finally {
             this.isSubmitting = false;
         }
